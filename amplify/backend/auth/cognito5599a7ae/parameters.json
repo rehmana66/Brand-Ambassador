@@ -1,0 +1,25 @@
+{
+    "identityPoolName": "myapp_identitypool_39f8969d",
+    "allowUnauthenticatedIdentities": true,
+    "openIdLambdaRoleName": "myapp39f8969d_openid_lambda_role",
+    "authSelections": "identityPoolOnly",
+    "resourceName": "cognito5599a7ae",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    }
+}
