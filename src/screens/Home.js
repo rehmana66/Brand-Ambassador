@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+
 import {
     View,
     Text,
@@ -10,11 +12,12 @@ import {
 class Home extends Component {
       render() {
         return (
-          <Text> Welcome </Text>
+          <Button title="Go To Detail Screen" onPress={() => this.props.navigation.navigate('Detail')} />
         );
       }
 
 }
+
 
 export default Home;
 

@@ -6,6 +6,7 @@ import Home from './src/screens/Home';
 import Search from './src/screens/Search';
 import Groups from './src/screens/Groups';
 import Account from './src/screens/Account';
+import Detail from './src/screens/Detail';
 
 import {
   createSwitchNavigator,
@@ -35,11 +36,97 @@ class MainScreen extends Component {
     );
   }
 }
-
-const DashboardTabNavigator = createBottomTabNavigator(
+const HomeStack = createStackNavigator(
   {
     Home: {
       screen: Home,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Home',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    },
+    Detail: {
+      screen: Detail
+    }
+  },
+  {
+    defaultNavigationOptions: {
+    gesturesEnabled: false
+    }
+  }
+);
+
+const SearchStack = createStackNavigator(
+  {
+    Search: {
+      screen: Search,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Search',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    },
+  },
+  {
+    defaultNavigationOptions: {
+    gesturesEnabled: false
+    }
+  }
+);
+
+const GroupStack = createStackNavigator(
+  {
+    Groups: {
+      screen: Groups,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Groups',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    },
+  },
+  {
+    defaultNavigationOptions: {
+    gesturesEnabled: false
+    }
+  }
+);
+
+const AccountStack = createStackNavigator(
+  {
+    Account: {
+      screen: Account,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Account Settings',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    },
+  },
+  {
+    defaultNavigationOptions: {
+    gesturesEnabled: false
+    }
+  }
+);
+
+const DashboardTabNavigator = createBottomTabNavigator(
+  {
+    Dashboard: {
+      screen: HomeStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
             return <Icon name={"ios-home"} size={25} color={tintColor} />;
@@ -47,15 +134,15 @@ const DashboardTabNavigator = createBottomTabNavigator(
       },
     },
     Search: {
-      screen: Search,
+      screen: SearchStack,
       navigationOptions: {
         tabBarIcon: ({ focused, tintColor }) => {
             return <Icon name={"ios-search"} size={25} color={tintColor} />;
         },
       },
     },
-    Groups: {
-      screen: Groups,
+    Group: {
+      screen: GroupStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
             return <Icon name={"ios-chatboxes"} size={25} color={tintColor} />;
@@ -63,7 +150,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
       },
     },
     Account: {
-      screen: Account,
+      screen: AccountStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
             return <Icon name={"ios-person"} size={25} color={tintColor} />;
@@ -75,6 +162,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state.routes[navigation.state.index];
       return {
+        header: null,
         headerTitle: routeName,
       }
     }
@@ -95,7 +183,6 @@ const DashboardStackNavigator = createStackNavigator(
             size={30}
           />
         )
-        
       };
     }
   }
