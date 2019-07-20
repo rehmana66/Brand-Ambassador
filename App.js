@@ -1,97 +1,124 @@
 import React, { Component } from 'react';
-import { Linking, Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import Auth from '@aws-amplify/auth';
-import Analytics from '@aws-amplify/analytics';
-import awsconfig from './aws-exports';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import Icon from '@expo/vector-icons/Ionicons';
 
 import Home from './src/screens/Home';
 import Search from './src/screens/Search';
 import Groups from './src/screens/Groups';
 import Account from './src/screens/Account';
 
-// retrieve temporary AWS credentials and sign requests
-Auth.configure(awsconfig);
-// send analytics events to Amazon Pinpoint
-Analytics.configure(awsconfig);
+import {
+  createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator,
+  createStackNavigator
+} from 'react-navigation';
 
+class App extends Component {
+  render() {
+    return <AppContainer />;
+  }
+}
+export default App;
 
-const AppNavigator = createStackNavigator({
-  // For each screen that you can navigate to, create a new entry like this:
-  Home: {
-    screen: Home
-  },
-  Search: {
-    screen: Search
-  },
-  Groups: {
-    screen: Groups
-  },
-  Account: {
-    screen: Account
-  },
-});
-
-export default AppContainer = createAppContainer(AppNavigator);
-
-
-//export default AppContainer;
-
-/*
-export default class App extends Component {
-    constructor(props) {
-      super(props);
-      this.handleAnalyticsClick = this.handleAnalyticsClick.bind(this);
-      this.state = {
-        resultHtml: <Text></Text>,
-        eventsSent: 0
-      };
-    }
-
-    handleAnalyticsClick() {
-      const { aws_project_region, aws_mobile_analytics_app_id } = awsconfig;
-
-      Analytics.record('AWS Amplify Tutorial Event')
-        .then( (evt) => {
-            const url = `https://${aws_project_region}.console.aws.amazon.com/pinpoint/home/?region=${aws_project_region}#/apps/${aws_mobile_analytics_app_id}/analytics/events`;
-            const result = (
-              <View>
-                <Text>Event Submitted.</Text>
-                <Text>Events sent: {this.state.eventsSent + 1}</Text>
-                <Text style={styles.link} onPress={() => Linking.openURL(url)}>
-                  View Events on the Amazon Pinpoint Console
-                </Text>
-              </View>
-            );
-            this.setState({
-                resultHtml: result,
-                eventsSent: this.state.eventsSent + 1
-            });
-        });
-    };
-    render() {
-      const {navigate} = this.props;
-      return (
-        <View style={styles.container}>
-          <Text>Welcome to your React Native App with Amplify!</Text>
-          <Button title="Generate Analytics Event" onPress={this.handleAnalyticsClick} />
-          {this.state.resultHtml}
-          <Button title="Home" onPress = {() => navigation.navigate('Home')} />
-              
-        </View>
-      );
-    }
+class MainScreen extends Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Button
+          title="Login"
+          onPress={() => this.props.navigation.navigate('Dashboard')}
+        />
+        <Button title="Sign Up" onPress={() => alert('button pressed')} />
+      </View>
+    );
+  }
 }
 
-*/
+const DashboardTabNavigator = createBottomTabNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => {
+            return <Icon name={"ios-home"} size={25} color={tintColor} />;
+        },
+      },
+    },
+    Search: {
+      screen: Search,
+      navigationOptions: {
+        tabBarIcon: ({ focused, tintColor }) => {
+            return <Icon name={"ios-search"} size={25} color={tintColor} />;
+        },
+      },
+    },
+    Groups: {
+      screen: Groups,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => {
+            return <Icon name={"ios-chatboxes"} size={25} color={tintColor} />;
+        },
+      },
+    },
+    Account: {
+      screen: Account,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => {
+            return <Icon name={"ios-person"} size={25} color={tintColor} />;
+        },
+      },
+    }
+  },
+  {
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state.routes[navigation.state.index];
+      return {
+        headerTitle: routeName,
+      }
+    }
+  }
+);
+const DashboardStackNavigator = createStackNavigator(
+  {
+    DashboardTabNavigator: DashboardTabNavigator
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => {
+      return {
+        headerLeft: (
+          <Icon
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.openDrawer()}
+            name="md-menu"
+            size={30}
+          />
+        )
+        
+      };
+    }
+  }
+);
+
+const AppDrawerNavigator = createDrawerNavigator({
+  Dashboard: {
+    screen: DashboardStackNavigator
+  }
+});
+
+const AppSwitchNavigator = createSwitchNavigator({
+  Welcome: { screen: MainScreen },
+  Dashboard: { screen: AppDrawerNavigator }
+});
+
+const AppContainer = createAppContainer(AppSwitchNavigator);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  link: {
-    color: 'blue'
+    justifyContent: 'center'
   }
 });
+
