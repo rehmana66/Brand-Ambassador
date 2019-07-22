@@ -44,7 +44,7 @@ class Search extends Component {
 
     render() {
         return (
-            <SafeAreaView style = {{ flex: 1 }}>
+            <SafeAreaView navigation ={this.props.navigation} style = {{ flex: 1 }}>
                 <View style = {{ flex: 1, backgroundColor: 'white' }}>
                     <Animated.View style = {styles.headerContainer}>
                         <View style={styles.searchContainer}>
@@ -93,10 +93,7 @@ class Search extends Component {
                         </View>
                    
                         <View style={{marginTop: 20, paddingHorizontal: 20}}>
-                            <Text style={{fontSize: 20, fontWeight: '700'}}>
-                                Shift Listing:
-                                
-                            </Text>
+                            <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                             <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
                                 <Shift width={width} imageURI={require("../../assets/home.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
                                 <Shift width={width} imageURI={require("../../assets/experiences.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>

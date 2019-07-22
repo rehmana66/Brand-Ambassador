@@ -71,16 +71,10 @@ const SearchStack = createStackNavigator(
           header: null,
         }
       }
-      /*
-      navigationOptions: ({ navigation }) => {
-        return {
-          headerTitle: 'Search',
-          headerLeft: (
-            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
-          )
-        };
-      }*/
     },
+    Detail: {
+      screen: Detail
+    }
   },
   {
     defaultNavigationOptions: {

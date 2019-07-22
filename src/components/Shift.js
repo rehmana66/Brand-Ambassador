@@ -3,7 +3,7 @@ import {
     View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
-import { Ionicons } from '@expo/vector-icons';
+import { withNavigation } from 'react-navigation';
 
 class Shift extends Component {
     constructor(props) {
@@ -20,7 +20,13 @@ class Shift extends Component {
       }
     render(){
         return(
-            <View style={{marginBottom: 20}}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Detail',
+                            {  
+                                title: this.props.title,
+                                desc: this.props.desc,
+                                price: this.props.price
+                            }
+                            )}>
                 <View style={{width: this.props.width - 40, height:  this.props.width/1.5 - 30, borderWidth: 0.5, borderColor: '#dddddd' }}>
                     <View style={{flex: 1, marginBottom: 2, borderBottomWidth: 2, borderBottomColor: '#dddddd'}}>
                         <Image source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}></Image>
@@ -39,12 +45,12 @@ class Shift extends Component {
                         </View>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
 
-export default Shift;
+export default withNavigation(Shift);
 
 const styles = StyleSheet.create({
     container: {

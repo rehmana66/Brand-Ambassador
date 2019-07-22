@@ -6,13 +6,16 @@ import {
     Text,
     StyleSheet,
     Button,
+    TouchableOpacity
 
 } from 'react-native';
 
 class Home extends Component {
       render() {
         return (
-          <Button title="Go To Detail Screen" onPress={() => this.props.navigation.navigate('Detail')} />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Detail')} >
+            <Text>Hi</Text>
+            </TouchableOpacity>
         );
       }
 
