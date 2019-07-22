@@ -8,7 +8,10 @@ import {
     StatusBar,
     Image,
     Dimensions,
-    Animated
+    Animated,
+    Alert,
+    Button,
+    TouchableOpacity
 
 } from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
@@ -23,7 +26,38 @@ class Search extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            SampleArray: [{id: 2, name: 'Bartender'}, {id: 1, name: 'Barissta'}, {id: 0, name: 'Construction'}],
+            count: 3, //change this later
+            lastRefresh: Date(Date.now()).toString(),
+            SearchText: '',
+            closeURI: require('../../assets/close.png'),
+            showCancel: false
+        }
+        this.refreshScreen = this.refreshScreen.bind(this)
     }
+
+    refreshScreen() {
+        this.setState({ lastRefresh: Date(Date.now()).toString() })
+    }
+    onSubmit = () => {
+        
+        if(this.state.count >= 10) {
+            popStock = this.state.SampleArray.pop()
+            //console.log('poped:', popStock)
+        }
+        console.log('sd', this.state.SearchText)
+        if(this.state.SearchText == undefined || this.state.SearchText == '') {
+            return
+        } else {
+            this.state.SampleArray.unshift({id: this.state.count, name: this.state.SearchText});
+            this.state.count = this.state.count+1
+        }
+      }
+
+    forceUpdateHandler(){
+        this.forceUpdate();
+      };
     
     //this does not work, find out why
     componentWillMount() {
@@ -41,20 +75,52 @@ class Search extends Component {
             extrapolate: 'clamp'
         })
     }
+    submitAndClear = () => {
+        console.log(this.state.showCancel.valueOf())
+        this.setState({
+            SearchText: ''
+        })
+        this.state.showCancel = false
+      }
+    renderCancel()  {
+        if (this.state.showCancel && this.state.SearchText.length > 0) {
+            return (
+                <TouchableOpacity onPress={this.submitAndClear}>
+                    <Image source={this.state.closeURI} style={{width: 20, height: 20, resizeMode: 'cover'}}></Image>
+                </TouchableOpacity>
+            );
+        } 
+    }
+    toggleCancel = () => {
+        this.state.showCancel = true
+    }
 
     render() {
         return (
-            <SafeAreaView navigation ={this.props.navigation} style = {{ flex: 1 }}>
+            <SafeAreaView style = {{ flex: 1 }}>
                 <View style = {{ flex: 1, backgroundColor: 'white' }}>
-                    <Animated.View style = {styles.headerContainer}>
+                    <View style = {styles.headerContainer}>
                         <View style={styles.searchContainer}>
                             <Ionicons name="ios-search" size={20} style={{marginHorizontal: 10}} />
-                            <TextInput
-                                underlineColorAndroid= "transparent"
-                                placeholder="Search"
-                                placeholderTextColor="grey"
-                                style={{flex: 1, fontWeight: '700', backgroundColor: 'white'}}>
-                            </TextInput>
+                            <View style={{flex: 1 , flexDirection: 'row'}}>
+                                <TextInput
+                                    underlineColorAndroid= "transparent"
+                                    placeholder="Search"
+                                    placeholderTextColor="grey"
+                                    returnKeyType = {"go"}
+                                    onEndEditing = {this.refreshScreen}
+                                    style={{flex: 1, fontWeight: '700', backgroundColor: 'white'}}
+                                    onChangeText={(SearchText) => this.setState({SearchText})}
+                                    onSubmitEditing={this.onSubmit}
+                                    maxLength = {40}
+                                    value = {this.state.SearchText}
+                                    onKeyPress={this.toggleCancel}
+                                    >
+                                </TextInput>
+                                
+                                {this.renderCancel()} 
+                                
+                            </View>
                         </View>
                        
                         <Animated.View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
@@ -68,31 +134,18 @@ class Search extends Component {
                             <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}> 1906 shifts found</Text>
                             <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}> Edmonton, Alberta</Text>
                         </View>
-                    </Animated.View>
-                    <ScrollView scrollEventThrottle={16}
-                        onScroll={Animated.event([
-                            {nativeEvent:{contentOffset:{y:this.scrollY}}}
-                        ])}
-                    >
+                    </View>
+                    <ScrollView scrollEventThrottle={16} >
                         
                         <View style={{ flex: 1, flexDirection: 'row', paddingTop: 10, paddingHorizontal: 15}}>
                             <Text style={{fontSize: 20, fontWeight:'700'}}> Recent Searches:</Text>
                         </View>
-                        <View style={{height: 130, marginTop: 10}}>
-                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <Category imageURI={require('../../assets/bartender.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/merchandiser.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/construction.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/bartender.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/merchandiser.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/construction.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/bartender.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/merchandiser.jpg')} name='Bartender'></Category>
-                                <Category imageURI={require('../../assets/construction.jpg')} name='Bartender'></Category>
-                            </ScrollView>
+                        <View style={{flex: 1, marginTop: 10, paddingHorizontal: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
+                            
+                                {this.state.SampleArray.map((item, key) =>
+                                <Tag item={item} key={item.id} name={item.name}/>)}
                         </View>
-                   
-                        <View style={{marginTop: 20, paddingHorizontal: 20}}>
+                        <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
                             <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                             <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
                                 <Shift width={width} imageURI={require("../../assets/home.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
@@ -107,9 +160,7 @@ class Search extends Component {
                             </View>
                         </View>
                     </ScrollView>
-                    
                 </View>
-                
             </SafeAreaView>
         );
     }
@@ -128,6 +179,7 @@ const styles = StyleSheet.create({
         height: Platform.OS == 'android' ? 180 : 130,
         //height: this.animatedHeaderHeight,
         //height: 130,
+        
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderBottomColor: '#dddddd'

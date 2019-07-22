@@ -20,7 +20,7 @@ class Shift extends Component {
       }
     render(){
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Detail',
+            <TouchableOpacity style={{marginBottom: 20}} onPress={() => this.props.navigation.navigate('Detail',
                             {  
                                 title: this.props.title,
                                 desc: this.props.desc,
