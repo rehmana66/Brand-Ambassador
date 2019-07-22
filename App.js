@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import { View, Image, StyleSheet, Button } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 import Home from './src/screens/Home';
 import Search from './src/screens/Search';
@@ -13,7 +14,8 @@ import {
   createAppContainer,
   createDrawerNavigator,
   createBottomTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  DrawerItems
 } from 'react-navigation';
 
 class App extends Component {
@@ -44,7 +46,7 @@ const HomeStack = createStackNavigator(
         return {
           headerTitle: 'Home',
           headerLeft: (
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
           )
         };
       }
@@ -64,14 +66,20 @@ const SearchStack = createStackNavigator(
   {
     Search: {
       screen: Search,
+      navigationOptions: ({ navigation}) => {
+        return {
+          header: null,
+        }
+      }
+      /*
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Search',
           headerLeft: (
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
           )
         };
-      }
+      }*/
     },
   },
   {
@@ -89,7 +97,7 @@ const GroupStack = createStackNavigator(
         return {
           headerTitle: 'Groups',
           headerLeft: (
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
           )
         };
       }
@@ -110,7 +118,7 @@ const AccountStack = createStackNavigator(
         return {
           headerTitle: 'Account Settings',
           headerLeft: (
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
           )
         };
       }
@@ -129,15 +137,15 @@ const DashboardTabNavigator = createBottomTabNavigator(
       screen: HomeStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
-            return <Icon name={"ios-home"} size={25} color={tintColor} />;
+            return <Ionicons name={"ios-home"} size={25} color={tintColor} />;
         },
       },
     },
     Search: {
       screen: SearchStack,
       navigationOptions: {
-        tabBarIcon: ({ focused, tintColor }) => {
-            return <Icon name={"ios-search"} size={25} color={tintColor} />;
+        tabBarIcon: ({tintColor}) => {
+            return <Ionicons name={"ios-search"} size={25} color={tintColor} />;
         },
       },
     },
@@ -145,7 +153,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
       screen: GroupStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
-            return <Icon name={"ios-chatboxes"} size={25} color={tintColor} />;
+            return <Ionicons name={"ios-chatboxes"} size={25} color={tintColor} />;
         },
       },
     },
@@ -153,7 +161,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
       screen: AccountStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
-            return <Icon name={"ios-person"} size={25} color={tintColor} />;
+            return <Ionicons name={"ios-person"} size={25} color={tintColor} />;
         },
       },
     }
@@ -176,7 +184,7 @@ const DashboardStackNavigator = createStackNavigator(
     defaultNavigationOptions: ({ navigation }) => {
       return {
         headerLeft: (
-          <Icon
+          <Ionicons
             style={{ paddingLeft: 10 }}
             onPress={() => navigation.openDrawer()}
             name="md-menu"
@@ -189,10 +197,11 @@ const DashboardStackNavigator = createStackNavigator(
 );
 
 const AppDrawerNavigator = createDrawerNavigator({
-  Dashboard: {
-    screen: DashboardStackNavigator
+    Dashboard: {
+      screen: DashboardStackNavigator
+    }
   }
-});
+);
 
 const AppSwitchNavigator = createSwitchNavigator({
   Welcome: { screen: MainScreen },
@@ -206,6 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  
 });
 
