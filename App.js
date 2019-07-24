@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -15,10 +15,8 @@ import SignUp from './src/screens/SignUp';
 import {
   createSwitchNavigator,
   createAppContainer,
-  createDrawerNavigator,
   createBottomTabNavigator,
   createStackNavigator,
-  DrawerItems
 } from 'react-navigation';
 
 class App extends Component {
@@ -55,9 +53,6 @@ const HomeStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Home',
-          headerLeft: (
-            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
-          )
         };
       }
     },
@@ -65,11 +60,6 @@ const HomeStack = createStackNavigator(
       screen: Detail
     }
   },
-  {
-    defaultNavigationOptions: {
-    gesturesEnabled: false
-    }
-  }
 );
 
 const SearchStack = createStackNavigator(
@@ -86,11 +76,6 @@ const SearchStack = createStackNavigator(
       screen: Detail
     }
   },
-  {
-    defaultNavigationOptions: {
-    gesturesEnabled: false
-    }
-  }
 );
 
 const GroupStack = createStackNavigator(
@@ -100,18 +85,10 @@ const GroupStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Groups',
-          headerLeft: (
-            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
-          )
         };
       }
     },
   },
-  {
-    defaultNavigationOptions: {
-    gesturesEnabled: false
-    }
-  }
 );
 
 const AccountStack = createStackNavigator(
@@ -121,18 +98,10 @@ const AccountStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Account Settings',
-          headerLeft: (
-            <Ionicons style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
-          )
         };
       }
     },
   },
-  {
-    defaultNavigationOptions: {
-    gesturesEnabled: false
-    }
-  }
 );
 
 const DashboardTabNavigator = createBottomTabNavigator(
@@ -184,32 +153,11 @@ const DashboardStackNavigator = createStackNavigator(
   {
     DashboardTabNavigator: DashboardTabNavigator
   },
-  {
-    defaultNavigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <Ionicons
-            style={{ paddingLeft: 10 }}
-            onPress={() => navigation.openDrawer()}
-            name="md-menu"
-            size={30}
-          />
-        )
-      };
-    }
-  }
-);
-
-const AppDrawerNavigator = createDrawerNavigator({
-    Dashboard: {
-      screen: DashboardStackNavigator
-    }
-  }
 );
 
 const AppSwitchNavigator = createSwitchNavigator({
   Welcome: { screen: SignedOut },
-  Dashboard: { screen: AppDrawerNavigator }
+  Dashboard: { screen: DashboardStackNavigator }
 });
 
 const AppContainer = createAppContainer(AppSwitchNavigator);
