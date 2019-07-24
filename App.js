@@ -8,6 +8,9 @@ import Search from './src/screens/Search';
 import Groups from './src/screens/Groups';
 import Account from './src/screens/Account';
 import Detail from './src/screens/Detail';
+import Main from './src/screens/Main';
+import LogIn from './src/screens/LogIn';
+import SignUp from './src/screens/SignUp';
 
 import {
   createSwitchNavigator,
@@ -25,19 +28,26 @@ class App extends Component {
 }
 export default App;
 
-class MainScreen extends Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="Login"
-          onPress={() => this.props.navigation.navigate('Dashboard')}
-        />
-        <Button title="Sign Up" onPress={() => alert('button pressed')} />
-      </View>
-    );
-  }
-}
+const SignedOut = createStackNavigator({
+  Main: {
+    screen: Main,
+    navigationOptions: {
+      header: null
+    }
+  },
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: {
+      title: "Log In"
+    }
+  },
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: {
+      title: "Sign Up"
+    }
+  },
+})
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -198,7 +208,7 @@ const AppDrawerNavigator = createDrawerNavigator({
 );
 
 const AppSwitchNavigator = createSwitchNavigator({
-  Welcome: { screen: MainScreen },
+  Welcome: { screen: SignedOut },
   Dashboard: { screen: AppDrawerNavigator }
 });
 
