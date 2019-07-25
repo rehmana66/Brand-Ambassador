@@ -164,20 +164,23 @@ const styles = StyleSheet.create({
         width : Dimensions.get('window').width - 30
     },
     signUpButton: {
-        backgroundColor: 'black',
-        width: Dimensions.get('window').width/2 - 30,
+        justifyContent: 'center',
+        backgroundColor: '#3f51b5',
+        width: Dimensions.get('window').width - 30,
         margin: 5,
-        height: 50
+        height: 50,
+        borderRadius: 5
     },
     signUpButtonText: {
         fontFamily: "raleway-regular",
-        color: 'white',
+        color: '#dff3fd',
         padding: 14,
         fontSize: 16,
         alignSelf: 'center'
     },
     textStyle: {
         fontFamily: "raleway-regular",
+        color: '#3f51b5',
         paddingBottom: 10,
         fontSize: 24,
     }

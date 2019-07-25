@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#dff3fd',
         alignItems: 'center',
         height: 40,
+        borderRadius: 5
     },
     loginButtonText: {
         color: '#3f51b5',
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#3f51b5',
         alignItems: 'center',
         height: 40,
+        borderRadius: 5
     },
     signUpButtonText: {
         color: '#dff3fd',
