@@ -45,7 +45,7 @@ class Shift extends Component {
                         </View>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity >
         );
     }
 }

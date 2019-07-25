@@ -58,23 +58,7 @@ class Search extends Component {
     forceUpdateHandler(){
         this.forceUpdate();
       };
-    
-    //this does not work, find out why
-    componentWillMount() {
-        this.scrollY = new Animated.Value(0)
-        //this.startHeaderHeight = 0
-        this.endHeaderHeight = 50
-        if ( Platform.OS == 'android') {
-            this.startHeaderHeight = 100 + StatusBar.currentHeight
-            this.endHeaderHeight = 70 + StatusBar.currentHeight
-        }
-
-        this.animatedHeaderHeight = this.scrollY.interpolate({
-            inputRange: [0, 50],
-            outputRange: [this.startHeaderHeight, this.endHeaderHeight],
-            extrapolate: 'clamp'
-        })
-    }
+   
     submitAndClear = () => {
         console.log(this.state.showCancel.valueOf())
         this.setState({
