@@ -18,16 +18,27 @@ import {
   createBottomTabNavigator,
   createStackNavigator,
 } from 'react-navigation';
+import { AppLoading } from 'expo';
 
 class App extends Component {
-  componentDidMount() {
-    Font.loadAsync({
+
+  state = {
+    fontsLoaded: false,
+  };
+
+  async componentDidMount() {
+    await Font.loadAsync({
       'raleway-light': require('./assets/fonts/Raleway-Light.ttf'),
       'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
     });
+    this.setState({ fontsLoaded: true });
   }
 
   render() {
+    if (!this.state.fontsLoaded) {
+      return <AppLoading />
+    }
+    
     return <AppContainer />;
   }
 }

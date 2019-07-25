@@ -16,8 +16,8 @@ class LogIn extends Component {
                         source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}/>
                     </View>
                     <Text style = {styles.loginText}>Log In</Text>
-                    <Reinput label = "Email Address" />
-                    <Reinput label = "Password"  secureTextEntry = {true}/>
+                    <Reinput label = "Email Address"  fontFamily = "raleway-light"/>
+                    <Reinput label = "Password"  fontFamily = "raleway-light" secureTextEntry = {true}/>
                     <View style = {{flexDirection: 'row', justifyContent: 'center'}}>
                         <TouchableOpacity>
                             <View style = {styles.loginScreenButtons}>
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#dff3fd'
     },
     loginText: {
+        fontFamily: "raleway-regular",
         paddingBottom: 10,
         fontSize: 26,
         color: 'black'
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
         height: 50
     },
     loginScreenButtonsText: {
+        fontFamily: "raleway-regular",
         color: '#3f51b5',
         padding: 14,
         fontSize: 16,
