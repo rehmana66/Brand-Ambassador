@@ -19,6 +19,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Category from '../components/Category';
 import Shift from '../components/Shift';
 import Tag from '../components/Tag';
+import Constants from 'expo-constants';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 const { height, width } = Dimensions.get('window')
 
@@ -32,10 +35,40 @@ class Search extends Component {
             lastRefresh: Date(Date.now()).toString(),
             SearchText: '',
             closeURI: require('../../assets/close.png'),
-            showCancel: false
+            showCancel: false,
+            location: null,
+            errorMessage: null,
+            locationResult: null,
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
+    componentWillMount() {
+        if (Platform.OS === 'android' && !Constants.isDevice) {
+          this.setState({
+            errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+          });
+        } else {
+          this._getLocationAsync();
+        }
+      }
+    
+      _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          this.setState({
+            errorMessage: 'Permission to access location was denied',
+          });
+        }
+    
+        let location = await Location.getCurrentPositionAsync({});
+        let geocode = await Location.reverseGeocodeAsync(location.coords);
+        this.setState({ 
+            location,
+            locationResult: geocode,
+         });
+        
+
+      };
 
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
@@ -80,6 +113,13 @@ class Search extends Component {
     }
 
     render() {
+        let area = 'Waiting..';
+        
+        if (this.state.errorMessage) {
+            area = this.state.errorMessage;
+        } else if (this.state.location) {
+            area = this.state.locationResult[0].city + ', ' + this.state.locationResult[0].region;
+        }
         return (
             <SafeAreaView style = {{ flex: 1 }}>
                 <View style = {{ flex: 1, backgroundColor: 'white' }}>
@@ -102,21 +142,18 @@ class Search extends Component {
                                     >
                                 </TextInput>
                                 
-                                {this.renderCancel()} 
+                                {this.renderCancel()}
                                 
                             </View>
                         </View>
-                       
-                        <Animated.View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
+                        <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
                             <Tag name='Dates'></Tag>
                             <Tag name='Filters'></Tag>
                             <Tag name='Shifts'></Tag>
-                        </Animated.View>
-
-
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15}}>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
                             <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}> 1906 shifts found</Text>
-                            <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}> Edmonton, Alberta</Text>
+                            <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}>{area}</Text>
                         </View>
                     </View>
                     <ScrollView scrollEventThrottle={16} >
