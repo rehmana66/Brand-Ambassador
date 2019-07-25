@@ -35,6 +35,7 @@ class SignUp extends Component {
             <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = { styles.mainScroll}>
                 <Text ref = {'Account'} style = {styles.textStyle}>Account</Text>
                 <Reinput
+                    fontFamily = "raleway-light"
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next"}
@@ -43,6 +44,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['Password'].focus() }}
                     onChangeText = { (value) => this.setState({ email: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = "Password"
                     autoCorrect = {false}
                     secureTextEntry = {true}
@@ -53,6 +55,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
                     onChangeText = { (value) => this.setState({ password: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = "ConfirmPassword"
                     autoCorrect = {false}
                     secureTextEntry = {true}
@@ -64,6 +67,7 @@ class SignUp extends Component {
                     onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
                 <Text style = {styles.textStyle}>Personal</Text>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'FirstName'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -73,6 +77,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['LastName'].focus() }}
                     onChangeText = { (value) => this.setState({ firstName: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'LastName'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -82,6 +87,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
                     onChangeText = { (value) => this.setState({ lastName: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'PhoneNumber'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -92,6 +98,7 @@ class SignUp extends Component {
                     onChangeText = { (value) => this.setState({ phoneNumber: value }) }/>
                 <Text style = {styles.textStyle}>Location</Text>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'Country'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -101,6 +108,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['City'].focus() }}
                     onChangeText = { (value) => this.setState({ country: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'City'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -110,6 +118,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['Province'].focus() }}
                     onChangeText = { (value) => this.setState({ city: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'Province'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -119,6 +128,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
                     onChangeText = { (value) => this.setState({ province: value }) }/>
                 <Reinput
+                    fontFamily = "raleway-light"
                     ref = {'PostalCode'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
@@ -154,19 +164,23 @@ const styles = StyleSheet.create({
         width : Dimensions.get('window').width - 30
     },
     signUpButton: {
-        backgroundColor: 'black',
-        width: Dimensions.get('window').width/2 - 30,
+        justifyContent: 'center',
+        backgroundColor: '#3f51b5',
+        width: Dimensions.get('window').width - 30,
         margin: 5,
-        height: 50
+        height: 50,
+        borderRadius: 5
     },
     signUpButtonText: {
-        color: 'white',
+        fontFamily: "raleway-regular",
+        color: '#dff3fd',
         padding: 14,
         fontSize: 16,
         alignSelf: 'center'
     },
     textStyle: {
-        fontFamily: "raleway-light",
+        fontFamily: "raleway-regular",
+        color: '#3f51b5',
         paddingBottom: 10,
         fontSize: 24,
     }

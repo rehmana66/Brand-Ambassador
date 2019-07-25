@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
 class Home extends Component {
     render() {
         return (
-           <View style = {styles.mainContainer}>
-               <View style = {styles.topContainer}>
+            <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
+                Keyboard.dismiss() }}>
+                <View style = {styles.topContainer}>
                     <Text style = {styles.title}>AppName</Text>
                     <Image
                     style={{width: 100, height: 100}}
@@ -13,43 +15,36 @@ class Home extends Component {
                     <Text style = {styles.slogan}>Find shifts to fit your schedule!</Text>
                 </View>
                 <View style = {styles.bottomContainer}>
-                    <View>
-                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
-                            <View style = {styles.loginButton}>
-                                <Text style = {styles.loginButtonText}>Dashboard</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    
-                    <View>
-                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('LogIn')}>
-                            <View style = {styles.loginButton}>
-                                <Text style = {styles.loginButtonText}>LOG IN</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <Button style = {styles.regButton}
-                            onPress = {() => this.props.navigation.navigate('SignUp')}
-                            title = "Sign Up"
-                            borderColor = 'black'/>
-                    </View>
-                </View>
-           </View> 
+                    <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
+                        <View style = {styles.loginButton}>
+                            <Text style = {styles.loginButtonText}>Dashboard</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => this.props.navigation.navigate('LogIn')}>
+                        <View style = {styles.loginButton}>
+                            <Text style = {styles.loginButtonText}>Log In</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')}>
+                        <View style = {styles.signUpButton}>
+                            <Text style = {styles.signUpButtonText}>Sign Up</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View> 
+           </SafeAreaView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: '#021f4b',
-    },
     topContainer: {
-        flex: 4,
-        justifyContent: 'space-around',
+        flex: 3,
         alignItems: 'center',
-        margin: 50
+        justifyContent: 'space-around',
+        backgroundColor: '#dff3fd',
+        marginHorizontal: 15,
+        marginVertical: 20,
+        width : Dimensions.get('window').width - 30,
     },
     bottomContainer: {
         flex: 1,
@@ -58,29 +53,39 @@ const styles = StyleSheet.create({
         margin: 30,
     },
     title: {
+        fontFamily: "raleway-regular",
         margin: 10,
         fontSize: 26,
-        color: '#ffffff'
+        color: '#3f51b5'
     },
     slogan: {
+        fontFamily: "raleway-light",
         margin: 10,
         fontSize: 16,
-        color: '#ffffff'
-    },
-    regButton: {
-       borderRadius: 10,
-       borderWidth: 1,
-       padding: 10,
-       height: 40,
+        color: '#3f51b5'
     },
     loginButton: {
-        backgroundColor: '#021f4b',
-        alignItems: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#dff3fd',
+        alignItems: 'center',
+        height: 40,
+        borderRadius: 5
     },
     loginButtonText: {
-        color: 'white',
+        color: '#3f51b5',
         padding: 8
-    }
+    },
+    signUpButton: {
+        justifyContent: 'center',
+        backgroundColor: '#3f51b5',
+        alignItems: 'center',
+        height: 40,
+        borderRadius: 5
+    },
+    signUpButtonText: {
+        color: '#dff3fd',
+        padding: 8
+    },
  })
 
 
