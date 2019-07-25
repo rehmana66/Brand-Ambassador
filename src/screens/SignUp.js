@@ -5,7 +5,22 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 class SignUp extends Component {
     
-    inputFocused(refName) {
+    constructor (props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: "",
+            confirmPassword: "",
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            country: "",
+            city: "",
+            province: "",
+            postalCode: ""
+        }
+    }
+    inputFocused (refName) {
         setTimeout(() => {
             let scrollResponder = this.refs.scrollView.getScrollResponder();
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(findNodeHandle(this.refs[refName]),100,true);
@@ -24,7 +39,8 @@ class SignUp extends Component {
                     placeholder = "Email Address"
                     placeholderTextColor = "#6c9192"
                     keyboardType = {'email-address'}
-                    onSubmitEditing={() => { this.refs['Password'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['Password'].focus() }}
+                    onChangeText = { (value) => this.setState({ email: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = "Password"
                     autoCorrect = {false}
@@ -33,7 +49,8 @@ class SignUp extends Component {
                     returnKeyType = { "next" }
                     placeholder = "Password"
                     placeholderTextColor = "#6c9192"
-                    onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
+                    onChangeText = { (value) => this.setState({ password: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = "ConfirmPassword"
                     autoCorrect = {false}
@@ -43,7 +60,8 @@ class SignUp extends Component {
                     placeholder = "Confirm Password"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('FirstName')}
-                    onSubmitEditing={() => { this.refs['FirstName'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['FirstName'].focus() }}
+                    onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'FirstName'}
                     autoCorrect = {false}
@@ -52,7 +70,8 @@ class SignUp extends Component {
                     placeholder = "First Name"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('LastName')}
-                    onSubmitEditing={() => { this.refs['LastName'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['LastName'].focus() }}
+                    onChangeText = { (value) => this.setState({ firstName: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'LastName'}
                     autoCorrect = {false}
@@ -61,7 +80,8 @@ class SignUp extends Component {
                     placeholder = "Last Name"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('PhoneNumber')}
-                    onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
+                    onChangeText = { (value) => this.setState({ lastName: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'PhoneNumber'}
                     autoCorrect = {false}
@@ -70,7 +90,8 @@ class SignUp extends Component {
                     placeholder = "Phone Number"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('Country')}
-                    onSubmitEditing={() => { this.refs['Country'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['Country'].focus() }}
+                    onChangeText = { (value) => this.setState({ phoneNumber: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'Country'}
                     autoCorrect = {false}
@@ -79,7 +100,8 @@ class SignUp extends Component {
                     placeholder = "Country"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('City')}
-                    onSubmitEditing={() => { this.refs['City'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['City'].focus() }}
+                    onChangeText = { (value) => this.setState({ country: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'City'}
                     autoCorrect = {false}
@@ -88,7 +110,8 @@ class SignUp extends Component {
                     placeholder = "City"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => { this.refs['Province'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['Province'].focus() }}
+                    onChangeText = { (value) => this.setState({ city: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'Province'}
                     autoCorrect = {false}
@@ -97,7 +120,8 @@ class SignUp extends Component {
                     placeholder = "Province"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => { this.refs['PostalCode'].focus() }}/>
+                    onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
+                    onChangeText = { (value) => this.setState({ province: value }) }/>
                 <TextInput  style = {styles.input}
                     ref = {'PostalCode'}
                     autoCorrect = {false}
@@ -106,7 +130,8 @@ class SignUp extends Component {
                     placeholder = "Postal Code"
                     placeholderTextColor = "#6c9192"
                     onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => this.inputFocused('SignUpButton') }/>
+                    onSubmitEditing={() => this.inputFocused('SignUpButton') }
+                    onChangeText = { (value) => this.setState({ postalCode: value }) }/>
                 <Button title = "Sign Up" 
                     ref = {'SignUpButton'}
                     onPress = {() => this.props.navigation.navigate('Dashboard')}/>
