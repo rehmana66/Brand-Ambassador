@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import * as Font from 'expo-font';
 
 import Home from './src/screens/Home';
 import Search from './src/screens/Search';
@@ -20,6 +20,13 @@ import {
 } from 'react-navigation';
 
 class App extends Component {
+  componentDidMount() {
+    Font.loadAsync({
+      'raleway-light': require('./assets/fonts/Raleway-Light.ttf'),
+      'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
+    });
+  }
+
   render() {
     return <AppContainer />;
   }

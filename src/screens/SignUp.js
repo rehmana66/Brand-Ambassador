@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { findNodeHandle, Dimensions, Button, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, findNodeHandle, Dimensions, Button, Text, TextInput, StyleSheet } from 'react-native';
+import Reinput from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -32,109 +33,108 @@ class SignUp extends Component {
         <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
             Keyboard.dismiss() }}>
             <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = { styles.mainScroll}>
-                <TextInput  style = {styles.input}
+                <Text ref = {'Account'} style = {styles.textStyle}>Account</Text>
+                <Reinput
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next"}
-                    placeholder = "Email Address"
-                    placeholderTextColor = "#6c9192"
+                    label = "Email Address"
                     keyboardType = {'email-address'}
                     onSubmitEditing={() => { this.refs['Password'].focus() }}
                     onChangeText = { (value) => this.setState({ email: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = "Password"
                     autoCorrect = {false}
                     secureTextEntry = {true}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Password"
-                    placeholderTextColor = "#6c9192"
+                    label = "Password"
+                    onFocus={() => this.inputFocused('Account')}
                     onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
                     onChangeText = { (value) => this.setState({ password: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = "ConfirmPassword"
                     autoCorrect = {false}
                     secureTextEntry = {true}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Confirm Password"
-                    placeholderTextColor = "#6c9192"
+                    label = "Confirm Password"
                     onFocus={() => this.inputFocused('FirstName')}
                     onSubmitEditing={() => { this.refs['FirstName'].focus() }}
                     onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
-                <TextInput  style = {styles.input}
+                <Text style = {styles.textStyle}>Personal</Text>
+                <Reinput
                     ref = {'FirstName'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "First Name"
-                    placeholderTextColor = "#6c9192"
+                    label = "First Name"
                     onFocus={() => this.inputFocused('LastName')}
                     onSubmitEditing={() => { this.refs['LastName'].focus() }}
                     onChangeText = { (value) => this.setState({ firstName: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = {'LastName'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Last Name"
-                    placeholderTextColor = "#6c9192"
+                    label = "Last Name"
                     onFocus={() => this.inputFocused('PhoneNumber')}
                     onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
                     onChangeText = { (value) => this.setState({ lastName: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = {'PhoneNumber'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Phone Number"
-                    placeholderTextColor = "#6c9192"
+                    label = "Phone Number"
                     onFocus={() => this.inputFocused('Country')}
                     onSubmitEditing={() => { this.refs['Country'].focus() }}
                     onChangeText = { (value) => this.setState({ phoneNumber: value }) }/>
-                <TextInput  style = {styles.input}
+                <Text style = {styles.textStyle}>Location</Text>
+                <Reinput
                     ref = {'Country'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Country"
-                    placeholderTextColor = "#6c9192"
+                    label = "Country"
                     onFocus={() => this.inputFocused('City')}
                     onSubmitEditing={() => { this.refs['City'].focus() }}
                     onChangeText = { (value) => this.setState({ country: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = {'City'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "City"
-                    placeholderTextColor = "#6c9192"
+                    label = "City"
                     onFocus={() => this.inputFocused('SignUpButton')}
                     onSubmitEditing={() => { this.refs['Province'].focus() }}
                     onChangeText = { (value) => this.setState({ city: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = {'Province'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
-                    placeholder = "Province"
-                    placeholderTextColor = "#6c9192"
+                    label = "Province"
                     onFocus={() => this.inputFocused('SignUpButton')}
                     onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
                     onChangeText = { (value) => this.setState({ province: value }) }/>
-                <TextInput  style = {styles.input}
+                <Reinput
                     ref = {'PostalCode'}
                     autoCorrect = {false}
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "done" }
-                    placeholder = "Postal Code"
-                    placeholderTextColor = "#6c9192"
+                    label = "Postal Code"
                     onFocus={() => this.inputFocused('SignUpButton')}
                     onSubmitEditing={() => this.inputFocused('SignUpButton') }
                     onChangeText = { (value) => this.setState({ postalCode: value }) }/>
-                <Button title = "Sign Up" 
-                    ref = {'SignUpButton'}
-                    onPress = {() => this.props.navigation.navigate('Dashboard')}/>
+                <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
+                        <View style = {styles.signUpButton}>
+                            <Text style = {styles.signUpButtonText}>Sign Up</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
             </KeyboardAwareScrollView>
         </SafeAreaView>
         );  
@@ -148,27 +148,28 @@ const styles = StyleSheet.create({
     },
     mainScroll: {
         flexGrow: 1,
-        backgroundColor: '#dff3fd'
-    },
-    input: {
+        backgroundColor: '#dff3fd',
         marginHorizontal: 15,
         marginVertical: 20,
-        width : Dimensions.get('window').width - 30,
-        height: 40,
-        color: '#000',
-        fontSize: 14,
-        textAlign: 'left',
-        textAlignVertical: 'center',
-        overflow: 'hidden',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        paddingLeft: 10,
-        borderRadius: 5,
-        borderColor: '#d5d5d5',
-        borderWidth: 0.5,
-        backgroundColor: '#f5f5f5',
+        width : Dimensions.get('window').width - 30
     },
+    signUpButton: {
+        backgroundColor: 'black',
+        width: Dimensions.get('window').width/2 - 30,
+        margin: 5,
+        height: 50
+    },
+    signUpButtonText: {
+        color: 'white',
+        padding: 14,
+        fontSize: 16,
+        alignSelf: 'center'
+    },
+    textStyle: {
+        fontFamily: "raleway-light",
+        paddingBottom: 10,
+        fontSize: 24,
+    }
 });
 
 export default SignUp;
