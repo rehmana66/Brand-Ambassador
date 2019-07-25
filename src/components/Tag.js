@@ -8,8 +8,8 @@ class Tag extends Component {
     render(){
         return(
             <View style={styles.container}>
-                    <Text style={{fontWeight: '700', fontSize: 10}}>{this.props.name}</Text>
-                </View>
+                <Text style={{fontWeight: '700', fontSize: 10}}>{this.props.name}</Text>
+            </View>
         );
     }
 }

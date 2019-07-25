@@ -4,9 +4,7 @@ import {
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
 import { withNavigation } from 'react-navigation';
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import CachedImage from './CachedImage';
 
 class Shift extends Component {
     constructor(props) {
@@ -28,17 +26,17 @@ class Shift extends Component {
                 <View style={{width: this.props.width - 40, height:  this.props.width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
                     <View style={{height: 40, flexDirection: 'row'}}>
                         <View style={styles.profile}>
-                                <Image source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
+                            <CachedImage source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
                         </View>
                         <View style={{flex: 1, justifyContent:'center'}}>
                             <Text style={{fontSize: 20, fontWeight: '400', paddingLeft: 5, maxWidth: this.props.width/1.5}}>Username Here</Text>
                         </View>
                         <View style={{alignItems:'flex-end', justifyContent: 'center', paddingRight: 10}}>
-                            <Image source={require('../../assets/more.png')} style={{width: 20, height: 20}}></Image>
+                            <CachedImage source={require('../../assets/more.png')} style={{width: 20, height: 20}}/>
                         </View>
                     </View>
                     <View style={{flex: 1}}>
-                            <Image source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}></Image>
+                            <CachedImage source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}/>
                     </View>
                     <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
                         <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
@@ -49,7 +47,7 @@ class Shift extends Component {
                         </TouchableOpacity>
                         <View style={{justifyContent: 'flex-end', marginRight: 5}}>
                             <TouchableOpacity onPress={this.onPress}>
-                                <Image source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover'}}></Image>
+                                <CachedImage source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
                             </TouchableOpacity>
                         </View>
                     </View>

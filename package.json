@@ -12,6 +12,8 @@
     "aws-amplify": "^1.1.32",
     "aws-amplify-react-native": "^2.1.15",
     "expo": "^33.0.0",
+    "expo-asset": "^5.0.1",
+    "expo-file-system": "~5.0.1",
     "expo-font": "~5.0.1",
     "expo-location": "~5.0.1",
     "react": "16.8.3",
