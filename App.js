@@ -44,26 +44,40 @@ class App extends Component {
 }
 export default App;
 
-const SignedOut = createStackNavigator({
-  Main: {
-    screen: Main,
-    navigationOptions: {
-      header: null
+const SignedOut = createStackNavigator(
+  {
+    Main: {
+      screen: Main,
+      navigationOptions: {
+        header: null
+      }
+    },
+    LogIn: {
+      screen: LogIn,
+      navigationOptions: {
+        title: "Log In",
+      }
+    },
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        title: "Sign Up",
+      }
     }
-  },
-  LogIn: {
-    screen: LogIn,
-    navigationOptions: {
-      title: "Log In"
+},
+  {
+    initialRouteName: 'Main',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#3f51b5',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      }
     }
-  },
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: "Sign Up"
-    }
-  },
-})
+  }
+);
 const HomeStack = createStackNavigator(
   {
     Home: {
