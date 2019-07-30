@@ -11,6 +11,7 @@ import Detail from './src/screens/Detail';
 import Main from './src/screens/Main';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
+import ConfirmSignUp from './src/screens/ConfirmSignUp';
 
 import {
   createSwitchNavigator,
@@ -19,6 +20,7 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 import { AppLoading } from 'expo';
+
 
 class App extends Component {
 
@@ -63,6 +65,13 @@ const SignedOut = createStackNavigator({
       title: "Sign Up"
     }
   },
+  ConfirmSignUp: {
+    screen: ConfirmSignUp,
+    navigationOptions: {
+      title: "Confirm Sign Up"
+    }
+  }
+
 })
 const HomeStack = createStackNavigator(
   {
@@ -76,7 +85,7 @@ const HomeStack = createStackNavigator(
     },
     Detail: {
       screen: Detail
-    }
+    },
   },
 );
 

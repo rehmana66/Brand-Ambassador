@@ -1,14 +1,9 @@
 {
 	"auth": {
-		"cognito5599a7ae": {
+		"myappf0a5c846": {
 			"service": "Cognito",
-			"providerPlugin": "awscloudformation"
-		}
-	},
-	"analytics": {
-		"myapp": {
-			"service": "Pinpoint",
-			"providerPlugin": "awscloudformation"
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
 		}
 	}
 }
