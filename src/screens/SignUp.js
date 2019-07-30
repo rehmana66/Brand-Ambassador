@@ -39,7 +39,6 @@ class SignUp extends Component {
             postalCode: "",
             gender: "",
             birthday: "",
-            ff: null
         }
     }
 
@@ -58,24 +57,12 @@ class SignUp extends Component {
                 'custom:city': this.state.city,
                 'custom:state': this.state.province,
                 'custom:postalcode': this.state.postalCode,
-
             },
-            //validationData: []  //optional
-            })
+        })
             .then(
                  data => console.log(data),
-                //this.props.navigation.navigate('ConfirmSignUp', {username: this.state.email})
-            
-            ).then(
-                data => this.setState({ff:data}),
-                //console.log(this.state.ff)
-            ).then(
-                //console.log(this.state.ff)
-            )
-            .catch(err => console.log(err), 
-                err => this.setState({ff:err}),
-                console.log(this.state.ff)
-            );
+                    this.props.navigation.navigate('ConfirmSignUp', {username: this.state.email})
+            ).catch(err => console.log(err));
             
     }
 
