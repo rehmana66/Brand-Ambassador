@@ -11,6 +11,7 @@ import Detail from './src/screens/Detail';
 import Main from './src/screens/Main';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
+import EditAccount from './src/screens/EditAccount';
 import ConfirmSignUp from './src/screens/ConfirmSignUp';
 
 import {
@@ -46,7 +47,8 @@ class App extends Component {
 }
 export default App;
 
-const SignedOut = createStackNavigator({
+const SignedOut = createStackNavigator(
+{
   Main: {
     screen: Main,
     navigationOptions: {
@@ -56,23 +58,36 @@ const SignedOut = createStackNavigator({
   LogIn: {
     screen: LogIn,
     navigationOptions: {
-      title: "Log In"
+      title: "Log In",
     }
   },
   SignUp: {
     screen: SignUp,
     navigationOptions: {
-      title: "Sign Up"
+      title: "Sign Up",
     }
   },
   ConfirmSignUp: {
     screen: ConfirmSignUp,
     navigationOptions: {
       title: "Confirm Sign Up"
-    }
-  }
+    },
+  },
+},
+  {
+    initialRouteName: 'Main',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#3f51b5',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      },
+    },
+  },
+);
 
-})
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -128,7 +143,25 @@ const AccountStack = createStackNavigator(
         };
       }
     },
+    EditAccount: {
+      screen: EditAccount,
+      navigationOptions: {
+        title: "Edit Account",
+      }
+    },
   },
+  {
+    initialRouteName: 'Account',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#3f51b5',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      }
+    }
+  }
 );
 
 const DashboardTabNavigator = createBottomTabNavigator(
