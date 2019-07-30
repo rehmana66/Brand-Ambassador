@@ -3,6 +3,24 @@ import { View, TouchableOpacity, findNodeHandle, Dimensions, Button, Text, TextI
 import Reinput from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { withNavigation } from 'react-navigation';
+
+import ConfirmSignup from '../screens/ConfirmSignUp';
+
+
+import Amplify, { Auth } from 'aws-amplify';
+Amplify.configure({
+    Auth: {
+        // REQUIRED - Amazon Cognito Identity Pool ID
+        identityPoolId: 'us-west-2:a88e9101-8d00-45f7-a879-e47167f25a36', 
+        // REQUIRED - Amazon Cognito Region
+        region: 'us-west-2', 
+        // OPTIONAL - Amazon Cognito User Pool ID
+        userPoolId: 'us-west-2_ybDxoo4oL',
+        // OPTIONAL - Amazon Cognito Web Client ID
+        userPoolWebClientId: '5213lor8ffaqd9b2pifkj2m53n', 
+    }
+});
 
 class SignUp extends Component {
     
@@ -18,9 +36,37 @@ class SignUp extends Component {
             country: "",
             city: "",
             province: "",
-            postalCode: ""
+            postalCode: "",
+            gender: "",
+            birthday: "",
         }
     }
+
+    signUp() {
+        Auth.signUp({
+            username: this.state.email,
+            password: this.state.confirmPassword,
+            attributes: {
+                email: this.state.email,
+                phone_number: this.state.phoneNumber,   // optional - E.164 number convention
+                'custom:firstname': this.state.firstName,
+                'custom:lastname': this.state.lastName,
+                //gender: this.state.gender,
+                //birthday: this.state.birthday,
+                'custom:country': this.state.country,
+                'custom:city': this.state.city,
+                'custom:state': this.state.province,
+                'custom:postalcode': this.state.postalCode,
+            },
+        })
+            .then(
+                 data => console.log(data),
+                    this.props.navigation.navigate('ConfirmSignUp', {username: this.state.email})
+            ).catch(err => console.log(err));
+            
+    }
+
+
     inputFocused (refName) {
         setTimeout(() => {
             let scrollResponder = this.refs.scrollView.getScrollResponder();
@@ -83,9 +129,29 @@ class SignUp extends Component {
                     underlineColorAndroid = "transparent"
                     returnKeyType = { "next" }
                     label = "Last Name"
+                    onFocus={() => this.inputFocused('Birthday')}
+                    onSubmitEditing={() => { this.refs['Birthday'].focus() }}
+                    onChangeText = { (value) => this.setState({ lastName: value }) }/>
+                  <Reinput
+                    fontFamily = "raleway-light"
+                    ref = {'Birthday'}
+                    autoCorrect = {false}
+                    underlineColorAndroid = "transparent"
+                    returnKeyType = { "next" }
+                    label = "Birthday"
+                    onFocus={() => this.inputFocused('Gender')}
+                    onSubmitEditing={() => { this.refs['Gender'].focus() }}
+                    onChangeText = { (value) => this.setState({ birthday: value }) }/>                  
+                <Reinput
+                    fontFamily = "raleway-light"
+                    ref = {'Gender'}
+                    autoCorrect = {false}
+                    underlineColorAndroid = "transparent"
+                    returnKeyType = { "next" }
+                    label = "Gender"
                     onFocus={() => this.inputFocused('PhoneNumber')}
                     onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
-                    onChangeText = { (value) => this.setState({ lastName: value }) }/>
+                    onChangeText = { (value) => this.setState({ gender: value }) }/>
                 <Reinput
                     fontFamily = "raleway-light"
                     ref = {'PhoneNumber'}
@@ -138,7 +204,7 @@ class SignUp extends Component {
                     onSubmitEditing={() => this.inputFocused('SignUpButton') }
                     onChangeText = { (value) => this.setState({ postalCode: value }) }/>
                 <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
+                    <TouchableOpacity onPress = {this.signUp.bind(this)}>
                         <View style = {styles.signUpButton}>
                             <Text style = {styles.signUpButtonText}>Sign Up</Text>
                         </View>
@@ -186,4 +252,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignUp;
+export default withNavigation(SignUp);

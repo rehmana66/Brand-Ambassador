@@ -12,6 +12,7 @@ import Main from './src/screens/Main';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
 import EditAccount from './src/screens/EditAccount';
+import ConfirmSignUp from './src/screens/ConfirmSignUp';
 
 import {
   createSwitchNavigator,
@@ -20,6 +21,7 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 import { AppLoading } from 'expo';
+
 
 class App extends Component {
 
@@ -64,7 +66,13 @@ const SignedOut = createStackNavigator(
     navigationOptions: {
       title: "Sign Up",
     }
-  }
+  },
+  ConfirmSignUp: {
+    screen: ConfirmSignUp,
+    navigationOptions: {
+      title: "Confirm Sign Up"
+    },
+  },
 },
   {
     initialRouteName: 'Main',
@@ -75,10 +83,11 @@ const SignedOut = createStackNavigator(
       headerTintColor: '#dff3fd',
       headerTitleStyle: {
         fontFamily: 'raleway-regular'
-      }
-    }
-  }
+      },
+    },
+  },
 );
+
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -91,7 +100,7 @@ const HomeStack = createStackNavigator(
     },
     Detail: {
       screen: Detail
-    }
+    },
   },
 );
 
