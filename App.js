@@ -159,8 +159,7 @@ const AccountStack = createStackNavigator(
                     onPress: () => navigation.goBack()
                   },
                   {
-                    text: 'Cancel', 
-                    onPress: () => console.log('Cancel Pressed')
+                    text: 'Cancel',
                   },
                 ],
                 {cancelable: false},
@@ -180,8 +179,7 @@ const AccountStack = createStackNavigator(
                     onPress: () => navigation.goBack()
                   },
                   {
-                    text: 'Stay', 
-                    onPress: () => console.log('Cancel Pressed')
+                    text: 'Stay',
                   },
                 ],
                 {cancelable: false},
