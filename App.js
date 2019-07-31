@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Button, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 
@@ -143,9 +143,51 @@ const AccountStack = createStackNavigator(
     },
     EditAccount: {
       screen: EditAccount,
-      navigationOptions: {
-        title: "Edit Account",
-      }
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: "Edit Account",
+          headerRight: (
+            <Button
+              onPress = { () => Alert.alert(
+                'Submit Changes?',
+                'Are you sure you want to submit your changes?',
+                [
+                  {
+                    text: 'Submit',
+                    onPress: () => navigation.goBack()
+                  },
+                  {
+                    text: 'Cancel',
+                  },
+                ],
+                {cancelable: false},
+              )}
+              title = "Done"
+              color = "#dff3fd"
+            />
+          ),
+          headerLeft: (
+            <Button
+              onPress = { () => Alert.alert(
+                'Discard Changes?',
+                'Are you sure you want to discard your changes?',
+                [
+                  {
+                    text: 'Discard',
+                    onPress: () => navigation.goBack()
+                  },
+                  {
+                    text: 'Stay',
+                  },
+                ],
+                {cancelable: false},
+              )}
+              title = "Cancel"
+              color = "#dff3fd"
+            />
+          ),
+        };
+      },
     },
   },
   {

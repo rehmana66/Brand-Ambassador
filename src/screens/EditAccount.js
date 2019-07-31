@@ -1,47 +1,84 @@
 import React, { Component } from 'react';
-import { View, Image,Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import  Reinput  from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from "react-native-modal";
+
 class EditAccount extends Component {
+    state = {
+        isModalVisible: false
+    };
+
+    toggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
+
+    passwordChangeRequest = () => {
+        Alert.alert(
+          "Change Password",
+          "Password Change Completed",
+          [
+            { text: "Ok", onPress: () => this.setState({ isModalVisible: !this.state.isModalVisible })}
+          ],
+          { cancelable: false },
+        );
+    };
+
     render() {
         return (
             <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
                 Keyboard.dismiss() }}>
                 <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = { styles.mainScroll}>
-                        <View style = {{alignItems: 'center', paddingTop: 10 , flex: 1}}>
-                                <Image
-                                style={{width: 80, height: 80}}
-                                source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}/>
-                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')}>
-                                    <View style = {styles.loginButton}>
-                                        <Text style = {styles.loginButtonText}>Change Profile Picture</Text>
+                    <Modal isVisible = {this.state.isModalVisible} style = {{paddingBottom: Dimensions.get('window').height/3 }}
+                    onBackdropPress = {() => this.setState({ isModalVisible: !this.state.isModalVisible })}>
+                        <View style = {{ height: Dimensions.get('window').height/2 + 50, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
+                            <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
+                                <Text style = {styles.changePassModalTitle}>Change Password</Text>
+                                <Reinput label = "Old Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
+                                <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
+                                <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
+                                <TouchableOpacity onPress={this.passwordChangeRequest}>
+                                    <View style = {styles.changePassModalButton}>
+                                        <Text style = {styles.changePassModalButtonText}>Change Password</Text>
                                     </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View>
-                            <Text style = {styles.textStyle}>Public Info</Text>
-                            <Reinput label = "Name"  defaultValue = "Big Boy" fontFamily = "raleway-light"/>
-                            <Reinput label = "Bio"  defaultValue = "Description" fontFamily = "raleway-light"/>
-                            <Reinput label = "Province/City"  defaultValue = "Location" fontFamily = "raleway-light"/>
-                            <Reinput label = "Resume"  defaultValue = "Resume-Name" editable = {false} selectTextOnFocus = {false} fontFamily = "raleway-light"/>
-                            <Text style = {styles.textStyle}>Private Info</Text>
-                            <Reinput label = "Email"  defaultValue = "email@email.com" fontFamily = "raleway-light"/>
-                            <Reinput label = "Phone Number"  defaultValue = "(123) 456-7890" fontFamily = "raleway-light"/>
-                            <Reinput label = "Postal Code"  defaultValue = "A1B-2C3" fontFamily = "raleway-light"/>
-                        </View>
-                        <View style = {styles.bottomContainer}>
-                            <TouchableOpacity>
+                    </Modal>
+                    <View style = {{alignItems: 'center', paddingTop: 10 , flex: 1}}>
+                            <Image
+                            style={{width: 80, height: 80}}
+                            source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}/>
+                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')}>
                                 <View style = {styles.loginButton}>
-                                    <Text style = {styles.loginButtonText}>Upload Resume</Text>
+                                    <Text style = {styles.loginButtonText}>Change Profile Picture</Text>
                                 </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style = {styles.signUpButton}>
-                                    <Text style = {styles.signUpButtonText}>Change Password</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style = {styles.textStyle}>Public Info</Text>
+                        <Reinput label = "Name"  defaultValue = "Big Boy" fontFamily = "raleway-light"/>
+                        <Reinput label = "Bio"  defaultValue = "Description" fontFamily = "raleway-light"/>
+                        <Reinput label = "Province/City"  defaultValue = "Location" fontFamily = "raleway-light"/>
+                        <Reinput label = "Resume"  defaultValue = "Resume-Name" editable = {false} selectTextOnFocus = {false} fontFamily = "raleway-light"/>
+                        <Text style = {styles.textStyle}>Private Info</Text>
+                        <Reinput label = "Email"  defaultValue = "email@email.com" fontFamily = "raleway-light"/>
+                        <Reinput label = "Phone Number"  defaultValue = "(123) 456-7890" fontFamily = "raleway-light"/>
+                        <Reinput label = "Postal Code"  defaultValue = "A1B-2C3" fontFamily = "raleway-light"/>
+                    </View>
+                    <View style = {styles.bottomContainer}>
+                        <TouchableOpacity>
+                            <View style = {styles.loginButton}>
+                                <Text style = {styles.loginButtonText}>Upload Resume</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress = {this.toggleModal}>
+                            <View style = {styles.signUpButton}>
+                                <Text style = {styles.signUpButtonText}>Change Password</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
         );
@@ -104,5 +141,27 @@ const styles = StyleSheet.create({
         color: '#3f51b5',
         paddingBottom: 10,
         fontSize: 24,
-    }
+    },
+    changePassModalTitle: {
+        fontFamily: "raleway-regular",
+        paddingBottom: 20,
+        fontSize: 26,
+        color: '#3f51b5',
+        alignSelf: 'center'
+    },
+    changePassModalButton: {
+        backgroundColor: '#3f51b5',
+        borderRadius: 10,
+        width: Dimensions.get('window').width - 60,
+        alignSelf: 'center',
+        margin: 5,
+        height: 50
+    },
+    changePassModalButtonText: {
+        fontFamily: "raleway-regular",
+        color: '#dff3fd',
+        padding: 14,
+        fontSize: 16,
+        alignSelf: 'center'
+    },
 });
