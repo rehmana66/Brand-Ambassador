@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 
@@ -8,11 +8,10 @@ import Search from './src/screens/Search';
 import Groups from './src/screens/Groups';
 import Account from './src/screens/Account';
 import Detail from './src/screens/Detail';
-import Main from './src/screens/Main';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
 import EditAccount from './src/screens/EditAccount';
-import ConfirmSignUp from './src/screens/ConfirmSignUp';
+import Initializing from './src/screens/Initializing';
 
 import {
   createSwitchNavigator,
@@ -49,34 +48,32 @@ export default App;
 
 const SignedOut = createStackNavigator(
 {
-  Main: {
-    screen: Main,
+  Initializing: {
+    screen: Initializing,
     navigationOptions: {
       header: null
     }
   },
-  LogIn: {
+  Login: {
     screen: LogIn,
     navigationOptions: {
       title: "Log In",
+      
     }
   },
   SignUp: {
     screen: SignUp,
     navigationOptions: {
       title: "Sign Up",
+      gesturesEnabled: true,
     }
-  },
-  ConfirmSignUp: {
-    screen: ConfirmSignUp,
-    navigationOptions: {
-      title: "Confirm Sign Up"
-    },
   },
 },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Initializing',
     defaultNavigationOptions: {
+      headerLeft: null,
+      gesturesEnabled: false,
       headerStyle: {
         backgroundColor: '#3f51b5',
       },
@@ -87,6 +84,7 @@ const SignedOut = createStackNavigator(
     },
   },
 );
+
 
 const HomeStack = createStackNavigator(
   {

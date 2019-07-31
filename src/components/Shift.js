@@ -6,6 +6,8 @@ import StarRating from 'react-native-star-rating';
 import { withNavigation } from 'react-navigation';
 import CachedImage from './CachedImage';
 
+
+
 class Shift extends Component {
     constructor(props) {
         super(props)
