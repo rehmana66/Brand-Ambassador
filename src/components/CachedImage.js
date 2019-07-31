@@ -15,7 +15,6 @@ export default class CachedImage extends Component {
     }
     async _cacheResourcesAsync() {
       const images = [this.props.source];
-      console.log(images.toString())
       const cacheImages = images.map(image => {
         return Asset.fromModule(image).downloadAsync();
       }); 

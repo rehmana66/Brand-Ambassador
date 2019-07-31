@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment  } from 'react';
 import { View, TouchableOpacity, findNodeHandle, Dimensions, Button, Text, TextInput, StyleSheet } from 'react-native';
 import Reinput from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withNavigation } from 'react-navigation';
-
-import ConfirmSignup from '../screens/ConfirmSignUp';
 
 
 import Amplify, { Auth } from 'aws-amplify';
@@ -22,8 +20,28 @@ Amplify.configure({
     }
 });
 
+const initialState = {
+    username: '', 
+    password: '', 
+    confirmPassword: '',
+    email: '', 
+    phone_number: '', 
+    authenticationCode: '', 
+    firstname: '',
+    lastname: '',
+    country: "",
+    city: '',
+    province: '',
+    postalcode: '',
+    gender: '',
+    birthday: '',
+    showConfirmationForm: false
+  }
+
 class SignUp extends Component {
     
+    state = initialState
+    /*
     constructor (props) {
         super(props);
         this.state = {
@@ -40,32 +58,41 @@ class SignUp extends Component {
             gender: "",
             birthday: "",
         }
-    }
+    }*/
 
-    signUp() {
-        Auth.signUp({
-            username: this.state.email,
-            password: this.state.confirmPassword,
-            attributes: {
-                email: this.state.email,
-                phone_number: this.state.phoneNumber,   // optional - E.164 number convention
-                'custom:firstname': this.state.firstName,
-                'custom:lastname': this.state.lastName,
-                //gender: this.state.gender,
-                //birthday: this.state.birthday,
-                'custom:country': this.state.country,
-                'custom:city': this.state.city,
-                'custom:state': this.state.province,
-                'custom:postalcode': this.state.postalCode,
-            },
-        })
-            .then(
-                 data => console.log(data),
-                    this.props.navigation.navigate('ConfirmSignUp', {username: this.state.email})
-            ).catch(err => console.log(err));
-            
-    }
+    signUp = async () => {
+        const { username, password, email, phone_number, firstname, lastname, country, city,
+            province, postalcode, gender, birthday
+        } = this.state
+        try {
+            const success = await Auth.signUp({ username, password, 
+                attributes: { email, phone_number,
+                    'custom:firstname': firstname,
+                    'custom:lastname': lastname,
+                    'custom:country': country,
+                    'custom:city': city,
+                    'custom:state': province,
+                    'custom:postalcode': postalcode,
+            }})
 
+            console.log('user successfully signed up!: ', success)
+            this.setState({ showConfirmationForm: true })
+        } catch (err) {
+            console.log('error signing up: ', err)
+        }
+    }
+    confirmSignUp = async () => {
+        const { username, authenticationCode } = this.state
+        try {
+            await Auth.confirmSignUp(username, authenticationCode)
+            console.log('successully signed up!')
+            alert('User signed up successfully!')
+            this.setState({ ...initialState })
+            this.props.navigation.navigate('LogIn')
+        } catch (err) {
+            console.log('error confirming signing up: ', err)
+        }
+    }
 
     inputFocused (refName) {
         setTimeout(() => {
@@ -78,140 +105,165 @@ class SignUp extends Component {
         // Main Container
         <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
             Keyboard.dismiss() }}>
-            <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = { styles.mainScroll}>
-                <Text ref = {'Account'} style = {styles.textStyle}>Account</Text>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next"}
-                    label = "Email Address"
-                    keyboardType = {'email-address'}
-                    onSubmitEditing={() => { this.refs['Password'].focus() }}
-                    onChangeText = { (value) => this.setState({ email: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = "Password"
-                    autoCorrect = {false}
-                    secureTextEntry = {true}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Password"
-                    onFocus={() => this.inputFocused('Account')}
-                    onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
-                    onChangeText = { (value) => this.setState({ password: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = "ConfirmPassword"
-                    autoCorrect = {false}
-                    secureTextEntry = {true}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Confirm Password"
-                    onFocus={() => this.inputFocused('FirstName')}
-                    onSubmitEditing={() => { this.refs['FirstName'].focus() }}
-                    onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
-                <Text style = {styles.textStyle}>Personal</Text>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'FirstName'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "First Name"
-                    onFocus={() => this.inputFocused('LastName')}
-                    onSubmitEditing={() => { this.refs['LastName'].focus() }}
-                    onChangeText = { (value) => this.setState({ firstName: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'LastName'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Last Name"
-                    onFocus={() => this.inputFocused('Birthday')}
-                    onSubmitEditing={() => { this.refs['Birthday'].focus() }}
-                    onChangeText = { (value) => this.setState({ lastName: value }) }/>
-                  <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'Birthday'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Birthday"
-                    onFocus={() => this.inputFocused('Gender')}
-                    onSubmitEditing={() => { this.refs['Gender'].focus() }}
-                    onChangeText = { (value) => this.setState({ birthday: value }) }/>                  
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'Gender'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Gender"
-                    onFocus={() => this.inputFocused('PhoneNumber')}
-                    onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
-                    onChangeText = { (value) => this.setState({ gender: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'PhoneNumber'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Phone Number"
-                    onFocus={() => this.inputFocused('Country')}
-                    onSubmitEditing={() => { this.refs['Country'].focus() }}
-                    onChangeText = { (value) => this.setState({ phoneNumber: value }) }/>
-                <Text style = {styles.textStyle}>Location</Text>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'Country'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Country"
-                    onFocus={() => this.inputFocused('City')}
-                    onSubmitEditing={() => { this.refs['City'].focus() }}
-                    onChangeText = { (value) => this.setState({ country: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'City'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "City"
-                    onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => { this.refs['Province'].focus() }}
-                    onChangeText = { (value) => this.setState({ city: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'Province'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "next" }
-                    label = "Province"
-                    onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
-                    onChangeText = { (value) => this.setState({ province: value }) }/>
-                <Reinput
-                    fontFamily = "raleway-light"
-                    ref = {'PostalCode'}
-                    autoCorrect = {false}
-                    underlineColorAndroid = "transparent"
-                    returnKeyType = { "done" }
-                    label = "Postal Code"
-                    onFocus={() => this.inputFocused('SignUpButton')}
-                    onSubmitEditing={() => this.inputFocused('SignUpButton') }
-                    onChangeText = { (value) => this.setState({ postalCode: value }) }/>
-                <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress = {this.signUp.bind(this)}>
-                        <View style = {styles.signUpButton}>
-                            <Text style = {styles.signUpButtonText}>Sign Up</Text>
+            {!this.state.showConfirmationForm && (
+                <Fragment> 
+                    <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = { styles.mainScroll}>
+                        <Text ref = {'Account'} style = {styles.textStyle}>Account</Text>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next"}
+                            label = "Email Address"
+                            keyboardType = {'email-address'}
+                            onSubmitEditing={() => { this.refs['Password'].focus() }}
+                            onChangeText = { (value) => this.setState({ email: value, username: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = "Password"
+                            autoCorrect = {false}
+                            secureTextEntry = {true}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Password"
+                            onFocus={() => this.inputFocused('Account')}
+                            onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
+                            onChangeText = { (value) => this.setState({ password: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = "ConfirmPassword"
+                            autoCorrect = {false}
+                            secureTextEntry = {true}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Confirm Password"
+                            onFocus={() => this.inputFocused('FirstName')}
+                            onSubmitEditing={() => { this.refs['FirstName'].focus() }}
+                            onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
+                        <Text style = {styles.textStyle}>Personal</Text>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'FirstName'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "First Name"
+                            onFocus={() => this.inputFocused('LastName')}
+                            onSubmitEditing={() => { this.refs['LastName'].focus() }}
+                            onChangeText = { (value) => this.setState({ firstname: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'LastName'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Last Name"
+                            onFocus={() => this.inputFocused('Birthday')}
+                            onSubmitEditing={() => { this.refs['Birthday'].focus() }}
+                            onChangeText = { (value) => this.setState({ lastname: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'Birthday'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Birthday"
+                            onFocus={() => this.inputFocused('Gender')}
+                            onSubmitEditing={() => { this.refs['Gender'].focus() }}
+                            onChangeText = { (value) => this.setState({ birthday: value }) }/>                  
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'Gender'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Gender"
+                            onFocus={() => this.inputFocused('PhoneNumber')}
+                            onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
+                            onChangeText = { (value) => this.setState({ gender: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'PhoneNumber'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Phone Number"
+                            onFocus={() => this.inputFocused('Country')}
+                            onSubmitEditing={() => { this.refs['Country'].focus() }}
+                            onChangeText = { (value) => this.setState({ phone_number: value }) }/>
+                        <Text style = {styles.textStyle}>Location</Text>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'Country'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Country"
+                            onFocus={() => this.inputFocused('City')}
+                            onSubmitEditing={() => { this.refs['City'].focus() }}
+                            onChangeText = { (value) => this.setState({ country: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'City'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "City"
+                            onFocus={() => this.inputFocused('SignUpButton')}
+                            onSubmitEditing={() => { this.refs['Province'].focus() }}
+                            onChangeText = { (value) => this.setState({ city: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'Province'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Province"
+                            onFocus={() => this.inputFocused('SignUpButton')}
+                            onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
+                            onChangeText = { (value) => this.setState({ province: value }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'PostalCode'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "done" }
+                            label = "Postal Code"
+                            onFocus={() => this.inputFocused('SignUpButton')}
+                            onSubmitEditing={() => this.inputFocused('SignUpButton') }
+                            onChangeText = { (value) => this.setState({ postalcode: value }) }/>
+
+
+                        <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
+                            <TouchableOpacity onPress = {this.signUp}>
+                                <View style = {styles.signUpButton}>
+                                    <Text style = {styles.signUpButtonText}>Sign Up</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-                </View>
-                <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
-            </KeyboardAwareScrollView>
+                        <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
+                    </KeyboardAwareScrollView>
+                </Fragment>
+            )}
+            {
+            this.state.showConfirmationForm && (
+                <Fragment>
+                    <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = {styles.mainScroll}>
+                        <Text ref = {'Account'} style = {styles.textStyle}>Confirm Account</Text>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next"}
+                            label = "Authentication code"
+                            keyboardType = {'numeric'}
+                            onChangeText = { (value) => this.setState({ authenticationCode: value}) }/>
+                        <Button
+                            title='Confirm Sign Up'
+                            onPress={this.confirmSignUp}/>
+                    </KeyboardAwareScrollView>
+                </Fragment>
+            )}
         </SafeAreaView>
         );  
     }
