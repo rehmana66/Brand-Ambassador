@@ -1,13 +1,96 @@
 import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, Image, Text, StyleSheet, Dimensions, TouchableOpacity, Alert, Button, Keyboard } from 'react-native';
 import  Reinput  from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from "react-native-modal";
 
 class EditAccount extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+          headerRight: (
+            <Button
+                onPress = {navigation.getParam('doneOnClick')}
+                title = "Done"
+                color = "#dff3fd"
+            />
+          ),
+          headerLeft: (
+            <Button
+              onPress = {navigation.getParam('cancelOnClick')}
+              title = "Cancel"
+              color = "#dff3fd"
+            />
+          ),
+        };
+    }
     state = {
-        isModalVisible: false
+        name: 'Big Boy Test',
+        bio: 'Description',
+        provCity: 'Province, City',
+        resumeName: 'My-Resume.docx',
+        email: 'email@email.com',
+        phoneNumber: '(780)123-4567',
+        postalCode: 'A1B-2C3',
+        changeMade: false,
+        isModalVisible: false,
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({ doneOnClick: this.doneOnClick });
+        this.props.navigation.setParams({ cancelOnClick: this.cancelOnClick });
+    };
+
+    doneOnClick = () => {
+        Keyboard.dismiss();
+        if(this.state.changeMade){
+            Alert.alert(
+                'Submit Changes?',
+                'Are you sure you want to submit your changes?',
+                [
+                    {
+                    text: 'Submit',
+                    onPress: () => this.props.navigation.navigate('Account')
+                    //Update user info
+                    },
+                    {
+                    text: 'Go Back',
+                    },
+                ],
+                {cancelable: false},
+            )
+        }
+        else{
+            this.props.navigation.navigate('Account');
+        }
+    };
+
+    cancelOnClick = () => {
+        Keyboard.dismiss();
+        if(this.state.changeMade){
+            Alert.alert(
+                'Discard Changes?',
+                'Are you sure you want to discard your changes?',
+                [
+                    {
+                    text: 'Discard',
+                    onPress: () => this.props.navigation.navigate('Account')
+                    },
+                    {
+                    text: 'Stay',
+                    },
+                ],
+                {cancelable: false},
+            )
+        }
+        else{
+            this.props.navigation.navigate('Account');
+        }
+    };
+
+    changeMade = () => {
+        this.setState({ changeMade: true })
     };
 
     toggleModal = () => {
@@ -58,14 +141,14 @@ class EditAccount extends Component {
                     </View>
                     <View>
                         <Text style = {styles.textStyle}>Public Info</Text>
-                        <Reinput label = "Name"  defaultValue = "Big Boy" fontFamily = "raleway-light"/>
-                        <Reinput label = "Bio"  defaultValue = "Description" fontFamily = "raleway-light"/>
-                        <Reinput label = "Province/City"  defaultValue = "Location" fontFamily = "raleway-light"/>
-                        <Reinput label = "Resume"  defaultValue = "Resume-Name" editable = {false} selectTextOnFocus = {false} fontFamily = "raleway-light"/>
+                        <Reinput label = "Name"  defaultValue = {this.state.name} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
+                        <Reinput label = "Bio"  defaultValue = {this.state.bio} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
+                        <Reinput label = "Province/City"  defaultValue = {this.state.provCity} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
+                        <Reinput label = "Resume"  defaultValue = {this.state.resumeName} editable = {false} selectTextOnFocus = {false} fontFamily = "raleway-light"/>
                         <Text style = {styles.textStyle}>Private Info</Text>
-                        <Reinput label = "Email"  defaultValue = "email@email.com" fontFamily = "raleway-light"/>
-                        <Reinput label = "Phone Number"  defaultValue = "(123) 456-7890" fontFamily = "raleway-light"/>
-                        <Reinput label = "Postal Code"  defaultValue = "A1B-2C3" fontFamily = "raleway-light"/>
+                        <Reinput label = "Email"  defaultValue = {this.state.email} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
+                        <Reinput label = "Phone Number"  defaultValue = {this.state.phoneNumber} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
+                        <Reinput label = "Postal Code"  defaultValue = {this.state.postalCode} onChangeText = {this.changeMade} fontFamily = "raleway-light"/>
                     </View>
                     <View style = {styles.bottomContainer}>
                         <TouchableOpacity>
