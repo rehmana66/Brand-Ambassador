@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, Dimensions, TouchableOpacity, Alert, Button } from 'react-native';
+import { View, Image, Text, StyleSheet, Dimensions, TouchableOpacity, Alert, Button, Keyboard } from 'react-native';
 import  Reinput  from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -43,6 +43,7 @@ class EditAccount extends Component {
     };
 
     doneOnClick = () => {
+        Keyboard.dismiss();
         if(this.state.changeMade){
             Alert.alert(
                 'Submit Changes?',
@@ -66,6 +67,7 @@ class EditAccount extends Component {
     };
 
     cancelOnClick = () => {
+        Keyboard.dismiss();
         if(this.state.changeMade){
             Alert.alert(
                 'Discard Changes?',
