@@ -53,7 +53,6 @@ class Home extends Component {
             </View>
         );
       }
-
 }
 
 export default Home;
