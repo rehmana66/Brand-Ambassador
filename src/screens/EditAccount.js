@@ -52,17 +52,21 @@ class EditAccount extends Component {
 
     changePassword = async () => {
         const { oldPass, newPass, newPassConfirm } = this.state
-        if (oldPass.length < 8 || newPass.length < 8 || newPassConfirm < 8){
-            console.log("Invalid Password(s) length")
+        if (oldPass.length < 6 || newPass.length < 6 || newPassConfirm < 6){
+            console.log("Invalid Password(s) length");
         }
         else if (newPass === newPassConfirm){
-            Auth.currentAuthenticatedUser()
+            try{ 
+                Auth.currentAuthenticatedUser()
                 .then(user => {
                 return Auth.changePassword(user, oldPass, newPass);
                 })
                 .then(data => console.log(data))
-                .catch(err => console.log(err));
                 this.passwordChangeRequest();
+                Keyboard.dismiss();
+            } catch (err) {
+                console.log('error', err)
+            };
         }
     };
 

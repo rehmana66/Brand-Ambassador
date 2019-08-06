@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Dimensions, View, Text, StyleSheet, Image, Button, TouchableOpacity, Alert } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, Image, Button, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import  Reinput  from 'reinput';
 import Modal from "react-native-modal";
@@ -24,10 +24,14 @@ class LogIn extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            isModalVisible: false,
+            isForgotModalVisible: false,
+            isNewPassModalVisible: false,
             username: '',
             password: '',
-            user: {}, 
+            user: {},
+            confirmCode: '',
+            newPass: '',
+            confirmNewPass: '',
             
         };
     }
@@ -41,33 +45,87 @@ class LogIn extends Component {
         } catch (err) {
           console.log('error:', err)
         }
+    };
+
+    forgotPassword = async () => {
+        const { username } = this.state;
+        if(username.length > 0){
+            try{
+                Auth.forgotPassword(username)
+                .then(data => console.log(data))
+                this.toggleForgotModal();
+            } catch (err) {
+                console.log('error', err)
+            };
+        }
+        else
+            console.log('error: username cant be empty');
+    }
+    
+    setNewPassword = async () => {
+        const { username, confirmCode, newPass, confirmNewPass } = this.state;
+        if (newPass.length < 6 || confirmNewPass < 6){
+            console.log("Invalid Password(s) length");
+        }
+        else if(newPass === confirmNewPass){
+            try{
+                Auth.forgotPasswordSubmit(username, confirmCode, newPass)
+                .then(data => console.log(data))
+                this.passwordResetRequest();
+                Keyboard.dismiss();
+            } catch (err) {
+                console.log('error', err)
+            }
+        }
     }
     passwordResetRequest = () => {
         Alert.alert(
           "Forgot Password",
-          "Password Reset Requested",
+          "Password Reset",
           [
-            { text: "Ok", onPress: () => this.setState({ isModalVisible: !this.state.isModalVisible })}
+            { text: "Ok", onPress: () => this.setState({ isNewPassModalVisible: !this.state.isNewPassModalVisible })}
           ],
           { cancelable: false },
         );
     };
-    toggleModal = () => {
-        this.setState({ isModalVisible: !this.state.isModalVisible });
+
+    toggleForgotModal = () => {
+        this.setState({ isForgotModalVisible: !this.state.isForgotModalVisible });
     };
+
+    toggleNewPassModal = () => {
+        this.setState({ isNewPassModalVisible: !this.state.isNewPassModalVisible });
+    };
+
     render() {
         return (
             <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
                 Keyboard.dismiss() }}>
-                <Modal isVisible = {this.state.isModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
-                onBackdropPress = {() => this.setState({ isModalVisible: !this.state.isModalVisible })}>
+                <Modal isVisible = {this.state.isForgotModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
+                onBackdropPress = {() => this.setState({ isForgotModalVisible: !this.state.isForgotModalVisible })} onModalHide = {this.toggleNewPassModal}>
                     <View style = {{ height: Dimensions.get('window').height/2 - 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
                         <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
                             <Text style = {styles.forgotModalTitle}>Forgot Password</Text>
-                            <Reinput label = "Email Address"  fontFamily = "raleway-light" keyboardType = {'email-address'} />
-                            <TouchableOpacity onPress={this.passwordResetRequest}>
+                            <Reinput label = "Email Address"  fontFamily = "raleway-light" keyboardType = {'email-address'} onChangeText = { (value) => this.setState({ username: value }) }/>
+                            <TouchableOpacity onPress={this.forgotPassword}>
                                 <View style = {styles.forgotModalButton}>
                                     <Text style = {styles.forgotModalButtonText}>Forgot Password?</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+                <Modal isVisible = {this.state.isNewPassModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
+                onBackdropPress = {() => this.setState({ isNewPassModalVisible: !this.state.isNewPassModalVisible })}>
+                    <View style = {{ height: Dimensions.get('window').height/2, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
+                        <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
+                            <Text style = {styles.forgotModalTitle}>Forgot Password</Text>
+                            <Reinput label = "Confirmation Code"  fontFamily = "raleway-light" onChangeText = { (value) => this.setState({ confirmCode: value }) }/>
+                            <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ newPass: value }) }/>
+                            <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ confirmNewPass: value }) }/>
+                            <TouchableOpacity onPress={this.setNewPassword}>
+                                <View style = {styles.forgotModalButton}>
+                                    <Text style = {styles.forgotModalButtonText}>Confirm New Password</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -86,7 +144,7 @@ class LogIn extends Component {
                     onChangeText = { (value) => this.setState({ password: value }) }/>
 
                     <View style = {{flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.toggleModal}>
+                        <TouchableOpacity onPress={this.toggleForgotModal}>
                             <View style = {styles.loginScreenButtons}>
                                 <Text style = {styles.loginScreenButtonsText}>Forgot Password?</Text>
                             </View>
