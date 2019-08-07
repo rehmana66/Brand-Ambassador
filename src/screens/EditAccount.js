@@ -4,8 +4,28 @@ import  Reinput  from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from "react-native-modal";
+import { Auth } from 'aws-amplify';
+
 
 class EditAccount extends Component {
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            name: 'Big Boy Test',
+            bio: 'Description',
+            provCity: 'Province, City',
+            resumeName: 'My-Resume.docx',
+            email: 'email@email.com',
+            phoneNumber: '(780)123-4567',
+            postalCode: 'A1B-2C3',
+            changeMade: false,
+            isModalVisible: false,
+            newPass: '',
+            newPassConfirm: '',
+            oldPassword: '',
+        };
+    };
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -25,21 +45,29 @@ class EditAccount extends Component {
           ),
         };
     }
-    state = {
-        name: 'Big Boy Test',
-        bio: 'Description',
-        provCity: 'Province, City',
-        resumeName: 'My-Resume.docx',
-        email: 'email@email.com',
-        phoneNumber: '(780)123-4567',
-        postalCode: 'A1B-2C3',
-        changeMade: false,
-        isModalVisible: false,
-    };
-
     componentDidMount() {
         this.props.navigation.setParams({ doneOnClick: this.doneOnClick });
         this.props.navigation.setParams({ cancelOnClick: this.cancelOnClick });
+    };
+
+    changePassword = async () => {
+        const { oldPass, newPass, newPassConfirm } = this.state
+        if (oldPass.length < 6 || newPass.length < 6 || newPassConfirm < 6){
+            console.log("Invalid Password(s) length");
+        }
+        else if (newPass === newPassConfirm){
+            try{ 
+                Auth.currentAuthenticatedUser()
+                .then(user => {
+                return Auth.changePassword(user, oldPass, newPass);
+                })
+                .then(data => console.log(data))
+                this.passwordChangeRequest();
+                Keyboard.dismiss();
+            } catch (err) {
+                console.log('error', err)
+            };
+        }
     };
 
     doneOnClick = () => {
@@ -118,10 +146,10 @@ class EditAccount extends Component {
                         <View style = {{ height: Dimensions.get('window').height/2 + 50, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
                             <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
                                 <Text style = {styles.changePassModalTitle}>Change Password</Text>
-                                <Reinput label = "Old Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
-                                <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
-                                <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true} />
-                                <TouchableOpacity onPress={this.passwordChangeRequest}>
+                                <Reinput label = "Old Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ oldPass: value }) }/>
+                                <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ newPass: value }) }/>
+                                <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ newPassConfirm: value }) }/>
+                                <TouchableOpacity onPress={this.changePassword}>
                                     <View style = {styles.changePassModalButton}>
                                         <Text style = {styles.changePassModalButtonText}>Change Password</Text>
                                     </View>
