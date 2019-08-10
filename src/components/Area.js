@@ -72,7 +72,8 @@ class Area extends Component {
             errorMessage: null,
         });
       } catch(error) {
-    }
+      }
+      
   }
 
     openSetting = () => {

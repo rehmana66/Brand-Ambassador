@@ -3,9 +3,11 @@ import { Dimensions, View, Text, StyleSheet, Image, Button, TouchableOpacity, Al
 import { SafeAreaView } from 'react-navigation';
 import  Reinput  from 'reinput';
 import Modal from "react-native-modal";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 //import Amplify from 'aws-amplify';
 import Amplify, { Auth } from 'aws-amplify';
+
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
@@ -18,6 +20,7 @@ Amplify.configure({
         userPoolWebClientId: '5213lor8ffaqd9b2pifkj2m53n', 
     }
 });
+
 
 class LogIn extends Component {
 
@@ -32,20 +35,44 @@ class LogIn extends Component {
             confirmCode: '',
             newPass: '',
             confirmNewPass: '',
-            
+            showConfirmationForm: false,
+            authenticationCode: '', 
         };
     }
+
     signIn = async () => {
         const { username, password } = this.state
         try {
-           const user = await Auth.signIn(username, password)
-           console.log('user successfully signed in!', user)
+            const user = await Auth.signIn(username, password);
+           //const user = await Auth.signIn("dfdf", "sd`")
+           //console.log('user successfully signed in!', user)
            this.setState({user})
+           console.log(this.state.user.attributes);
            this.props.navigation.navigate('Dashboard')
         } catch (err) {
-          console.log('error:', err)
+          console.log('error:', err.code)
+            if (err.code == "UserNotConfirmedException") {
+                this.setState({ showConfirmationForm: true })
+            }
         }
     };
+
+    confirmSignUp = async () => {
+        const { username, authenticationCode } = this.state
+        try {
+            await Auth.confirmSignUp(username, authenticationCode);
+            console.log('successully signed up!');
+            //this.props.navigation.navigate('Login');
+            alert('User signed up successfully!');
+            //this.setState({ ...initialState });
+            this.signIn();
+        } catch (err) {
+            console.log('error confirming signing up: ', err)
+            if (err.message == "User cannot be confirmed. Current status is CONFIRMED") {
+                this.signIn();
+            }
+        }
+    }
 
     forgotPassword = async () => {
         const { username } = this.state;
@@ -101,6 +128,8 @@ class LogIn extends Component {
         return (
             <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
                 Keyboard.dismiss() }}>
+                {!this.state.showConfirmationForm && (
+                <Fragment> 
                 <Modal isVisible = {this.state.isForgotModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
                 onBackdropPress = {() => this.setState({ isForgotModalVisible: !this.state.isForgotModalVisible })} onModalHide = {this.toggleNewPassModal}>
                     <View style = {{ height: Dimensions.get('window').height/2 - 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
@@ -168,6 +197,27 @@ class LogIn extends Component {
                         </TouchableOpacity>
                     </View>
                 </View> 
+                </Fragment>
+                )}
+                {
+                this.state.showConfirmationForm && (
+                    <Fragment>
+                        <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'} contentContainerStyle = {styles.mainScroll}>
+                            <Text ref = {'Account'} style = {styles.textStyle}>Confirm Account</Text>
+                            <Reinput
+                                fontFamily = "raleway-light"
+                                autoCorrect = {false}
+                                underlineColorAndroid = "transparent"
+                                returnKeyType = { "next"}
+                                label = "Authentication code"
+                                keyboardType = {'numeric'}
+                                onChangeText = { (value) => this.setState({ authenticationCode: value}) }/>
+                            <Button
+                                title='Login'
+                                onPress={this.confirmSignUp}/>
+                        </KeyboardAwareScrollView>
+                    </Fragment>
+                )}
             </SafeAreaView>
         );
     }
@@ -243,6 +293,20 @@ const styles = StyleSheet.create({
         color: '#dff3fd',
         padding: 8
     },
+    mainScroll: {
+        flexGrow: 1,
+        backgroundColor: '#dff3fd',
+        marginHorizontal: 15,
+        marginVertical: 20,
+        width : Dimensions.get('window').width - 30
+    },
+    textStyle: {
+        fontFamily: "raleway-regular",
+        color: '#3f51b5',
+        paddingBottom: 10,
+        fontSize: 24,
+    },
+
  })
 
 export default LogIn;

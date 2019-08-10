@@ -6,15 +6,15 @@ import {
 } from 'react-native'
 
 import { Auth } from 'aws-amplify'
-
-
+import {AsyncStorage} from 'react-native';
 
 export default class Initializing extends Component {
+
     async componentDidMount() {
       this.ShowAlertWithDelay
         try {
             const user = await Auth.currentAuthenticatedUser()
-            console.log('user: ', user)
+            console.log('user: ', user.attributes);
         if (user) {
             this.props.navigation.navigate('Home');
         } else {
@@ -24,7 +24,25 @@ export default class Initializing extends Component {
             this.props.navigation.navigate('Login');
         }
     }
-
+    _storeData = async () => {
+      try {
+        await AsyncStorage.setItem('@MySuperStore:key', 'I like to save its.');
+        console.log("true");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    _retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@MySuperStore:key');
+        if (value !== null) {
+          // We have data!!
+          console.log(value);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     ShowAlertWithDelay=()=>{
         setTimeout(function(){
         }, 5000);

@@ -6,7 +6,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { withNavigation } from 'react-navigation';
 
 
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
+
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
+
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
@@ -27,7 +32,7 @@ const initialState = {
     email: '', 
     phone_number: '', 
     authenticationCode: '', 
-    firstname: '',
+    firstname: "",
     lastname: '',
     country: "",
     city: '',
@@ -41,40 +46,20 @@ const initialState = {
 class SignUp extends Component {
     
     state = initialState
-    /*
-    constructor (props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: "",
-            confirmPassword: "",
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            country: "",
-            city: "",
-            province: "",
-            postalCode: "",
-            gender: "",
-            birthday: "",
-        }
-    }*/
 
     signUp = async () => {
         const { username, password, email, phone_number, firstname, lastname, country, city,
             province, postalcode, gender, birthday
         } = this.state
         try {
-            const success = await Auth.signUp({ username, password, 
+            const success = await Auth.signUp({ username, password,
                 attributes: { email, phone_number,
                     'custom:firstname': firstname,
                     'custom:lastname': lastname,
                     'custom:country': country,
                     'custom:city': city,
                     'custom:state': province,
-                    'custom:postalcode': postalcode,
-            }})
-
+                    'custom:postalcode': postalcode,}})
             console.log('user successfully signed up!: ', success)
             this.setState({ showConfirmationForm: true })
         } catch (err) {
@@ -84,15 +69,33 @@ class SignUp extends Component {
     confirmSignUp = async () => {
         const { username, authenticationCode } = this.state
         try {
-            await Auth.confirmSignUp(username, authenticationCode)
-            console.log('successully signed up!')
-            alert('User signed up successfully!')
-            this.setState({ ...initialState })
-            this.props.navigation.navigate('LogIn')
+            await Auth.confirmSignUp(username, authenticationCode);
+            console.log('successully signed up!');
+            //this.props.navigation.navigate('Login');
+            alert('User signed up successfully!'); 
+            this.setState({ ...initialState });
+            this.signIn();   
         } catch (err) {
             console.log('error confirming signing up: ', err)
+            if (err.message == "User cannot be confirmed. Current status is CONFIRMED") {
+                this.signIn();
+            }
         }
     }
+    signIn = async () => {
+        const { username, password } = this.state
+        try {
+            const user = await Auth.signIn(username, password);
+           this.setState({user})
+           console.log(this.state.user.attributes);
+           this.props.navigation.navigate('Dashboard')
+        } catch (err) {
+          console.log('error:', err.code)
+            if (err.code == "UserNotConfirmedException") {
+                this.setState({ showConfirmationForm: true })
+            }
+        }
+    };
 
     inputFocused (refName) {
         setTimeout(() => {
@@ -240,6 +243,11 @@ class SignUp extends Component {
                                     <Text style = {styles.signUpButtonText}>Sign Up</Text>
                                 </View>
                             </TouchableOpacity>
+                            <TouchableOpacity onPress = {this.makeUser}>
+                                <View style = {styles.signUpButton}>
+                                    <Text style = {styles.signUpButtonText}>Create User</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                         <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
                     </KeyboardAwareScrollView>
@@ -259,7 +267,7 @@ class SignUp extends Component {
                             keyboardType = {'numeric'}
                             onChangeText = { (value) => this.setState({ authenticationCode: value}) }/>
                         <Button
-                            title='Confirm Sign Up'
+                            title='Login'
                             onPress={this.confirmSignUp}/>
                     </KeyboardAwareScrollView>
                 </Fragment>
