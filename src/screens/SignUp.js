@@ -243,11 +243,6 @@ class SignUp extends Component {
                                     <Text style = {styles.signUpButtonText}>Sign Up</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress = {this.makeUser}>
-                                <View style = {styles.signUpButton}>
-                                    <Text style = {styles.signUpButtonText}>Create User</Text>
-                                </View>
-                            </TouchableOpacity>
                         </View>
                         <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
                     </KeyboardAwareScrollView>
