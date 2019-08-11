@@ -51,11 +51,21 @@ class LogIn extends Component {
            this.props.navigation.navigate('Dashboard')
         } catch (err) {
           console.log('error:', err.code)
-            if (err.code == "UserNotConfirmedException") {
-                this.setState({ showConfirmationForm: true })
-            }
+          this.errorcheck(err.code);
         }
     };
+
+    errorcheck(code) {
+        if(code == "UserNotConfirmedException") {
+            this.setState({ showConfirmationForm: true })
+        } else if (code == undefined) {
+            alert("Please enter a user")
+        } else if (code == "UserNotFoundException") {
+            alert("Incorrect username or password")
+        } else {
+            console.log("not working")
+        }
+    }
 
     confirmSignUp = async () => {
         const { username, authenticationCode } = this.state

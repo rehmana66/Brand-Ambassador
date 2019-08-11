@@ -90,12 +90,22 @@ class SignUp extends Component {
            console.log(this.state.user.attributes);
            this.props.navigation.navigate('Dashboard')
         } catch (err) {
-          console.log('error:', err.code)
-            if (err.code == "UserNotConfirmedException") {
-                this.setState({ showConfirmationForm: true })
-            }
+            this.errorcheck(err)
+            console.log('error:', err)
         }
     };
+
+    errorcheck(code) {
+        if(code == "UserNotConfirmedException") {
+            this.setState({ showConfirmationForm: true })
+        } else if (code == undefined) {
+            alert("Please enter a user")
+        } else if (code == "UserNotFoundException") {
+            alert("Incorrect username or password")
+        } else {
+            console.log("not working")
+        }
+    }
 
     inputFocused (refName) {
         setTimeout(() => {
