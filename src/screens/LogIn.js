@@ -83,6 +83,15 @@ class LogIn extends Component {
             }
         }
     }
+    resendCode = async () => {
+        const { username } = this.state
+        Auth.resendSignUp(username).then(() => {
+            alert("New code sent sucessfully");
+            console.log('code resent successfully');
+        }).catch(e => {
+            console.log(e);
+        });
+    }
 
     forgotPassword = async () => {
         const { username } = this.state;
@@ -225,6 +234,9 @@ class LogIn extends Component {
                             <Button
                                 title='Login'
                                 onPress={this.confirmSignUp}/>
+                            <Button style={{marginVertical: 10}}
+                            title='Resend Code'
+                            onPress={this.resendCode}/>
                         </KeyboardAwareScrollView>
                     </Fragment>
                 )}
