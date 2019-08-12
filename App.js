@@ -40,7 +40,6 @@ class App extends Component {
     if (!this.state.fontsLoaded) {
       return <AppLoading />
     }
-    
     return <AppContainer />;
   }
 }

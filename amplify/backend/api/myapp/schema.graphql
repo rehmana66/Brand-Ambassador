@@ -1,24 +1,19 @@
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
-  priority: String
-}
-
 type User @model {
-  id: ID!
+  userID: ID!
   firstName: String
   lastname: String
   phone_number: AWSPhone
   user_type: Boolean
   email: AWSEmail
+  dateOfBirth: AWSDate
   location: Location @connection
   resume: Resume @connection
-  events: [UserEvents] @connection(name: "userEmployee")
+  jobs: [UserJobs] @connection(name: "userjobs")
+  postings: [UserPosting] @connection
 }
 
 type Location @model {
-  id: ID!
+  LocationID: ID!
   city: String
   country: String
   isoCountryCode: String
@@ -28,19 +23,44 @@ type Location @model {
 }
 
 type Resume @model {
-  id: ID!
+  ResumeID: ID!
   resume_key: String
 }
 
-type UserEvents @model (queries: null){
-  id: ID!
-  employee: User @connection(name: "userEmployee")
-  event: Event @connection(name: "eventEmployees")
+type UserJobs @model (queries: null){
+  userJobsID: ID!
+  userID: User @connection(name: "userjobs")
+  jobID: Job @connection(name: "employees")
 }
 
-type Event @model {
-  id: ID!
+type Job @model {
+  jobsID: ID!
   employer_id: String
   name: String
-  employees: [UserEvents] @connection(name: "eventEmployees")
+  employees: [UserJobs] @connection(name: "employees")
 }
+
+type UserPosting @model (queries: null) {
+    UserPostingID: ID!
+    userID: User @connection
+    postingID: Posting @connection
+}
+
+type Posting @model {
+    postingID: ID!
+    employer_id: String
+    userID: [UserPosting] @connection
+    title: String
+    desc: String
+    misc: String
+    shift_max: Int
+    rate: Int
+}
+
+type Application @model {
+  applicationID: ID!
+  status: Boolean
+}
+
+
+
