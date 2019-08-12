@@ -1,0 +1,65 @@
+User -> Location: One to one relationship
+    - user can have only have one location and resume at a time
+    IDs:
+    - id to update location in user: userLocationId
+    - id to update resume in user: userResumeId
+
+        type User @model {
+            id: ID!
+            firstName: String
+            lastname: String
+            phone_number: AWSPhone
+            user_type: Boolean
+            email: AWSEmail
+            location: Location @connection
+            resume: Resume @connection
+        }
+
+        type Location @model {
+            id: ID!
+            city: String
+            country: String
+            isoCountryCode: String
+            postalCode: String
+            region: String
+            street: String
+        }
+        type Resume @model {
+            id: ID!
+            resume: String
+        }
+
+User -> UserEvents -> Events: Many to many relationship
+    - user can have multiple Events
+    - events can have multiple users
+
+    IDs: willchange
+    userEventsEmployeeId: the user id
+    userEventsEventId: the event id
+
+        type User @model {
+            id: ID!
+            firstName: String
+            lastname: String
+            phone_number: AWSPhone
+            user_type: Boolean
+            email: AWSEmail
+            location: Location @connection
+            resume: Resume @connection
+            events: [UserEvents] @connection(name: "userEmployee")*-->
+        }
+        --->
+        type UserEvents @model (queries: null){
+            id: ID!
+            employee: User @connection(name: "userEmployee")
+            event: Event @connection(name: "eventEmployees")
+        }
+        <---
+        type Event @model {
+            id: ID!
+            employer_id: String
+            name: String
+        <--*employees: [UserEvents] @connection(name: "eventEmployees")
+        }
+
+

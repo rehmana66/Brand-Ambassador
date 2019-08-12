@@ -66,6 +66,7 @@ class Area extends Component {
         }
         let location = await Location.getCurrentPositionAsync({});
         let geocode = await Location.reverseGeocodeAsync(location.coords);
+        //console.log(geocode);
         this.setState({ 
             location,
             locationResult: geocode,

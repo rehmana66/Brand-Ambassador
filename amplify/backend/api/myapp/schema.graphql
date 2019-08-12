@@ -8,4 +8,39 @@ type Todo @model {
 type User @model {
   id: ID!
   firstName: String
+  lastname: String
+  phone_number: AWSPhone
+  user_type: Boolean
+  email: AWSEmail
+  location: Location @connection
+  resume: Resume @connection
+  events: [UserEvents] @connection(name: "userEmployee")
+}
+
+type Location @model {
+  id: ID!
+  city: String
+  country: String
+  isoCountryCode: String
+  postalCode: String
+  region: String
+  street: String
+}
+
+type Resume @model {
+  id: ID!
+  resume_key: String
+}
+
+type UserEvents @model (queries: null){
+  id: ID!
+  employee: User @connection(name: "userEmployee")
+  event: Event @connection(name: "eventEmployees")
+}
+
+type Event @model {
+  id: ID!
+  employer_id: String
+  name: String
+  employees: [UserEvents] @connection(name: "eventEmployees")
 }
