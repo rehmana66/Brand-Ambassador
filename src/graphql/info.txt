@@ -1,3 +1,16 @@
+ID: 
+user: e407a0fe-e1d6-4ce2-a391-549d318ffee0
+
+location: 8104588e-baa5-4f7b-bb37-a9880e34f530
+
+event_id: "8e20e28e-5dbf-4092-a88d-6888697009b6"
+
+user_eventID: "d2c5694e-7e53-4cb9-adc7-ee7110d80cdf"
+
+
+
+
+
 User -> Location: One to one relationship
     - user can have only have one location and resume at a time
     IDs:
