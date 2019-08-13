@@ -1,5 +1,5 @@
 type User @model {
-  userID: ID!
+  id: ID!
   firstName: String
   lastname: String
   phone_number: AWSPhone
@@ -9,11 +9,12 @@ type User @model {
   location: Location @connection
   resume: Resume @connection
   jobs: [UserJobs] @connection(name: "userjobs")
-  postings: [UserPosting] @connection
+  shifts: [UserShifts] @connection(name: "usershifts")
+  apply: [Application] @connection(name: "userApplications")
 }
 
 type Location @model {
-  LocationID: ID!
+  id: ID!
   city: String
   country: String
   isoCountryCode: String
@@ -23,44 +24,42 @@ type Location @model {
 }
 
 type Resume @model {
-  ResumeID: ID!
+  id: ID!
   resume_key: String
 }
 
 type UserJobs @model (queries: null){
-  userJobsID: ID!
+  id: ID!
   userID: User @connection(name: "userjobs")
   jobID: Job @connection(name: "employees")
 }
 
 type Job @model {
-  jobsID: ID!
+  id: ID!
   employer_id: String
   name: String
   employees: [UserJobs] @connection(name: "employees")
-}
-
-type UserPosting @model (queries: null) {
-    UserPostingID: ID!
-    userID: User @connection
-    postingID: Posting @connection
-}
-
-type Posting @model {
-    postingID: ID!
-    employer_id: String
-    userID: [UserPosting] @connection
-    title: String
-    desc: String
-    misc: String
-    shift_max: Int
-    rate: Int
+  applications: [Application] @connection(name: "jobApplications")
 }
 
 type Application @model {
-  applicationID: ID!
+  id: ID!
   status: Boolean
+  userID: User @connection(name: "userApplications")
+  jobID: Job @connection(name: "jobApplications")
 }
 
+type UserShifts @model (queries: null) {
+  id: ID!
+  userID: User @connection(name: "usershifts")
+  shiftID: Shift @connection(name: "shifts")
+}
 
-
+type Shift @model {
+  id: ID!
+  title: String
+  desc: String
+  misc: String
+  rate: String
+  test: [UserShifts] @connection(name: "shifts")
+}

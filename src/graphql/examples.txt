@@ -1,91 +1,63 @@
-query getEvent {
-  getEvent(
-  id: "8e20e28e-5dbf-4092-a88d-6888697009b6"
-  )  {
+5213lor8ffaqd9b2pifkj2m53n
+
+Rehmana6@mymacewan.ca
+
+mutation createApplication{
+  createApplication(input: {
+    applicationJobIDId: "781ba6fb-8efc-4ee3-a0cd-46217eec1a03"
+    applicationUserIDId: "71b085df-8fcc-40d9-8f53-bb0731921165"
+    status: false
+  }) {
+    id 
+    jobID{id employer_id}
+    userID{id firstName lastname}
+  }
+}
+
+mutation addJob{
+  createJob(input: {
+    name: "Tech"
+    employer_id: "82c1dafd-33fb-4e1c-9245-378baaf9fcac"
+  }) {
     id name employer_id
+  }
+}
+
+query listJobs{
+  listJobs{items{
+    id employer_id
     employees{items{
       id 
-      employee{
-        id firstName
-        lastname phone_number
-        user_type email
-        location{
-          city country
-          isoCountryCode postalCode
-          region street
-        }
+      jobID{
+        id 
+        applications{items{
+          id
+        }}
       }
+      userID{firstName lastname}
     }}
-  }
+    applications{items{
+      userID{firstName lastname}
+    }}
+  }}
 }
 
-mutation addUserToEvent{
-  createUserEvents(input: {
-    userEventsEmployeeId: "e407a0fe-e1d6-4ce2-a391-549d318ffee0"
-    userEventsEventId: "8e20e28e-5dbf-4092-a88d-6888697009b6"
-  }) {
-    id
-  }
-}
-    
-
-mutation createEvent{
-  createEvent(input: {
-    employer_id: "test"
-    name: "Abdul Rehman"
-  }) {
-    id employer_id name
-  }
-}
-
-query getUserDetails{ 
-	getUser(
-    id: "e407a0fe-e1d6-4ce2-a391-549d318ffee0") {
-  	id firstName lastname
-    phone_number user_type
-    email 
+query listUsers{
+  listUsers{items{
+    id firstName lastname
+    phone_number user_type email
+    dateOfBirth
     location{
-      id city country
-      isoCountryCode postalCode
-      region street
+      id isoCountryCode city country
+      postalCode region street
     }
-  }
-}
-
-mutation UpdateUserLocation{
-  updateUser(input:{
-    id: "e407a0fe-e1d6-4ce2-a391-549d318ffee0"
-    userLocationId: "8104588e-baa5-4f7b-bb37-a9880e34f530"
-  }) {
-    firstName lastname
-  }
-}
-
-mutation CreateLocation{
-  createLocation(input: {
-    city: "Edmonton"
-    country: "Canada"
-    isoCountryCode: "CA"
-    postalCode: "T6R3T4"
-    region: "AB"
-    street: "1615 Lacombe Court"
-  }) {
-    id city country isoCountryCode
-    postalCode region street
-  }
-}
-
-mutation CreateUser{
-  createUser(input: {
-    firstName: "Abdul"
-    lastname: "Rehman"
-    phone_number: "+17809329550"
-    user_type: true
-    email: "Rehmana6@mymacewan.ca"
-  }) {
-    id
-    firstName lastname
-    phone_number user_type
-    email
-  }
+    jobs{items{
+      id jobID{id employer_id}
+      userID{firstName lastname}
+    }}
+    apply{items{
+      id status 
+      jobID{id employer_id}
+    }}
+  }}
 }

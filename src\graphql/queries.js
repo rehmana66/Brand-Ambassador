@@ -1,9 +1,9 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -11,7 +11,7 @@ export const getUser = `query GetUser($id: ID!) {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -20,18 +20,25 @@ export const getUser = `query GetUser($id: ID!) {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -45,7 +52,7 @@ export const listUsers = `query ListUsers(
 ) {
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -53,7 +60,7 @@ export const listUsers = `query ListUsers(
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -62,13 +69,16 @@ export const listUsers = `query ListUsers(
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
@@ -78,7 +88,7 @@ export const listUsers = `query ListUsers(
 `;
 export const getLocation = `query GetLocation($id: ID!) {
   getLocation(id: $id) {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -95,7 +105,7 @@ export const listLocations = `query ListLocations(
 ) {
   listLocations(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -109,7 +119,7 @@ export const listLocations = `query ListLocations(
 `;
 export const getResume = `query GetResume($id: ID!) {
   getResume(id: $id) {
-    ResumeID
+    id
     resume_key
   }
 }
@@ -121,7 +131,7 @@ export const listResumes = `query ListResumes(
 ) {
   listResumes(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      ResumeID
+      id
       resume_key
     }
     nextToken
@@ -130,12 +140,19 @@ export const listResumes = `query ListResumes(
 `;
 export const getJob = `query GetJob($id: ID!) {
   getJob(id: $id) {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
+      }
+      nextToken
+    }
+    applications {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -145,52 +162,15 @@ export const getJob = `query GetJob($id: ID!) {
 export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: Int, $nextToken: String) {
   listJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      jobsID
+      id
       employer_id
       name
       employees {
         nextToken
       }
-    }
-    nextToken
-  }
-}
-`;
-export const getPosting = `query GetPosting($id: ID!) {
-  getPosting(id: $id) {
-    postingID
-    employer_id
-    userID {
-      items {
-        UserPostingID
-      }
-      nextToken
-    }
-    title
-    desc
-    misc
-    shift_max
-    rate
-  }
-}
-`;
-export const listPostings = `query ListPostings(
-  $filter: ModelPostingFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listPostings(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      postingID
-      employer_id
-      userID {
+      applications {
         nextToken
       }
-      title
-      desc
-      misc
-      shift_max
-      rate
     }
     nextToken
   }
@@ -198,8 +178,50 @@ export const listPostings = `query ListPostings(
 `;
 export const getApplication = `query GetApplication($id: ID!) {
   getApplication(id: $id) {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -210,8 +232,58 @@ export const listApplications = `query ListApplications(
 ) {
   listApplications(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      applicationID
+      id
       status
+      userID {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      jobID {
+        id
+        employer_id
+        name
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getShift = `query GetShift($id: ID!) {
+  getShift(id: $id) {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listShifts = `query ListShifts(
+  $filter: ModelShiftFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listShifts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
     }
     nextToken
   }

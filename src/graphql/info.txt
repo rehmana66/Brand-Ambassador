@@ -1,3 +1,7 @@
+5213lor8ffaqd9b2pifkj2m53n
+
+Rehmana6@mymacewan.ca
+
 ID: 
 user: e407a0fe-e1d6-4ce2-a391-549d318ffee0
 
@@ -7,8 +11,7 @@ event_id: "8e20e28e-5dbf-4092-a88d-6888697009b6"
 
 user_eventID: "d2c5694e-7e53-4cb9-adc7-ee7110d80cdf"
 
-
-
+#TODO: change employer_id to connect to USER table
 
 
 User -> Location: One to one relationship

@@ -1,9 +1,9 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -11,7 +11,7 @@ export const onCreateUser = `subscription OnCreateUser {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -20,18 +20,25 @@ export const onCreateUser = `subscription OnCreateUser {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -40,7 +47,7 @@ export const onCreateUser = `subscription OnCreateUser {
 `;
 export const onUpdateUser = `subscription OnUpdateUser {
   onUpdateUser {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -48,7 +55,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -57,18 +64,25 @@ export const onUpdateUser = `subscription OnUpdateUser {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -77,7 +91,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
 `;
 export const onDeleteUser = `subscription OnDeleteUser {
   onDeleteUser {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -85,7 +99,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -94,18 +108,25 @@ export const onDeleteUser = `subscription OnDeleteUser {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -114,7 +135,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
 `;
 export const onCreateLocation = `subscription OnCreateLocation {
   onCreateLocation {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -126,7 +147,7 @@ export const onCreateLocation = `subscription OnCreateLocation {
 `;
 export const onUpdateLocation = `subscription OnUpdateLocation {
   onUpdateLocation {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -138,7 +159,7 @@ export const onUpdateLocation = `subscription OnUpdateLocation {
 `;
 export const onDeleteLocation = `subscription OnDeleteLocation {
   onDeleteLocation {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -150,30 +171,30 @@ export const onDeleteLocation = `subscription OnDeleteLocation {
 `;
 export const onCreateResume = `subscription OnCreateResume {
   onCreateResume {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const onUpdateResume = `subscription OnUpdateResume {
   onUpdateResume {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const onDeleteResume = `subscription OnDeleteResume {
   onDeleteResume {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const onCreateUserJobs = `subscription OnCreateUserJobs {
   onCreateUserJobs {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -181,7 +202,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -190,21 +211,27 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -213,9 +240,9 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
 `;
 export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
   onUpdateUserJobs {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -223,7 +250,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -232,21 +259,27 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -255,9 +288,9 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
 `;
 export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
   onDeleteUserJobs {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -265,7 +298,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -274,21 +307,27 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -297,12 +336,19 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
 `;
 export const onCreateJob = `subscription OnCreateJob {
   onCreateJob {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
+      }
+      nextToken
+    }
+    applications {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -311,12 +357,19 @@ export const onCreateJob = `subscription OnCreateJob {
 `;
 export const onUpdateJob = `subscription OnUpdateJob {
   onUpdateJob {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
+      }
+      nextToken
+    }
+    applications {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -325,228 +378,358 @@ export const onUpdateJob = `subscription OnUpdateJob {
 `;
 export const onDeleteJob = `subscription OnDeleteJob {
   onDeleteJob {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-  }
-}
-`;
-export const onCreateUserPosting = `subscription OnCreateUserPosting {
-  onCreateUserPosting {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const onUpdateUserPosting = `subscription OnUpdateUserPosting {
-  onUpdateUserPosting {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const onDeleteUserPosting = `subscription OnDeleteUserPosting {
-  onDeleteUserPosting {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const onCreatePosting = `subscription OnCreatePosting {
-  onCreatePosting {
-    postingID
-    employer_id
-    userID {
+    applications {
       items {
-        UserPostingID
+        id
+        status
       }
       nextToken
     }
-    title
-    desc
-    misc
-    shift_max
-    rate
-  }
-}
-`;
-export const onUpdatePosting = `subscription OnUpdatePosting {
-  onUpdatePosting {
-    postingID
-    employer_id
-    userID {
-      items {
-        UserPostingID
-      }
-      nextToken
-    }
-    title
-    desc
-    misc
-    shift_max
-    rate
-  }
-}
-`;
-export const onDeletePosting = `subscription OnDeletePosting {
-  onDeletePosting {
-    postingID
-    employer_id
-    userID {
-      items {
-        UserPostingID
-      }
-      nextToken
-    }
-    title
-    desc
-    misc
-    shift_max
-    rate
   }
 }
 `;
 export const onCreateApplication = `subscription OnCreateApplication {
   onCreateApplication {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
   }
 }
 `;
 export const onUpdateApplication = `subscription OnUpdateApplication {
   onUpdateApplication {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
   }
 }
 `;
 export const onDeleteApplication = `subscription OnDeleteApplication {
   onDeleteApplication {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onCreateUserShifts = `subscription OnCreateUserShifts {
+  onCreateUserShifts {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdateUserShifts = `subscription OnUpdateUserShifts {
+  onUpdateUserShifts {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeleteUserShifts = `subscription OnDeleteUserShifts {
+  onDeleteUserShifts {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onCreateShift = `subscription OnCreateShift {
+  onCreateShift {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateShift = `subscription OnUpdateShift {
+  onUpdateShift {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteShift = `subscription OnDeleteShift {
+  onDeleteShift {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;

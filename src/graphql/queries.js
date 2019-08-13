@@ -1,31 +1,6 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const getTodo = `query GetTodo($id: ID!) {
-  getTodo(id: $id) {
-    id
-    name
-    description
-    priority
-  }
-}
-`;
-export const listTodos = `query ListTodos(
-  $filter: ModelTodoFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
-      description
-      priority
-    }
-    nextToken
-  }
-}
-`;
 export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
@@ -34,6 +9,7 @@ export const getUser = `query GetUser($id: ID!) {
     phone_number
     user_type
     email
+    dateOfBirth
     location {
       id
       city
@@ -47,9 +23,22 @@ export const getUser = `query GetUser($id: ID!) {
       id
       resume_key
     }
-    events {
+    jobs {
       items {
         id
+      }
+      nextToken
+    }
+    shifts {
+      items {
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -69,6 +58,7 @@ export const listUsers = `query ListUsers(
       phone_number
       user_type
       email
+      dateOfBirth
       location {
         id
         city
@@ -82,7 +72,13 @@ export const listUsers = `query ListUsers(
         id
         resume_key
       }
-      events {
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
@@ -142,8 +138,8 @@ export const listResumes = `query ListResumes(
   }
 }
 `;
-export const getEvent = `query GetEvent($id: ID!) {
-  getEvent(id: $id) {
+export const getJob = `query GetJob($id: ID!) {
+  getJob(id: $id) {
     id
     employer_id
     name
@@ -153,20 +149,139 @@ export const getEvent = `query GetEvent($id: ID!) {
       }
       nextToken
     }
+    applications {
+      items {
+        id
+        status
+      }
+      nextToken
+    }
   }
 }
 `;
-export const listEvents = `query ListEvents(
-  $filter: ModelEventFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: Int, $nextToken: String) {
+  listJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getApplication = `query GetApplication($id: ID!) {
+  getApplication(id: $id) {
+    id
+    status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listApplications = `query ListApplications(
+  $filter: ModelApplicationFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listApplications(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      status
+      userID {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      jobID {
+        id
+        employer_id
+        name
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getShift = `query GetShift($id: ID!) {
+  getShift(id: $id) {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listShifts = `query ListShifts(
+  $filter: ModelShiftFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listShifts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
         nextToken
       }
     }

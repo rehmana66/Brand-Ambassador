@@ -1,9 +1,9 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -11,7 +11,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -20,18 +20,25 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -40,7 +47,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
 `;
 export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -48,7 +55,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -57,18 +64,25 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -77,7 +91,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
 `;
 export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
-    userID
+    id
     firstName
     lastname
     phone_number
@@ -85,7 +99,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     email
     dateOfBirth
     location {
-      LocationID
+      id
       city
       country
       isoCountryCode
@@ -94,18 +108,25 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       street
     }
     resume {
-      ResumeID
+      id
       resume_key
     }
     jobs {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-    postings {
+    shifts {
       items {
-        UserPostingID
+        id
+      }
+      nextToken
+    }
+    apply {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -114,7 +135,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
 `;
 export const createLocation = `mutation CreateLocation($input: CreateLocationInput!) {
   createLocation(input: $input) {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -126,7 +147,7 @@ export const createLocation = `mutation CreateLocation($input: CreateLocationInp
 `;
 export const updateLocation = `mutation UpdateLocation($input: UpdateLocationInput!) {
   updateLocation(input: $input) {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -138,7 +159,7 @@ export const updateLocation = `mutation UpdateLocation($input: UpdateLocationInp
 `;
 export const deleteLocation = `mutation DeleteLocation($input: DeleteLocationInput!) {
   deleteLocation(input: $input) {
-    LocationID
+    id
     city
     country
     isoCountryCode
@@ -150,30 +171,30 @@ export const deleteLocation = `mutation DeleteLocation($input: DeleteLocationInp
 `;
 export const createResume = `mutation CreateResume($input: CreateResumeInput!) {
   createResume(input: $input) {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const updateResume = `mutation UpdateResume($input: UpdateResumeInput!) {
   updateResume(input: $input) {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const deleteResume = `mutation DeleteResume($input: DeleteResumeInput!) {
   deleteResume(input: $input) {
-    ResumeID
+    id
     resume_key
   }
 }
 `;
 export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInput!) {
   createUserJobs(input: $input) {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -181,7 +202,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -190,21 +211,27 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -213,9 +240,9 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
 `;
 export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInput!) {
   updateUserJobs(input: $input) {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -223,7 +250,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -232,21 +259,27 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -255,9 +288,9 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
 `;
 export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInput!) {
   deleteUserJobs(input: $input) {
-    userJobsID
+    id
     userID {
-      userID
+      id
       firstName
       lastname
       phone_number
@@ -265,7 +298,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       email
       dateOfBirth
       location {
-        LocationID
+        id
         city
         country
         isoCountryCode
@@ -274,21 +307,27 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         street
       }
       resume {
-        ResumeID
+        id
         resume_key
       }
       jobs {
         nextToken
       }
-      postings {
+      shifts {
+        nextToken
+      }
+      apply {
         nextToken
       }
     }
     jobID {
-      jobsID
+      id
       employer_id
       name
       employees {
+        nextToken
+      }
+      applications {
         nextToken
       }
     }
@@ -297,12 +336,19 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
 `;
 export const createJob = `mutation CreateJob($input: CreateJobInput!) {
   createJob(input: $input) {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
+      }
+      nextToken
+    }
+    applications {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -311,12 +357,19 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
 `;
 export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
   updateJob(input: $input) {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
+      }
+      nextToken
+    }
+    applications {
+      items {
+        id
+        status
       }
       nextToken
     }
@@ -325,228 +378,358 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
 `;
 export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
   deleteJob(input: $input) {
-    jobsID
+    id
     employer_id
     name
     employees {
       items {
-        userJobsID
+        id
       }
       nextToken
     }
-  }
-}
-`;
-export const createUserPosting = `mutation CreateUserPosting($input: CreateUserPostingInput!) {
-  createUserPosting(input: $input) {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const updateUserPosting = `mutation UpdateUserPosting($input: UpdateUserPostingInput!) {
-  updateUserPosting(input: $input) {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const deleteUserPosting = `mutation DeleteUserPosting($input: DeleteUserPostingInput!) {
-  deleteUserPosting(input: $input) {
-    UserPostingID
-    userID {
-      userID
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
-      location {
-        LocationID
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      resume {
-        ResumeID
-        resume_key
-      }
-      jobs {
-        nextToken
-      }
-      postings {
-        nextToken
-      }
-    }
-    postingID {
-      postingID
-      employer_id
-      userID {
-        nextToken
-      }
-      title
-      desc
-      misc
-      shift_max
-      rate
-    }
-  }
-}
-`;
-export const createPosting = `mutation CreatePosting($input: CreatePostingInput!) {
-  createPosting(input: $input) {
-    postingID
-    employer_id
-    userID {
+    applications {
       items {
-        UserPostingID
+        id
+        status
       }
       nextToken
     }
-    title
-    desc
-    misc
-    shift_max
-    rate
-  }
-}
-`;
-export const updatePosting = `mutation UpdatePosting($input: UpdatePostingInput!) {
-  updatePosting(input: $input) {
-    postingID
-    employer_id
-    userID {
-      items {
-        UserPostingID
-      }
-      nextToken
-    }
-    title
-    desc
-    misc
-    shift_max
-    rate
-  }
-}
-`;
-export const deletePosting = `mutation DeletePosting($input: DeletePostingInput!) {
-  deletePosting(input: $input) {
-    postingID
-    employer_id
-    userID {
-      items {
-        UserPostingID
-      }
-      nextToken
-    }
-    title
-    desc
-    misc
-    shift_max
-    rate
   }
 }
 `;
 export const createApplication = `mutation CreateApplication($input: CreateApplicationInput!) {
   createApplication(input: $input) {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
   }
 }
 `;
 export const updateApplication = `mutation UpdateApplication($input: UpdateApplicationInput!) {
   updateApplication(input: $input) {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
   }
 }
 `;
 export const deleteApplication = `mutation DeleteApplication($input: DeleteApplicationInput!) {
   deleteApplication(input: $input) {
-    applicationID
+    id
     status
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    jobID {
+      id
+      employer_id
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createUserShifts = `mutation CreateUserShifts($input: CreateUserShiftsInput!) {
+  createUserShifts(input: $input) {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateUserShifts = `mutation UpdateUserShifts($input: UpdateUserShiftsInput!) {
+  updateUserShifts(input: $input) {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteUserShifts = `mutation DeleteUserShifts($input: DeleteUserShiftsInput!) {
+  deleteUserShifts(input: $input) {
+    id
+    userID {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      shifts {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
+    shiftID {
+      id
+      title
+      desc
+      misc
+      rate
+      test {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createShift = `mutation CreateShift($input: CreateShiftInput!) {
+  createShift(input: $input) {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateShift = `mutation UpdateShift($input: UpdateShiftInput!) {
+  updateShift(input: $input) {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteShift = `mutation DeleteShift($input: DeleteShiftInput!) {
+  deleteShift(input: $input) {
+    id
+    title
+    desc
+    misc
+    rate
+    test {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
