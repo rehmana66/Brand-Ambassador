@@ -1,9 +1,10 @@
 import React, { Component, Fragment  } from 'react';
-import { View, TouchableOpacity, findNodeHandle, Dimensions, Button, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, findNodeHandle, Dimensions, Button, Text, Picker, StyleSheet } from 'react-native';
 import Reinput from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withNavigation } from 'react-navigation';
+import DatePicker from 'react-native-datepicker';
 
 
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
@@ -39,7 +40,8 @@ const initialState = {
     province: '',
     postalcode: '',
     gender: '',
-    birthday: '',
+    DoB: '',
+    userType: false,
     showConfirmationForm: false
   }
 
@@ -124,6 +126,11 @@ class SignUp extends Component {
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(findNodeHandle(this.refs[refName]),100,true);
         }, 50);
     }
+
+    updateUser = (userType) => {
+        this.setState({ userType: userType })
+     }
+
     render () {
         return (
         // Main Container
@@ -182,19 +189,9 @@ class SignUp extends Component {
                             underlineColorAndroid = "transparent"
                             returnKeyType = { "next" }
                             label = "Last Name"
-                            onFocus={() => this.inputFocused('Birthday')}
-                            onSubmitEditing={() => { this.refs['Birthday'].focus() }}
-                            onChangeText = { (value) => this.setState({ lastname: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'Birthday'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Birthday"
                             onFocus={() => this.inputFocused('Gender')}
                             onSubmitEditing={() => { this.refs['Gender'].focus() }}
-                            onChangeText = { (value) => this.setState({ birthday: value }) }/>                  
+                            onChangeText = { (value) => this.setState({ lastname: value }) }/>              
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = {'Gender'}
@@ -215,6 +212,36 @@ class SignUp extends Component {
                             onFocus={() => this.inputFocused('Country')}
                             onSubmitEditing={() => { this.refs['Country'].focus() }}
                             onChangeText = { (value) => this.setState({ phone_number: value }) }/>
+                        <Text style = {styles.textStyle}>Date of Birth</Text>
+                        <DatePicker
+                            ref = {'DoB'}
+                            style = {{width: 200, marginVertical: 20}}
+                            date = {this.state.DoB}
+                            mode = "date"
+                            placeholder = "Select Date"
+                            format = "YYYY-MM-DD"
+                            minDate = "1910-01-01"
+                            maxDate = "2005-01-01"
+                            confirmBtnText = "Confirm"
+                            cancelBtnText = "Cancel"
+                            onDateChange={(date) => {this.setState({DoB: date})}}
+                            customStyles={{
+                                dateIcon: {
+                                  position: 'absolute',
+                                  left: 0,
+                                  top: 4,
+                                  marginLeft: 0
+                                },
+                                dateInput: {
+                                  marginLeft: 36
+                                },
+                                btnTextConfirm: {
+                                    color: '#1094f7'
+                                },
+                                btnTextCancel: {
+                                    color: '#1094f7'
+                                }
+                            }}/>
                         <Text style = {styles.textStyle}>Location</Text>
                         <Reinput
                             fontFamily = "raleway-light"
@@ -256,8 +283,13 @@ class SignUp extends Component {
                             onFocus={() => this.inputFocused('SignUpButton')}
                             onSubmitEditing={() => this.inputFocused('SignUpButton') }
                             onChangeText = { (value) => this.setState({ postalcode: value }) }/>
-
-
+                        <Text style = {styles.textStyle}>User Type</Text>
+                        <View>
+                            <Picker selectedValue = {this.state.userType} onValueChange = {(value) => this.setState({ userType: value })}>
+                                <Picker.Item label = "User" value = {false} />
+                                <Picker.Item label = "Employer" value = {true} />
+                            </Picker>
+                        </View>
                         <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
                             <TouchableOpacity onPress = {this.signUp}>
                                 <View style = {styles.signUpButton}>
