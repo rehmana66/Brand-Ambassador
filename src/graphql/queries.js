@@ -29,12 +29,6 @@ export const getUser = `query GetUser($id: ID!) {
       }
       nextToken
     }
-    shifts {
-      items {
-        id
-      }
-      nextToken
-    }
     apply {
       items {
         id
@@ -73,9 +67,6 @@ export const listUsers = `query ListUsers(
         resume_key
       }
       jobs {
-        nextToken
-      }
-      shifts {
         nextToken
       }
       apply {
@@ -141,7 +132,34 @@ export const listResumes = `query ListResumes(
 export const getJob = `query GetJob($id: ID!) {
   getJob(id: $id) {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -156,6 +174,28 @@ export const getJob = `query GetJob($id: ID!) {
       }
       nextToken
     }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
+    }
   }
 }
 `;
@@ -163,13 +203,28 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
   listJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
     nextToken
@@ -204,22 +259,34 @@ export const getApplication = `query GetApplication($id: ID!) {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -245,7 +312,6 @@ export const listApplications = `query ListApplications(
       }
       jobID {
         id
-        employer_id
         name
       }
     }
@@ -253,36 +319,165 @@ export const listApplications = `query ListApplications(
   }
 }
 `;
-export const getShift = `query GetShift($id: ID!) {
-  getShift(id: $id) {
+export const getDetails = `query GetDetails($id: ID!) {
+  getDetails(id: $id) {
     id
     title
     desc
     misc
     rate
-    test {
+    location {
+      id
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
       items {
         id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
       }
       nextToken
     }
   }
 }
 `;
-export const listShifts = `query ListShifts(
-  $filter: ModelShiftFilterInput
+export const listDetailss = `query ListDetailss(
+  $filter: ModelDetailsFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listShifts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listDetailss(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       title
       desc
       misc
       rate
-      test {
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
         nextToken
+      }
+      dates {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getJobDates = `query GetJobDates($id: ID!) {
+  getJobDates(id: $id) {
+    id
+    date
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listJobDatess = `query ListJobDatess(
+  $filter: ModelJobDatesFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listJobDatess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      date
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getCategory = `query GetCategory($id: ID!) {
+  getCategory(id: $id) {
+    id
+    name
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listCategorys = `query ListCategorys(
+  $filter: ModelCategoryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCategorys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
     nextToken

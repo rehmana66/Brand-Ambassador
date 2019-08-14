@@ -29,12 +29,6 @@ export const onCreateUser = `subscription OnCreateUser {
       }
       nextToken
     }
-    shifts {
-      items {
-        id
-      }
-      nextToken
-    }
     apply {
       items {
         id
@@ -73,12 +67,6 @@ export const onUpdateUser = `subscription OnUpdateUser {
       }
       nextToken
     }
-    shifts {
-      items {
-        id
-      }
-      nextToken
-    }
     apply {
       items {
         id
@@ -112,12 +100,6 @@ export const onDeleteUser = `subscription OnDeleteUser {
       resume_key
     }
     jobs {
-      items {
-        id
-      }
-      nextToken
-    }
-    shifts {
       items {
         id
       }
@@ -217,22 +199,34 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -265,22 +259,34 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -313,22 +319,34 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -337,7 +355,34 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
 export const onCreateJob = `subscription OnCreateJob {
   onCreateJob {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -351,6 +396,28 @@ export const onCreateJob = `subscription OnCreateJob {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -358,7 +425,34 @@ export const onCreateJob = `subscription OnCreateJob {
 export const onUpdateJob = `subscription OnUpdateJob {
   onUpdateJob {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -372,6 +466,28 @@ export const onUpdateJob = `subscription OnUpdateJob {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -379,7 +495,34 @@ export const onUpdateJob = `subscription OnUpdateJob {
 export const onDeleteJob = `subscription OnDeleteJob {
   onDeleteJob {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -393,6 +536,28 @@ export const onDeleteJob = `subscription OnDeleteJob {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -425,22 +590,34 @@ export const onCreateApplication = `subscription OnCreateApplication {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -474,22 +651,34 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -523,16 +712,21 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
@@ -540,21 +734,126 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       applications {
         nextToken
       }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
     }
   }
 }
 `;
-export const onCreateUserShifts = `subscription OnCreateUserShifts {
-  onCreateUserShifts {
+export const onCreateDetails = `subscription OnCreateDetails {
+  onCreateDetails {
     id
-    userID {
+    title
+    desc
+    misc
+    rate
+    location {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateDetails = `subscription OnUpdateDetails {
+  onUpdateDetails {
+    id
+    title
+    desc
+    misc
+    rate
+    location {
+      id
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteDetails = `subscription OnDeleteDetails {
+  onDeleteDetails {
+    id
+    title
+    desc
+    misc
+    rate
+    location {
+      id
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateJobDates = `subscription OnCreateJobDates {
+  onCreateJobDates {
+    id
+    date
+    details {
+      id
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -564,44 +863,26 @@ export const onCreateUserShifts = `subscription OnCreateUserShifts {
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
-        nextToken
-      }
-    }
-    shiftID {
-      id
-      title
-      desc
-      misc
-      rate
-      test {
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const onUpdateUserShifts = `subscription OnUpdateUserShifts {
-  onUpdateUserShifts {
+export const onUpdateJobDates = `subscription OnUpdateJobDates {
+  onUpdateJobDates {
     id
-    userID {
+    date
+    details {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -611,44 +892,26 @@ export const onUpdateUserShifts = `subscription OnUpdateUserShifts {
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
-        nextToken
-      }
-    }
-    shiftID {
-      id
-      title
-      desc
-      misc
-      rate
-      test {
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const onDeleteUserShifts = `subscription OnDeleteUserShifts {
-  onDeleteUserShifts {
+export const onDeleteJobDates = `subscription OnDeleteJobDates {
+  onDeleteJobDates {
     id
-    userID {
+    date
+    details {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -658,77 +921,99 @@ export const onDeleteUserShifts = `subscription OnDeleteUserShifts {
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
+      dates {
         nextToken
       }
     }
-    shiftID {
+  }
+}
+`;
+export const onCreateCategory = `subscription OnCreateCategory {
+  onCreateCategory {
+    id
+    name
+    details {
       id
       title
       desc
       misc
       rate
-      test {
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const onCreateShift = `subscription OnCreateShift {
-  onCreateShift {
+export const onUpdateCategory = `subscription OnUpdateCategory {
+  onUpdateCategory {
     id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
+    name
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
         id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
       }
-      nextToken
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
 `;
-export const onUpdateShift = `subscription OnUpdateShift {
-  onUpdateShift {
+export const onDeleteCategory = `subscription OnDeleteCategory {
+  onDeleteCategory {
     id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
+    name
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
         id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
       }
-      nextToken
-    }
-  }
-}
-`;
-export const onDeleteShift = `subscription OnDeleteShift {
-  onDeleteShift {
-    id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
-        id
+      category {
+        nextToken
       }
-      nextToken
+      dates {
+        nextToken
+      }
     }
   }
 }

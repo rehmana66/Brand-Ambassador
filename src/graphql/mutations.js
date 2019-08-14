@@ -29,12 +29,6 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
       }
       nextToken
     }
-    shifts {
-      items {
-        id
-      }
-      nextToken
-    }
     apply {
       items {
         id
@@ -73,12 +67,6 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       }
       nextToken
     }
-    shifts {
-      items {
-        id
-      }
-      nextToken
-    }
     apply {
       items {
         id
@@ -112,12 +100,6 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       resume_key
     }
     jobs {
-      items {
-        id
-      }
-      nextToken
-    }
-    shifts {
       items {
         id
       }
@@ -217,22 +199,34 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -265,22 +259,34 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -313,22 +319,34 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -337,7 +355,34 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
 export const createJob = `mutation CreateJob($input: CreateJobInput!) {
   createJob(input: $input) {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -351,6 +396,28 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -358,7 +425,34 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
 export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
   updateJob(input: $input) {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -372,6 +466,28 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -379,7 +495,34 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
 export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
   deleteJob(input: $input) {
     id
-    employer_id
+    employer {
+      id
+      firstName
+      lastname
+      phone_number
+      user_type
+      email
+      dateOfBirth
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      resume {
+        id
+        resume_key
+      }
+      jobs {
+        nextToken
+      }
+      apply {
+        nextToken
+      }
+    }
     name
     employees {
       items {
@@ -393,6 +536,28 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
         status
       }
       nextToken
+    }
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
@@ -425,22 +590,34 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -474,22 +651,34 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
       }
       applications {
         nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
       }
     }
   }
@@ -523,16 +712,21 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       jobs {
         nextToken
       }
-      shifts {
-        nextToken
-      }
       apply {
         nextToken
       }
     }
     jobID {
       id
-      employer_id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
       name
       employees {
         nextToken
@@ -540,21 +734,126 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       applications {
         nextToken
       }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
     }
   }
 }
 `;
-export const createUserShifts = `mutation CreateUserShifts($input: CreateUserShiftsInput!) {
-  createUserShifts(input: $input) {
+export const createDetails = `mutation CreateDetails($input: CreateDetailsInput!) {
+  createDetails(input: $input) {
     id
-    userID {
+    title
+    desc
+    misc
+    rate
+    location {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateDetails = `mutation UpdateDetails($input: UpdateDetailsInput!) {
+  updateDetails(input: $input) {
+    id
+    title
+    desc
+    misc
+    rate
+    location {
+      id
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteDetails = `mutation DeleteDetails($input: DeleteDetailsInput!) {
+  deleteDetails(input: $input) {
+    id
+    title
+    desc
+    misc
+    rate
+    location {
+      id
+      city
+      country
+      isoCountryCode
+      postalCode
+      region
+      street
+    }
+    category {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+    dates {
+      items {
+        id
+        date
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createJobDates = `mutation CreateJobDates($input: CreateJobDatesInput!) {
+  createJobDates(input: $input) {
+    id
+    date
+    details {
+      id
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -564,44 +863,26 @@ export const createUserShifts = `mutation CreateUserShifts($input: CreateUserShi
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
-        nextToken
-      }
-    }
-    shiftID {
-      id
-      title
-      desc
-      misc
-      rate
-      test {
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const updateUserShifts = `mutation UpdateUserShifts($input: UpdateUserShiftsInput!) {
-  updateUserShifts(input: $input) {
+export const updateJobDates = `mutation UpdateJobDates($input: UpdateJobDatesInput!) {
+  updateJobDates(input: $input) {
     id
-    userID {
+    date
+    details {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -611,44 +892,26 @@ export const updateUserShifts = `mutation UpdateUserShifts($input: UpdateUserShi
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
-        nextToken
-      }
-    }
-    shiftID {
-      id
-      title
-      desc
-      misc
-      rate
-      test {
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const deleteUserShifts = `mutation DeleteUserShifts($input: DeleteUserShiftsInput!) {
-  deleteUserShifts(input: $input) {
+export const deleteJobDates = `mutation DeleteJobDates($input: DeleteJobDatesInput!) {
+  deleteJobDates(input: $input) {
     id
-    userID {
+    date
+    details {
       id
-      firstName
-      lastname
-      phone_number
-      user_type
-      email
-      dateOfBirth
+      title
+      desc
+      misc
+      rate
       location {
         id
         city
@@ -658,77 +921,99 @@ export const deleteUserShifts = `mutation DeleteUserShifts($input: DeleteUserShi
         region
         street
       }
-      resume {
-        id
-        resume_key
-      }
-      jobs {
+      category {
         nextToken
       }
-      shifts {
-        nextToken
-      }
-      apply {
+      dates {
         nextToken
       }
     }
-    shiftID {
+  }
+}
+`;
+export const createCategory = `mutation CreateCategory($input: CreateCategoryInput!) {
+  createCategory(input: $input) {
+    id
+    name
+    details {
       id
       title
       desc
       misc
       rate
-      test {
+      location {
+        id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
+      }
+      category {
+        nextToken
+      }
+      dates {
         nextToken
       }
     }
   }
 }
 `;
-export const createShift = `mutation CreateShift($input: CreateShiftInput!) {
-  createShift(input: $input) {
+export const updateCategory = `mutation UpdateCategory($input: UpdateCategoryInput!) {
+  updateCategory(input: $input) {
     id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
+    name
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
         id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
       }
-      nextToken
+      category {
+        nextToken
+      }
+      dates {
+        nextToken
+      }
     }
   }
 }
 `;
-export const updateShift = `mutation UpdateShift($input: UpdateShiftInput!) {
-  updateShift(input: $input) {
+export const deleteCategory = `mutation DeleteCategory($input: DeleteCategoryInput!) {
+  deleteCategory(input: $input) {
     id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
+    name
+    details {
+      id
+      title
+      desc
+      misc
+      rate
+      location {
         id
+        city
+        country
+        isoCountryCode
+        postalCode
+        region
+        street
       }
-      nextToken
-    }
-  }
-}
-`;
-export const deleteShift = `mutation DeleteShift($input: DeleteShiftInput!) {
-  deleteShift(input: $input) {
-    id
-    title
-    desc
-    misc
-    rate
-    test {
-      items {
-        id
+      category {
+        nextToken
       }
-      nextToken
+      dates {
+        nextToken
+      }
     }
   }
 }

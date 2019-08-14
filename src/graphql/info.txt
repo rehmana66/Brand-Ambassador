@@ -79,33 +79,24 @@ User -> UserEvents -> Events: Many to many relationship
         }
 
 
-UserPostings: 
+type Details @model {
+  id: ID!
+  title: String
+  desc: String
+  misc: String
+  rate: String
+  location: Location @connection
+  category: [Category] @connection(name: "jobcategory")
+  dates: [JobDates] @connection(name: "jobdate")
+}
 
-        type User @model {
-            id: ID!
-            firstName: String
-            lastname: String
-            phone_number: AWSPhone
-            user_type: Boolean
-            email: AWSEmail
-            location: Location @connection
-            resume: Resume @connection
-            events: [UserEvents] @connection(name: "userEmployee")*-->
-            postings: [UserPosting] @connection
-        }
+type JobDates @model {
+  id: ID!
+  date: AWSDateTime
+  con: Details @connection(name: "jobdate")
+}
 
-        UserPosting @model {
-            UserPostingID: ID!
-            userID: User @connection
-            postingID: Posting @connection
-        }
-
-        Posting @model {
-            postingID: ID!
-            employer_id: [UserPosting] @connection
-            title: String
-            desc: String
-            misc: String
-            shift_max: Int
-            rate: Int
-        }
+type Category @model {
+  id: ID!
+  name: String
+  conn: Details @connection(name: "jobcategory")

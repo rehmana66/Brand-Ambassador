@@ -9,8 +9,8 @@ type User @model {
   location: Location @connection
   resume: Resume @connection
   jobs: [UserJobs] @connection(name: "userjobs")
-  shifts: [UserShifts] @connection(name: "usershifts")
   apply: [Application] @connection(name: "userApplications")
+  
 }
 
 type Location @model {
@@ -36,10 +36,11 @@ type UserJobs @model (queries: null){
 
 type Job @model {
   id: ID!
-  employer_id: String
+  employer: User @connection
   name: String
   employees: [UserJobs] @connection(name: "employees")
   applications: [Application] @connection(name: "jobApplications")
+  details: Details @connection
 }
 
 type Application @model {
@@ -49,17 +50,25 @@ type Application @model {
   jobID: Job @connection(name: "jobApplications")
 }
 
-type UserShifts @model (queries: null) {
-  id: ID!
-  userID: User @connection(name: "usershifts")
-  shiftID: Shift @connection(name: "shifts")
-}
-
-type Shift @model {
+type Details @model {
   id: ID!
   title: String
   desc: String
   misc: String
   rate: String
-  test: [UserShifts] @connection(name: "shifts")
+  location: Location @connection
+  category: [Category] @connection(name: "jobcategory")
+  dates: [JobDates] @connection(name: "jobdate")
+}
+
+type JobDates @model {
+  id: ID!
+  date: AWSDateTime
+  details: Details @connection(name: "jobdate")
+}
+
+type Category @model {
+  id: ID!
+  name: String
+  details: Details @connection(name: "jobcategory")
 }
