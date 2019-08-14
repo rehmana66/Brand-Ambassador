@@ -5,7 +5,7 @@ export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -49,7 +49,7 @@ export const listUsers = `query ListUsers(
     items {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -136,7 +136,7 @@ export const getJob = `query GetJob($id: ID!) {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -179,6 +179,7 @@ export const getJob = `query GetJob($id: ID!) {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -201,6 +202,7 @@ export const getJob = `query GetJob($id: ID!) {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -211,7 +213,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -227,6 +229,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -234,6 +237,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
       search {
         nextToken
       }
+      date
     }
     nextToken
   }
@@ -247,7 +251,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -263,6 +267,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -270,6 +275,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -292,6 +298,7 @@ export const listJobSearchs = `query ListJobSearchs(
       job {
         id
         name
+        date
       }
       category {
         id
@@ -339,7 +346,7 @@ export const getApplication = `query GetApplication($id: ID!) {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -369,7 +376,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -385,6 +392,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -392,6 +400,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -408,7 +417,7 @@ export const listApplications = `query ListApplications(
       userID {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -417,6 +426,7 @@ export const listApplications = `query ListApplications(
       jobID {
         id
         name
+        date
       }
     }
     nextToken
@@ -427,6 +437,7 @@ export const getDetails = `query GetDetails($id: ID!) {
   getDetails(id: $id) {
     id
     title
+    body
     desc
     misc
     rate
@@ -458,6 +469,7 @@ export const listDetailss = `query ListDetailss(
     items {
       id
       title
+      body
       desc
       misc
       rate
@@ -485,6 +497,7 @@ export const getJobDates = `query GetJobDates($id: ID!) {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -516,6 +529,7 @@ export const listJobDatess = `query ListJobDatess(
       details {
         id
         title
+        body
         desc
         misc
         rate

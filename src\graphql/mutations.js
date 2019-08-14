@@ -5,7 +5,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -44,7 +44,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -83,7 +83,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -181,7 +181,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -211,7 +211,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -227,6 +227,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -234,6 +235,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -245,7 +247,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -275,7 +277,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -291,6 +293,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -298,6 +301,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -309,7 +313,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -339,7 +343,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -355,6 +359,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -362,6 +367,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -373,7 +379,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -416,6 +422,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -438,6 +445,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -447,7 +455,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -490,6 +498,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -512,6 +521,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -521,7 +531,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -564,6 +574,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -586,6 +597,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -597,7 +609,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -613,6 +625,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -620,6 +633,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -639,7 +653,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -655,6 +669,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -662,6 +677,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -681,7 +697,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -697,6 +713,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -704,6 +721,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -761,7 +779,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -791,7 +809,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -807,6 +825,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -814,6 +833,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -825,7 +845,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -855,7 +875,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -871,6 +891,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -878,6 +899,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -889,7 +911,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -919,7 +941,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -935,6 +957,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -942,6 +965,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -950,6 +974,7 @@ export const createDetails = `mutation CreateDetails($input: CreateDetailsInput!
   createDetails(input: $input) {
     id
     title
+    body
     desc
     misc
     rate
@@ -976,6 +1001,7 @@ export const updateDetails = `mutation UpdateDetails($input: UpdateDetailsInput!
   updateDetails(input: $input) {
     id
     title
+    body
     desc
     misc
     rate
@@ -1002,6 +1028,7 @@ export const deleteDetails = `mutation DeleteDetails($input: DeleteDetailsInput!
   deleteDetails(input: $input) {
     id
     title
+    body
     desc
     misc
     rate
@@ -1031,6 +1058,7 @@ export const createJobDates = `mutation CreateJobDates($input: CreateJobDatesInp
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -1057,6 +1085,7 @@ export const updateJobDates = `mutation UpdateJobDates($input: UpdateJobDatesInp
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -1083,6 +1112,7 @@ export const deleteJobDates = `mutation DeleteJobDates($input: DeleteJobDatesInp
     details {
       id
       title
+      body
       desc
       misc
       rate

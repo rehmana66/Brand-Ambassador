@@ -3,14 +3,18 @@ import {
     View,
     StyleSheet,
     Button,
-    Text
+    Text,
+    Dimensions
 } from 'react-native';
+
+import Shift from "../components/Shift";
+
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
-
+const { height, width } = Dimensions.get('window')
 
 Amplify.configure({
     Auth: {
@@ -28,17 +32,6 @@ Amplify.configure({
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
 });
 
-/*
-lastname: String
-  phone_number: AWSPhone
-  email: AWSEmail
-  city: String
-  country: String
-  province: String
-  postalcode: String
-  gender: String
-*/
-
 
 class Home extends Component {
 
@@ -46,51 +39,15 @@ class Home extends Component {
         super(props);
         this.state = {
             log: {},
-            shifts: []
+            jobs: [],
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
+
     async componentDidMount() {
-        const todoDetails = {
-            name: 'Todo 1',
-            description: 'Learn AWS AppSync'
-        };
-        //const newTodo = await API.graphql(graphqlOperation(mutations.createTodo, {input: todoDetails}));
 
-        //const allTodos = await API.graphql(graphqlOperation(queries.listTodos));
-        //console.log(allTodos);
     }
 
-    async createShift() {
-        //5213lor8ffaqd9b2pifkj2m53n
-        //us-west-2:1c3aaff9-add7-44e8-b2ae-c6fde2bab990
-        const datetime = new Date();
-        console.log(datetime);
-        try {
-            const shiftDetails = {
-                firstname: 'John',
-                lastname: 'brain',
-                Title: 'Home Media',
-                rate: 14,
-                misc: 'Requires Certification',
-                date: datetime,
-            };
-            const newShift = await API.graphql(graphqlOperation(mutations.createShift, {input: shiftDetails}))
-            
-
-        } catch(err) {
-            console.log("error: ", err)
-        }
-    }
-
-     
-
-    async listShift() {
-        const allShifts = await API.graphql(graphqlOperation(queries.listShifts, {filter:{firstname: {eq:"roman"}}}));
-        console.log(allShifts);
-        //const oneTodo = await API.graphql(graphqlOperation(queries.getShift, { firstname: 'john' }));
-        //console.log(oneTodo);
-    }
 
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
@@ -106,13 +63,12 @@ class Home extends Component {
 
     render() {
         return (
-            <View style={{justifyContent: 'center', alignContent: 'center'}}>
+            <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                 <Button onPress={this.logout} title="Sign Out"/>
-                <Button onPress={this.createShift} title="Create Shift"/>
-                <Button onPress={this.listShift} title="List Shift"/>
-                <View>
-                    <Text>Hello</Text>
-                </View>
+                <Button title="List Jobs"/>
+                <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
+                    <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
+                 </View>
             </View>
 
         );

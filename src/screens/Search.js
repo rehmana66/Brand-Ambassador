@@ -13,8 +13,29 @@ import Tag from '../components/Tag';
 import Area from '../components/Area';
 import SearchInput from '../components/SearchInput';
 
+import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
 const { height, width } = Dimensions.get('window')
+
+Amplify.configure({
+    Auth: {
+        // REQUIRED - Amazon Cognito Identity Pool ID
+        identityPoolId: 'us-west-2:1c3aaff9-add7-44e8-b2ae-c6fde2bab990', 
+        // REQUIRED - Amazon Cognito Region
+        region: 'us-west-2', 
+        // OPTIONAL - Amazon Cognito User Pool ID
+        userPoolId: 'us-west-2_0554WrncK',
+        // OPTIONAL - Amazon Cognito Web Client ID
+        userPoolWebClientId: '2rlumscuro51u9d6m56srimcov', 
+    },
+    "aws_appsync_graphqlEndpoint": "https://xtwbkpbhera2fdndfrvu2w4hb4.appsync-api.us-west-2.amazonaws.com/graphql",
+    "aws_appsync_region": "us-west-2",
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+});
+
 
 class Search extends Component {
 
@@ -23,8 +44,18 @@ class Search extends Component {
         this.state = {
             SampleArray: [{id: 2, name: 'Bartender'}, {id: 1, name: 'Barissta'}, {id: 0, name: 'Construction'}],
             lastRefresh: Date(Date.now()).toString(),
+            jobs: []
         }
         this.refreshScreen = this.refreshScreen.bind(this)
+    }
+    async componentDidMount() {
+        try {
+            const allJobs = await API.graphql(graphqlOperation(queries.listJobs));
+            this.setState({ jobs:allJobs.data.listJobs.items });
+        } catch(err) {
+            console.log("error: ", err)
+        }
+        //console.log(this.state.jobs)
     }
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
@@ -57,15 +88,9 @@ class Search extends Component {
                         <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
                             <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                             <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
-                                <Shift width={width} imageURI={require("../../assets/home.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/experiences.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/restaurant.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/home.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/experiences.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/restaurant.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/home.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/experiences.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
-                                <Shift width={width} imageURI={require("../../assets/restaurant.jpg")} title="Bartender - SMAK" desc="Requires certification" price="14"></Shift>
+                                {this.state.jobs.map((jobs, i) => (
+                                <Shift key={i} jobinfo={jobs} width={width} imageURI={require("../../assets/home.jpg")}></Shift>
+                                ))}
                             </View>
                         </View>
                     </ScrollView>

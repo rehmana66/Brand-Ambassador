@@ -1,7 +1,7 @@
 type User @model {
   id: ID!
   firstName: String
-  lastname: String
+  lastName: String
   phone_number: AWSPhone
   user_type: Boolean
   email: AWSEmail
@@ -43,6 +43,7 @@ type Job @model {
   applications: [Application] @connection(name: "jobApplications")
   details: Details @connection
   search: [JobSearch] @connection(name: "jobsearch")
+  date: AWSDateTime
 }
 
 type JobSearch @model {
@@ -57,7 +58,6 @@ type Category @model {
   search: [JobSearch] @connection(name: "jobcategory")
 }
 
-
 type Application @model {
   id: ID!
   status: Boolean
@@ -68,6 +68,7 @@ type Application @model {
 type Details @model {
   id: ID!
   title: String
+  body: String
   desc: String
   misc: String
   rate: String

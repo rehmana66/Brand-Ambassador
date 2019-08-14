@@ -5,7 +5,7 @@ export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -44,7 +44,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
   onUpdateUser {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -83,7 +83,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
   onDeleteUser {
     id
     firstName
-    lastname
+    lastName
     phone_number
     user_type
     email
@@ -181,7 +181,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -211,7 +211,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -227,6 +227,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -234,6 +235,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -245,7 +247,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -275,7 +277,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -291,6 +293,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -298,6 +301,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -309,7 +313,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -339,7 +343,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -355,6 +359,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -362,6 +367,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       search {
         nextToken
       }
+      date
     }
     verify
   }
@@ -373,7 +379,7 @@ export const onCreateJob = `subscription OnCreateJob {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -416,6 +422,7 @@ export const onCreateJob = `subscription OnCreateJob {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -438,6 +445,7 @@ export const onCreateJob = `subscription OnCreateJob {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -447,7 +455,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -490,6 +498,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -512,6 +521,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -521,7 +531,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
     employer {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -564,6 +574,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -586,6 +597,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
       }
       nextToken
     }
+    date
   }
 }
 `;
@@ -597,7 +609,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -613,6 +625,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -620,6 +633,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -639,7 +653,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -655,6 +669,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -662,6 +677,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -681,7 +697,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -697,6 +713,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -704,6 +721,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
       search {
         nextToken
       }
+      date
     }
     category {
       id
@@ -761,7 +779,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -791,7 +809,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -807,6 +825,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -814,6 +833,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -825,7 +845,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -855,7 +875,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -871,6 +891,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -878,6 +899,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -889,7 +911,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
     userID {
       id
       firstName
-      lastname
+      lastName
       phone_number
       user_type
       email
@@ -919,7 +941,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       employer {
         id
         firstName
-        lastname
+        lastName
         phone_number
         user_type
         email
@@ -935,6 +957,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       details {
         id
         title
+        body
         desc
         misc
         rate
@@ -942,6 +965,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       search {
         nextToken
       }
+      date
     }
   }
 }
@@ -950,6 +974,7 @@ export const onCreateDetails = `subscription OnCreateDetails {
   onCreateDetails {
     id
     title
+    body
     desc
     misc
     rate
@@ -976,6 +1001,7 @@ export const onUpdateDetails = `subscription OnUpdateDetails {
   onUpdateDetails {
     id
     title
+    body
     desc
     misc
     rate
@@ -1002,6 +1028,7 @@ export const onDeleteDetails = `subscription OnDeleteDetails {
   onDeleteDetails {
     id
     title
+    body
     desc
     misc
     rate
@@ -1031,6 +1058,7 @@ export const onCreateJobDates = `subscription OnCreateJobDates {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -1057,6 +1085,7 @@ export const onUpdateJobDates = `subscription OnUpdateJobDates {
     details {
       id
       title
+      body
       desc
       misc
       rate
@@ -1083,6 +1112,7 @@ export const onDeleteJobDates = `subscription OnDeleteJobDates {
     details {
       id
       title
+      body
       desc
       misc
       rate
