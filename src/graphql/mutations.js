@@ -26,6 +26,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -64,6 +65,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -102,6 +104,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -228,7 +231,11 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -288,7 +295,11 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -348,7 +359,11 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -387,6 +402,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -412,12 +428,15 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -457,6 +476,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -482,12 +502,15 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -527,6 +550,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -552,12 +576,180 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearchInput!) {
+  createJobSearch(input: $input) {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearchInput!) {
+  updateJobSearch(input: $input) {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearchInput!) {
+  deleteJobSearch(input: $input) {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const createCategory = `mutation CreateCategory($input: CreateCategoryInput!) {
+  createCategory(input: $input) {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateCategory = `mutation UpdateCategory($input: UpdateCategoryInput!) {
+  updateCategory(input: $input) {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteCategory = `mutation DeleteCategory($input: DeleteCategoryInput!) {
+  deleteCategory(input: $input) {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -618,6 +810,9 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         desc
         misc
         rate
+      }
+      search {
+        nextToken
       }
     }
   }
@@ -680,6 +875,9 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
   }
 }
@@ -741,6 +939,9 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
   }
 }
@@ -760,13 +961,6 @@ export const createDetails = `mutation CreateDetails($input: CreateDetailsInput!
       postalCode
       region
       street
-    }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
     }
     dates {
       items {
@@ -794,13 +988,6 @@ export const updateDetails = `mutation UpdateDetails($input: UpdateDetailsInput!
       region
       street
     }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
     dates {
       items {
         id
@@ -826,13 +1013,6 @@ export const deleteDetails = `mutation DeleteDetails($input: DeleteDetailsInput!
       postalCode
       region
       street
-    }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
     }
     dates {
       items {
@@ -863,9 +1043,6 @@ export const createJobDates = `mutation CreateJobDates($input: CreateJobDatesInp
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -892,9 +1069,6 @@ export const updateJobDates = `mutation UpdateJobDates($input: UpdateJobDatesInp
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -920,96 +1094,6 @@ export const deleteJobDates = `mutation DeleteJobDates($input: DeleteJobDatesInp
         postalCode
         region
         street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const createCategory = `mutation CreateCategory($input: CreateCategoryInput!) {
-  createCategory(input: $input) {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const updateCategory = `mutation UpdateCategory($input: UpdateCategoryInput!) {
-  updateCategory(input: $input) {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const deleteCategory = `mutation DeleteCategory($input: DeleteCategoryInput!) {
-  deleteCategory(input: $input) {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
       }
       dates {
         nextToken

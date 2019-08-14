@@ -1,31 +1,63 @@
 5213lor8ffaqd9b2pifkj2m53n
 
 Rehmana6@mymacewan.ca
-
-mutation createApplication{
-  createApplication(input: {
-    applicationJobIDId: "781ba6fb-8efc-4ee3-a0cd-46217eec1a03"
-    applicationUserIDId: "71b085df-8fcc-40d9-8f53-bb0731921165"
-    status: false
+mutation createJobSearch{
+  createJobSearch(input: {
+    jobSearchJobId: "6a82bcfb-f30c-487a-a4d8-383be7543c0a"
+    jobSearchCategoryId: "b75fdf23-e9bd-4ea5-8a7a-bed39e849158"
   }) {
-    id 
-    jobID{id employer_id}
-    userID{id firstName lastname}
+    id
   }
 }
 
-mutation addJob{
-  createJob(input: {
-    name: "Tech"
-    employer_id: "82c1dafd-33fb-4e1c-9245-378baaf9fcac"
+query listCategory{
+  listCategorys{items{id name}}
+}
+
+mutation createCategory{
+  createCategory(input: {
+    name: "Bartender"
   }) {
-    id name employer_id
+    id name
+  }
+}
+
+mutation updateJob{
+  updateJob(input: {
+    id: "8417e765-6a5d-4aa7-ab09-0e29a125beb8"
+    jobDetailsId: "0c963751-4c63-4927-a2a9-53edc0528584"
+  }) {
+    id
+  }
+}
+
+mutation createDetails{
+  createDetails(input: {
+    title: "Random"
+    desc: "Random"
+    misc: "Random"
+    rate: "$14-16"
+    detailsLocationId: "256b4d64-fb2b-46c0-9fe0-0978b111c56f"
+  }) {
+    id
+  }
+}
+
+mutation createJob{
+  createJob(input: {
+    name: "Home Media"
+    jobEmployerId: "9944e09c-f466-4c66-942c-4296f0d0106d"
+  }) {
+    id name 
+    employer{firstName lastname}
   }
 }
 
 query listJobs{
   listJobs{items{
-    id employer_id
+    id
+    name
+    employer{id firstName lastname}
     employees{items{
       id 
       jobID{
@@ -37,7 +69,19 @@ query listJobs{
       userID{firstName lastname}
     }}
     applications{items{
+      id status
       userID{firstName lastname}
+    }}
+    details{
+      id title desc misc rate
+    	location{
+        id isoCountryCode city country
+        postalCode region street
+    	}
+      dates{items{date}}
+    }
+    search{items{
+      category{id name}
     }}
   }}
 }
@@ -52,12 +96,21 @@ query listUsers{
       postalCode region street
     }
     jobs{items{
-      id jobID{id employer_id}
-      userID{firstName lastname}
+      id 
+      jobID{
+        id 
+        employer{id firstName lastname}
+      }
+      userID{
+        firstName lastname
+      }
     }}
     apply{items{
       id status 
-      jobID{id employer_id}
+      jobID{
+        id 
+        employer{id firstName lastname}
+      }
     }}
   }}
 }

@@ -32,6 +32,7 @@ type UserJobs @model (queries: null){
   id: ID!
   userID: User @connection(name: "userjobs")
   jobID: Job @connection(name: "employees")
+  verify: Boolean
 }
 
 type Job @model {
@@ -41,7 +42,21 @@ type Job @model {
   employees: [UserJobs] @connection(name: "employees")
   applications: [Application] @connection(name: "jobApplications")
   details: Details @connection
+  search: [JobSearch] @connection(name: "jobsearch")
 }
+
+type JobSearch @model {
+  id: ID!
+  job: Job @connection(name: "jobsearch")
+  category: Category @connection(name: "jobcategory")
+}
+
+type Category @model {
+  id: ID!
+  name: String
+  search: [JobSearch] @connection(name: "jobcategory")
+}
+
 
 type Application @model {
   id: ID!
@@ -57,7 +72,6 @@ type Details @model {
   misc: String
   rate: String
   location: Location @connection
-  category: [Category] @connection(name: "jobcategory")
   dates: [JobDates] @connection(name: "jobdate")
 }
 
@@ -65,10 +79,4 @@ type JobDates @model {
   id: ID!
   date: AWSDateTime
   details: Details @connection(name: "jobdate")
-}
-
-type Category @model {
-  id: ID!
-  name: String
-  details: Details @connection(name: "jobcategory")
 }

@@ -26,6 +26,7 @@ export const onCreateUser = `subscription OnCreateUser {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -64,6 +65,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -102,6 +104,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -228,7 +231,11 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -288,7 +295,11 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -348,7 +359,11 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
+    verify
   }
 }
 `;
@@ -387,6 +402,7 @@ export const onCreateJob = `subscription OnCreateJob {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -412,12 +428,15 @@ export const onCreateJob = `subscription OnCreateJob {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -457,6 +476,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -482,12 +502,15 @@ export const onUpdateJob = `subscription OnUpdateJob {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -527,6 +550,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -552,12 +576,180 @@ export const onDeleteJob = `subscription OnDeleteJob {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateJobSearch = `subscription OnCreateJobSearch {
+  onCreateJobSearch {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
+  onUpdateJobSearch {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
+  onDeleteJobSearch {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const onCreateCategory = `subscription OnCreateCategory {
+  onCreateCategory {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateCategory = `subscription OnUpdateCategory {
+  onUpdateCategory {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteCategory = `subscription OnDeleteCategory {
+  onDeleteCategory {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -618,6 +810,9 @@ export const onCreateApplication = `subscription OnCreateApplication {
         desc
         misc
         rate
+      }
+      search {
+        nextToken
       }
     }
   }
@@ -680,6 +875,9 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
   }
 }
@@ -741,6 +939,9 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
   }
 }
@@ -760,13 +961,6 @@ export const onCreateDetails = `subscription OnCreateDetails {
       postalCode
       region
       street
-    }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
     }
     dates {
       items {
@@ -794,13 +988,6 @@ export const onUpdateDetails = `subscription OnUpdateDetails {
       region
       street
     }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
     dates {
       items {
         id
@@ -826,13 +1013,6 @@ export const onDeleteDetails = `subscription OnDeleteDetails {
       postalCode
       region
       street
-    }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
     }
     dates {
       items {
@@ -863,9 +1043,6 @@ export const onCreateJobDates = `subscription OnCreateJobDates {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -892,9 +1069,6 @@ export const onUpdateJobDates = `subscription OnUpdateJobDates {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -920,96 +1094,6 @@ export const onDeleteJobDates = `subscription OnDeleteJobDates {
         postalCode
         region
         street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const onCreateCategory = `subscription OnCreateCategory {
-  onCreateCategory {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const onUpdateCategory = `subscription OnUpdateCategory {
-  onUpdateCategory {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const onDeleteCategory = `subscription OnDeleteCategory {
-  onDeleteCategory {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
       }
       dates {
         nextToken

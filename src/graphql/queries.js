@@ -26,6 +26,7 @@ export const getUser = `query GetUser($id: ID!) {
     jobs {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -164,6 +165,7 @@ export const getJob = `query GetJob($id: ID!) {
     employees {
       items {
         id
+        verify
       }
       nextToken
     }
@@ -189,12 +191,15 @@ export const getJob = `query GetJob($id: ID!) {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
+    }
+    search {
+      items {
+        id
+      }
+      nextToken
     }
   }
 }
@@ -225,6 +230,102 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
         desc
         misc
         rate
+      }
+      search {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getJobSearch = `query GetJobSearch($id: ID!) {
+  getJobSearch(id: $id) {
+    id
+    job {
+      id
+      employer {
+        id
+        firstName
+        lastname
+        phone_number
+        user_type
+        email
+        dateOfBirth
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+    }
+    category {
+      id
+      name
+      search {
+        nextToken
+      }
+    }
+  }
+}
+`;
+export const listJobSearchs = `query ListJobSearchs(
+  $filter: ModelJobSearchFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listJobSearchs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      job {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getCategory = `query GetCategory($id: ID!) {
+  getCategory(id: $id) {
+    id
+    name
+    search {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listCategorys = `query ListCategorys(
+  $filter: ModelCategoryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCategorys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      search {
+        nextToken
       }
     }
     nextToken
@@ -288,6 +389,9 @@ export const getApplication = `query GetApplication($id: ID!) {
         misc
         rate
       }
+      search {
+        nextToken
+      }
     }
   }
 }
@@ -335,13 +439,6 @@ export const getDetails = `query GetDetails($id: ID!) {
       region
       street
     }
-    category {
-      items {
-        id
-        name
-      }
-      nextToken
-    }
     dates {
       items {
         id
@@ -373,9 +470,6 @@ export const listDetailss = `query ListDetailss(
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -403,9 +497,6 @@ export const getJobDates = `query GetJobDates($id: ID!) {
         region
         street
       }
-      category {
-        nextToken
-      }
       dates {
         nextToken
       }
@@ -422,56 +513,6 @@ export const listJobDatess = `query ListJobDatess(
     items {
       id
       date
-      details {
-        id
-        title
-        desc
-        misc
-        rate
-      }
-    }
-    nextToken
-  }
-}
-`;
-export const getCategory = `query GetCategory($id: ID!) {
-  getCategory(id: $id) {
-    id
-    name
-    details {
-      id
-      title
-      desc
-      misc
-      rate
-      location {
-        id
-        city
-        country
-        isoCountryCode
-        postalCode
-        region
-        street
-      }
-      category {
-        nextToken
-      }
-      dates {
-        nextToken
-      }
-    }
-  }
-}
-`;
-export const listCategorys = `query ListCategorys(
-  $filter: ModelCategoryFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listCategorys(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
       details {
         id
         title
