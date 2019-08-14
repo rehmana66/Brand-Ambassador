@@ -41,6 +41,7 @@ const initialState = {
     postalcode: '',
     gender: '',
     DoB: '',
+    userType: false,
     showConfirmationForm: false
   }
 
@@ -125,6 +126,11 @@ class SignUp extends Component {
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(findNodeHandle(this.refs[refName]),100,true);
         }, 50);
     }
+
+    updateUser = (userType) => {
+        this.setState({ userType: userType })
+     }
+
     render () {
         return (
         // Main Container
@@ -277,8 +283,13 @@ class SignUp extends Component {
                             onFocus={() => this.inputFocused('SignUpButton')}
                             onSubmitEditing={() => this.inputFocused('SignUpButton') }
                             onChangeText = { (value) => this.setState({ postalcode: value }) }/>
-
-
+                        <Text style = {styles.textStyle}>User Type</Text>
+                        <View>
+                            <Picker selectedValue = {this.state.userType} onValueChange = {(value) => this.setState({ userType: value })}>
+                                <Picker.Item label = "User" value = {false} />
+                                <Picker.Item label = "Employer" value = {true} />
+                            </Picker>
+                        </View>
                         <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
                             <TouchableOpacity onPress = {this.signUp}>
                                 <View style = {styles.signUpButton}>
