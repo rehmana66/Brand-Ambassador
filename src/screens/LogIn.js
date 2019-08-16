@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-navigation';
 import  Reinput  from 'reinput';
 import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import PropTypes from 'prop-types'
 //import Amplify from 'aws-amplify';
 import Amplify, { Auth } from 'aws-amplify';
 
@@ -212,6 +212,11 @@ class LogIn extends Component {
                         <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
                             <View style = {styles.signUpButton}>
                                 <Text style = {styles.signUpButtonText}>Dashboard</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('NewSignUp')}>
+                            <View style = {styles.signUpButton}>
+                                <Text style = {styles.signUpButtonText}>new SignUp</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

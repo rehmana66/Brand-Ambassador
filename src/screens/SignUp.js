@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { withNavigation } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 
-
+import Area from '../components/Area';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
 import * as queries from '../graphql/queries';
@@ -42,7 +42,8 @@ const initialState = {
     gender: '',
     DoB: '',
     userType: false,
-    showConfirmationForm: false
+    showConfirmationForm: false,
+    location: null
   }
 
 class SignUp extends Component {
@@ -127,9 +128,18 @@ class SignUp extends Component {
         }, 50);
     }
 
-    updateUser = (userType) => {
-        this.setState({ userType: userType })
-     }
+    async componentDidMount() {
+    }
+
+    updateState(data) {
+        this.setState({
+            location: data,
+            //country: this.state.location[0].country
+        });
+        //this.setState({country: location[0].country})
+        console.log(this.state.location[0].city)
+    }
+
 
     render () {
         return (
@@ -242,7 +252,12 @@ class SignUp extends Component {
                                     color: '#1094f7'
                                 }
                             }}/>
-                        <Text style = {styles.textStyle}>Location</Text>
+                        <View style={{flexDirection: 'row'}}>
+                        <Text style = {styles.textStyle }>Location</Text>
+                        <Area location={this.updateState.bind(this)} 
+                                style={{ fontSize: 15, fontWeight: '400', textAlign: 'right', marginHorizontal: 50}}></Area>
+                        </View>
+                        
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = {'Country'}
@@ -252,7 +267,9 @@ class SignUp extends Component {
                             label = "Country"
                             onFocus={() => this.inputFocused('City')}
                             onSubmitEditing={() => { this.refs['City'].focus() }}
-                            onChangeText = { (value) => this.setState({ country: value }) }/>
+                            onChangeText = { (value) => this.setState({ country: value }) }
+                            
+                            />
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = {'City'}

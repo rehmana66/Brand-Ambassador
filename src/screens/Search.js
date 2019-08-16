@@ -44,7 +44,8 @@ class Search extends Component {
         this.state = {
             SampleArray: [{id: 2, name: 'Bartender'}, {id: 1, name: 'Barissta'}, {id: 0, name: 'Construction'}],
             lastRefresh: Date(Date.now()).toString(),
-            jobs: []
+            jobs: [],
+            location: null
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
@@ -60,7 +61,9 @@ class Search extends Component {
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
     }
-
+    updateState(data) {
+        this.setState({location: data});
+    }
     render() {
         return (
             <SafeAreaView style = {{ flex: 1 }}>
@@ -74,7 +77,8 @@ class Search extends Component {
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
                             <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}> 1906 shifts found</Text>
-                            <Area style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
+                            <Area location={this.updateState.bind(this)} 
+                                style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
                         </View>
                     </View>
                     <ScrollView scrollEventThrottle={16} >

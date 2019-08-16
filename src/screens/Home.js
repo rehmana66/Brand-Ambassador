@@ -47,8 +47,6 @@ class Home extends Component {
     async componentDidMount() {
 
     }
-
-
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
     }
