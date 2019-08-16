@@ -46,6 +46,7 @@ class NewSignUp extends Component {
             userType: false,
 
             comfirmPasswordError: "",
+            passwordError: "",
             usernameError: "",
             emailError: "",
             phoneError: "",
@@ -100,16 +101,35 @@ class NewSignUp extends Component {
         } else {
             this.setState({errorColor: "", usernameError: ""});
         }
-        if(this.state.confirmPassword != this.state.password) {
+        if(this.state.password == "") {
             this.setState({
                 errorColor: "#fc1f4a",
-                error: "The password confirmation does not match"
+                passwordError: "The password field can not be empty"
+            });
+            count = 1;
+        } else {
+            this.setState({errorColor: "", passwordError: ""});
+        }
+        if(this.state.confirmPassword == "") {
+            this.setState({
+                errorColor: "#fc1f4a",
+                comfirmPasswordError: "The password field can not be empty"     
+            });
+            count = 1;
+        } else {
+            this.setState({errorColor: "", comfirmPasswordError: ""});
+        }
+        if(this.state.confirmPassword != this.state.password || 
+            this.state.password == "" || this.state.confirmPassword == "") {
+            this.setState({
+                errorColor: "#fc1f4a",
+                comfirmPasswordError: "The password confirmation does not match"
             });
             count = 1;
         } else {
             this.setState({
                 errorColor: "",
-                error: ""
+                comfirmPasswordError: ""
             });
         }
         if (count == 1) {
@@ -189,6 +209,8 @@ class NewSignUp extends Component {
                                 underlineColorAndroid = "transparent"
                                 returnKeyType = { "next" }
                                 label = "Password"
+                                errorColor = {this.state.errorColor}
+                                error = {this.state.passwordError}
                                 onFocus={() => this.inputFocused('Account')}
                                 onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
                                 onChangeText = { (value) => this.setState({ password: value }) }/>
@@ -225,20 +247,20 @@ class NewSignUp extends Component {
                        
                     </View>
                     <View style={styles.slide2}>
-                    <Reinput
-                                fontFamily = "raleway-light"
-                                ref = {'PhoneNumber'}
-                                autoCorrect = {false}
-                                underlineColorAndroid = "transparent"
-                                returnKeyType = { "next" }
-                                label = "PhoneNumber"
-                                errorColor = {this.state.errorColor}
-                                error = {this.state.phoneError}
-                                placeholder = "780-456-8744"
-                                keyboardType = {'phone-pad'}
-                                maxLength= {10}
-                                onFocus={() => this.inputFocused('PhoneNumber')}
-                                onChangeText = { (value) => this.setState({ phone_number: this.state.phoneid+value })}/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'PhoneNumber'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "PhoneNumber"
+                            errorColor = {this.state.errorColor}
+                            error = {this.state.phoneError}
+                            placeholder = "780-456-8744"
+                            keyboardType = {'phone-pad'}
+                            maxLength= {10}
+                            onFocus={() => this.inputFocused('PhoneNumber')}
+                            onChangeText = { (value) => this.setState({ phone_number: this.state.phoneid+value })}/>
                     </View>
                     <View style={styles.slide3}>
                         <Text style={styles.text}>And simple</Text>
