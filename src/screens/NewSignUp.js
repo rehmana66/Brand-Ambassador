@@ -84,55 +84,38 @@ class NewSignUp extends Component {
     errorCheckScreen3() {
         count = 0;
         if(this.state.email == "") {
-            this.setState({
-                errorColor: "#fc1f4a",
-                emailError: "The email field can not be empty"
-            });
+            this.setState({emailError: "The email field can not be empty"});
             count = 1;
         } else {
             this.setState({errorColor: "", emailError: ""});
         }
         if(this.state.username == "") {
-            this.setState({
-                errorColor: "#fc1f4a",
-                usernameError: "The username field can not be empty"
-            });
+            this.setState({usernameError: "The username field can not be empty"});
             count = 1;
         } else {
             this.setState({errorColor: "", usernameError: ""});
         }
         if(this.state.password == "") {
-            this.setState({
-                errorColor: "#fc1f4a",
-                passwordError: "The password field can not be empty"
-            });
+            this.setState({passwordError: "The password field can not be empty"});
             count = 1;
         } else {
             this.setState({errorColor: "", passwordError: ""});
         }
         if(this.state.confirmPassword == "") {
-            this.setState({
-                errorColor: "#fc1f4a",
-                comfirmPasswordError: "The password field can not be empty"     
-            });
+            this.setState({comfirmPasswordError: "The password field can not be empty"});
             count = 1;
         } else {
             this.setState({errorColor: "", comfirmPasswordError: ""});
         }
         if(this.state.confirmPassword != this.state.password || 
             this.state.password == "" || this.state.confirmPassword == "") {
-            this.setState({
-                errorColor: "#fc1f4a",
-                comfirmPasswordError: "The password confirmation does not match"
-            });
+            this.setState({comfirmPasswordError: "The password confirmation does not match"});
             count = 1;
         } else {
-            this.setState({
-                errorColor: "",
-                comfirmPasswordError: ""
-            });
+            this.setState({errorColor: "", comfirmPasswordError: ""});
         }
         if (count == 1) {
+            this.setState({errorColor: "#fc1f4a",});
             return false
         }
         return true
@@ -176,7 +159,7 @@ class NewSignUp extends Component {
             onPress ={ () => {Keyboard.dismiss()}}>
                 <Swiper style={styles.wrapper} showsButtons={false} loop={false} scrollEnabled={false} index={this.state.index}>
                     <View style={styles.mainScroll}>
-                        <KeyboardAwareScrollView sc ref = 'scrollView' keyboardShouldPersistTaps = {'always'}>
+                        <KeyboardAwareScrollView scrollEnabled={false} ref = 'scrollView' keyboardShouldPersistTaps = {'always'}>
                             <Text ref = {'Account'} style = {styles.textStyle}>Account Details</Text>
                             <Reinput
                                 fontFamily = "raleway-light"
