@@ -70,7 +70,7 @@ class NewSignUp extends Component {
     changeScreen() {
         index = this.state.index
         
-        if(index == 0) {
+        if(index == 2) {
             check = this.errorCheckScreen3()
             if(check == true) {
                 this.setState({index: index+1}) 
@@ -115,7 +115,7 @@ class NewSignUp extends Component {
             this.setState({errorColor: "", comfirmPasswordError: ""});
         }
         if (count == 1) {
-            this.setState({errorColor: "#fc1f4a",});
+            this.setState({errorColor: "#fc1f4a"});
             return false
         }
         return true
@@ -158,8 +158,28 @@ class NewSignUp extends Component {
             <SafeAreaView sc forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }}
             onPress ={ () => {Keyboard.dismiss()}}>
                 <Swiper style={styles.wrapper} showsButtons={false} loop={false} scrollEnabled={false} index={this.state.index}>
+                <View style={styles.slide1}>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'PhoneNumber'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "PhoneNumber"
+                            errorColor = {this.state.errorColor}
+                            error = {this.state.phoneError}
+                            placeholder = "780-456-8744"
+                            keyboardType = {'phone-pad'}
+                            maxLength= {10}
+                            onFocus={() => this.inputFocused('PhoneNumber')}
+                            onChangeText = { (value) => this.setState({ phone_number: this.state.phoneid+value })}/>
+                    </View>
+                    <View style={styles.slide2}>
+                        <Text style={styles.text}>And simple</Text>
+                    </View>
+
                     <View style={styles.mainScroll}>
-                        <KeyboardAwareScrollView scrollEnabled={false} ref = 'scrollView' keyboardShouldPersistTaps = {'always'}>
+                        <KeyboardAwareScrollView ref = 'scrollView' keyboardShouldPersistTaps = {'always'}>
                             <Text ref = {'Account'} style = {styles.textStyle}>Account Details</Text>
                             <Reinput
                                 fontFamily = "raleway-light"
@@ -228,25 +248,6 @@ class NewSignUp extends Component {
                             </TouchableOpacity>
                         </KeyboardAwareScrollView>
                        
-                    </View>
-                    <View style={styles.slide2}>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'PhoneNumber'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "PhoneNumber"
-                            errorColor = {this.state.errorColor}
-                            error = {this.state.phoneError}
-                            placeholder = "780-456-8744"
-                            keyboardType = {'phone-pad'}
-                            maxLength= {10}
-                            onFocus={() => this.inputFocused('PhoneNumber')}
-                            onChangeText = { (value) => this.setState({ phone_number: this.state.phoneid+value })}/>
-                    </View>
-                    <View style={styles.slide3}>
-                        <Text style={styles.text}>And simple</Text>
                     </View>
                 </Swiper>
              

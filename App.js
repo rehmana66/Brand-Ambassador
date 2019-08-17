@@ -22,34 +22,63 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 import { AppLoading } from 'expo';
+import { View } from 'react-native-animatable';
 
 
 class App extends Component {
-
   _isMounted = false;
   state = {
     fontsLoaded: false,
   };
 
+  /*
   async componentDidMount() {
     this._isMounted = true;
+    
     await Font.loadAsync({
       'raleway-light': require('./assets/fonts/Raleway-Light.ttf'),
       'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
+    }).then(result => {
+      if (this._isMounted) {
+        this.setState({ fontsLoaded: true });
+        console.log("done");
+
+      }
     });
-    this.setState({ fontsLoaded: true });
+  }*/
+
+  async LoadFonts() {
+    this._isMounted = true;
+    const fonts = await Font.loadAsync({
+      'raleway-light': require('./assets/fonts/Raleway-Light.ttf'),
+      'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
+    })
+    console.log("done");
   }
+
+  
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   render() {
     if (!this.state.fontsLoaded) {
-      return <AppLoading />
-    }
-    return <AppContainer />;
+      return (
+        <AppLoading
+          startAsync={this.LoadFonts}
+          onFinish={() => this.setState({ fontsLoaded: true })}
+          onError={console.warn}
+        />
+      ); }
+    return(
+      <View style={{ flex: 1 }}>
+        <AppContainer></AppContainer>
+      </View>
+    );
   }
 }
+
+
 export default App;
 
 const SignedOut = createStackNavigator(
@@ -88,6 +117,7 @@ const SignedOut = createStackNavigator(
     defaultNavigationOptions: {
       //headerLeft: null,
       gesturesEnabled: false,
+      
       headerStyle: {
         backgroundColor: '#3f51b5',
       },
