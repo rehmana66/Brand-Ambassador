@@ -1,9 +1,43 @@
 import React, { Component } from 'react';
 import { View, Image,Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Divider from 'react-native-divider';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 class Account extends Component {
+
+    state = {
+        image: null,
+    }
+    pickImage = async () => {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+              alert('Sorry, we need camera roll permissions to make this work!');
+            }
+            else {
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [4, 3],
+                });
+                console.log(result);
+
+                if (!result.cancelled) {
+                this.setState({ image: result.uri });
+                };
+            };
+        };
+    };
+
+    componentDidMount() {
+        this.setState({image: 'https://facebook.github.io/react-native/docs/assets/favicon.png'})
+    };
+    
     render() {
+        let { image } = this.state;
+
         return (
             <View style={styles.container}>
                 <View style = {styles.upperContainer}>
@@ -12,9 +46,9 @@ class Account extends Component {
                         <Text>10</Text>
                     </View>
                     <View style = {styles.upperContainerRow}>
-                        <TouchableOpacity style = {styles.imageContainer}>
-                            <Image style = {styles.imgStyle}
-                                source={require('../../assets/bartty.jpg')}/>
+                        <TouchableOpacity style = {styles.imageContainer} onPress = {this.pickImage}>
+                            {image &&
+                            <Image source = {{ uri: image }} style = {styles.imgStyle}/>}
                         </TouchableOpacity>
                     </View>
                     <View style = {styles.upperContainerRow}>
@@ -23,7 +57,7 @@ class Account extends Component {
                     </View>
                 </View>
                 <Divider borderColor = '#3f51b5' color = 'black' orientation = 'center'>Deangelo Vickers</Divider>
-                <View style = {styles.publicInfoContainer}> 
+                <View style = {styles.publicInfoContainer}>  
                     <Text> I don't care what your favorite flavor is. Here's a bowl of ice cream, you either like it or you don't. 
                         That's my attitude right now in this room, that's my attitude on Ice Cream Thursdays. Alright? Clear? Any questions?
                     </Text>
