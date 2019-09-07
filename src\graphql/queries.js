@@ -10,6 +10,7 @@ export const getUser = `query GetUser($id: ID!) {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -54,6 +55,7 @@ export const listUsers = `query ListUsers(
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -141,6 +143,7 @@ export const getJob = `query GetJob($id: ID!) {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -218,6 +221,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -256,6 +260,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -351,6 +356,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -381,6 +387,7 @@ export const getApplication = `query GetApplication($id: ID!) {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -422,6 +429,7 @@ export const listApplications = `query ListApplications(
         user_type
         email
         dateOfBirth
+        gender
       }
       jobID {
         id

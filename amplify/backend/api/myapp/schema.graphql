@@ -6,11 +6,11 @@ type User @model {
   user_type: Boolean
   email: AWSEmail
   dateOfBirth: AWSDate
+  gender: String
   location: Location @connection
   resume: Resume @connection
   jobs: [UserJobs] @connection(name: "userjobs")
   apply: [Application] @connection(name: "userApplications")
-  
 }
 
 type Location @model {

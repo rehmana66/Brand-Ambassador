@@ -10,6 +10,7 @@ export const onCreateUser = `subscription OnCreateUser {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -49,6 +50,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -88,6 +90,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -186,6 +189,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -216,6 +220,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -252,6 +257,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -282,6 +288,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -318,6 +325,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -348,6 +356,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -384,6 +393,7 @@ export const onCreateJob = `subscription OnCreateJob {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -460,6 +470,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -536,6 +547,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -614,6 +626,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -658,6 +671,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -702,6 +716,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -784,6 +799,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -814,6 +830,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -850,6 +867,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -880,6 +898,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -916,6 +935,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -946,6 +966,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {

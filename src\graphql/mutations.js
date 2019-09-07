@@ -10,6 +10,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -49,6 +50,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -88,6 +90,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     user_type
     email
     dateOfBirth
+    gender
     location {
       id
       city
@@ -186,6 +189,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -216,6 +220,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -252,6 +257,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -282,6 +288,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -318,6 +325,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -348,6 +356,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -384,6 +393,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -460,6 +470,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -536,6 +547,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -614,6 +626,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -658,6 +671,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -702,6 +716,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -784,6 +799,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -814,6 +830,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -850,6 +867,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -880,6 +898,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {
@@ -916,6 +935,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       user_type
       email
       dateOfBirth
+      gender
       location {
         id
         city
@@ -946,6 +966,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         user_type
         email
         dateOfBirth
+        gender
       }
       name
       employees {

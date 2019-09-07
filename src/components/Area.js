@@ -6,7 +6,8 @@ import {
     Platform,
     Linking,
     AppState,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
@@ -35,6 +36,8 @@ class Area extends Component {
         nextAppState === 'active'
       ) {
         console.log('App has come to the foreground!');
+        //TODO: make it so that the modal only pops up if button is clicked and updates data
+        // when app has come to foreground.
         this._getLocationAsync();
       }
       this.setState({ appState: nextAppState });
@@ -103,8 +106,9 @@ class Area extends Component {
           <Modal 
             onModalHide={this.state.openSetting?this.openSetting:undefined}
               isVisible={this.state.isLocationModalVisible} 
-              onBackdropPress = {() => this.setState({ isLocationModalVisible: false })}>
-            <View style={{height: 300, width: 300, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}> 
+              onBackdropPress = {() => this.setState({ isLocationModalVisible: false })}
+              style = {{alignSelf: 'center'}}>
+            <View style={{height: 200, width: 300, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}> 
               <Button title="Enable Location Services" 
               onPress={() => this.setState({isLocationModalVisible: false, openSetting: true})}></Button>
             </View>
