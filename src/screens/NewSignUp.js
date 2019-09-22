@@ -127,9 +127,7 @@ class NewSignUp extends Component {
     }
     moveScreen() {
         index = this.state.index
-        this.setState({index: index+1}) 
-            
-        
+        this.setState({index: index+1})
     }
 
     errorCheckScreen3() {
