@@ -74,6 +74,7 @@ class Search extends Component {
                             <Tag name='Dates'></Tag>
                             <Tag name='Filters'></Tag>
                             <Tag name='Shifts'></Tag>
+                            <Tag name='Shifts'></Tag>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
                             <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}> 1906 shifts found</Text>
