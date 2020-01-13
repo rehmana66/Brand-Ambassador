@@ -19,13 +19,13 @@ const { height, width } = Dimensions.get('window')
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: 'us-west-2:1c3aaff9-add7-44e8-b2ae-c6fde2bab990', 
+        identityPoolId: 'us-west-2:316afdde-f978-4983-810e-879215b80363', 
         // REQUIRED - Amazon Cognito Region
         region: 'us-west-2', 
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'us-west-2_0554WrncK',
+        userPoolId: 'us-west-2_CBWDFQaUL',
         // OPTIONAL - Amazon Cognito Web Client ID
-        userPoolWebClientId: '2rlumscuro51u9d6m56srimcov', 
+        userPoolWebClientId: '2mamhmvgilo83g0o6eqfkd7a2k', 
     },
     "aws_appsync_graphqlEndpoint": "https://xtwbkpbhera2fdndfrvu2w4hb4.appsync-api.us-west-2.amazonaws.com/graphql",
     "aws_appsync_region": "us-west-2",

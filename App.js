@@ -12,7 +12,6 @@ import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
 import EditAccount from './src/screens/EditAccount';
 import Initializing from './src/screens/Initializing';
-import NewSignUp from './src/screens/NewSignUp';
 import PropTypes from 'prop-types'
 
 import {
@@ -103,13 +102,7 @@ const SignedOut = createStackNavigator(
       gesturesEnabled: true,
     }
   },
-  NewSignUp: {
-    screen: NewSignUp,
-    navigationOptions: {
-      title: "Sign Up",
-      gesturesEnabled: true,
-    }
-  },
+  
 },
   {
     initialRouteName: 'Initializing',

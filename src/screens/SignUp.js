@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withNavigation } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 import Area from '../components/Area';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
@@ -16,59 +17,99 @@ import * as subscriptions from '../graphql/subscriptions';
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: 'us-west-2:a88e9101-8d00-45f7-a879-e47167f25a36', 
+        identityPoolId: 'us-west-2:316afdde-f978-4983-810e-879215b80363', 
         // REQUIRED - Amazon Cognito Region
         region: 'us-west-2', 
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'us-west-2_ybDxoo4oL',
+        userPoolId: 'us-west-2_CBWDFQaUL',
         // OPTIONAL - Amazon Cognito Web Client ID
-        userPoolWebClientId: '5213lor8ffaqd9b2pifkj2m53n', 
+        userPoolWebClientId: '2mamhmvgilo83g0o6eqfkd7a2k', 
     }
 });
 
 const initialState = {
-    username: '', 
-    password: '', 
-    confirmPassword: '',
-    email: '', 
-    phone_number: '', 
-    authenticationCode: '', 
-    firstname: "",
-    lastname: '',
-    country: "",
-    city: '',
-    province: '',
-    postalcode: '',
-    gender: '',
-    DoB: '',
+    username: "", 
+    password: "", 
+    email: "", 
+    phone_number: "+1", 
+    authenticationCode: "", 
+    name: "",
+    birthdate: "",
     userType: false,
     showConfirmationForm: false,
-    location: null
+
+    username_error: "",
+    name_error: "",
+    phone_error: "",
+    password_error: ""
   }
+
+
 
 class SignUp extends Component {
     
-    state = initialState
-
+    //state = initialState
+    constructor(props){
+        super(props);
+        this.state = {
+            username: "", 
+            password: "", 
+            email: "", 
+            phone_number: "+1", 
+            authenticationCode: "", 
+            name: "",
+            birthdate: "",
+            userType: false,
+            showConfirmationForm: false,
+        
+            username_error: "",
+            name_error: "",
+            phone_error: "",
+            password_error: ""
+        }
+      }
+    
     signUp = async () => {
-        const { username, password, email, phone_number, firstname, lastname, country, city,
-            province, postalcode, gender, birthday
+
+        const { username, password, email, phone_number, name
         } = this.state
         try {
             const success = await Auth.signUp({ username, password,
-                attributes: { email, phone_number,
-                    'custom:firstname': firstname,
-                    'custom:lastname': lastname,
-                    'custom:country': country,
-                    'custom:city': city,
-                    'custom:state': province,
-                    'custom:postalcode': postalcode,}})
+                attributes: { email, phone_number, name}})
             console.log('user successfully signed up!: ', success)
             this.setState({ showConfirmationForm: true })
         } catch (err) {
             console.log('error signing up: ', err)
+            this.errorcheck(err)
+        }
+        
+    }
+
+    checkEmpty() {
+        count = 0;
+        if (this.state.email == "") {
+            this.setState({username_error: "Email address cannot be empty"});
+            count = 1;
+        }
+        if (this.state.password == "") {
+            this.setState({password_error: "Password cannot be empty"});
+            count = 1;
+        }
+        if (this.state.name == "") {
+            this.setState({name_error: "Name cannot be empty"});
+            count = 1;
+        }
+        if (this.state.phone_number == "") {
+            this.setState({phone_error: "Phone Number cannot be empty"});
+            count = 1;
+        }
+        if (count == 1) {
+            return 1;
+        } else {
+            return 0;
         }
     }
+
     confirmSignUp = async () => {
         const { username, authenticationCode } = this.state
         try {
@@ -100,24 +141,36 @@ class SignUp extends Component {
         const { username, password } = this.state
         try {
             const user = await Auth.signIn(username, password);
-           this.setState({user})
-           console.log(this.state.user.attributes);
-           this.props.navigation.navigate('Dashboard')
+            this.setState({user})
+            console.log(this.state.user.attributes);
+            this.props.navigation.navigate('Dashboard')
         } catch (err) {
             this.errorcheck(err)
             console.log('error:', err)
         }
     };
 
-    errorcheck(code) {
-        if(code == "UserNotConfirmedException") {
+    errorcheck(error) {
+        if(error == "UserNotConfirmedException") {
             this.setState({ showConfirmationForm: true })
-        } else if (code == undefined) {
+        } else if (error == undefined) {
             alert("Please enter a user")
-        } else if (code == "UserNotFoundException") {
+        } else if (error == "UserNotFoundException") {
             alert("Incorrect username or password")
         } else {
             console.log("not working")
+        }
+        if (error == "Username cannot be empty") {
+            this.setState({username_error: "Email address cannot be empty"});
+        }
+        if (error == "Password cannot be empty") {
+            this.setState({password_error: "Password cannot be empty"});
+        }
+        if (error.message == "1 validation error detected: Value at 'password' failed to satisfy constraint: Member must have length greater than or equal to 6") {
+            this.setState({password_error: "Password must be greater than 6 characters"});
+        }
+        if (error.message == "Invalid email address format.") {
+            this.setState({username_error: "Invalid email address"});
         }
     }
 
@@ -131,16 +184,7 @@ class SignUp extends Component {
     async componentDidMount() {
     }
 
-    updateState(data) {
-        this.setState({
-            location: data,
-            //country: this.state.location[0].country
-        });
-        //this.setState({country: location[0].country})
-        console.log(this.state.location[0].city)
-    }
-
-
+    
     render () {
         return (
         // Main Container
@@ -157,8 +201,29 @@ class SignUp extends Component {
                             returnKeyType = { "next"}
                             label = "Email Address"
                             keyboardType = {'email-address'}
+                            error = {this.state.username_error}
+                            onSubmitEditing={() => { this.refs['FullName'].focus() }}
+                            onChangeText = { (value) => this.setState({ email: value, username: value, username_error: "" }) }/>
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'FullName'}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Full Name"
+                            onFocus={() => this.inputFocused('PhoneNumber')}
+                            onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
+                            onChangeText = { (value) => this.setState({ name: value, name_error: "" }) }/>              
+                        <Reinput
+                            fontFamily = "raleway-light"
+                            ref = {'PhoneNumber'}
+                            keyboardType={"number-pad"}
+                            autoCorrect = {false}
+                            underlineColorAndroid = "transparent"
+                            returnKeyType = { "next" }
+                            label = "Phone Number"
                             onSubmitEditing={() => { this.refs['Password'].focus() }}
-                            onChangeText = { (value) => this.setState({ email: value, username: value }) }/>
+                            onChangeText = { (value) => this.setState({ phone_number: value, phone_error: "" }) }/>
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = "Password"
@@ -166,147 +231,12 @@ class SignUp extends Component {
                             secureTextEntry = {true}
                             underlineColorAndroid = "transparent"
                             returnKeyType = { "next" }
+                            error = {this.state.password_error}
                             label = "Password"
-                            onFocus={() => this.inputFocused('Account')}
-                            onSubmitEditing={() => { this.refs['ConfirmPassword'].focus() }}
-                            onChangeText = { (value) => this.setState({ password: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = "ConfirmPassword"
-                            autoCorrect = {false}
-                            secureTextEntry = {true}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Confirm Password"
-                            onFocus={() => this.inputFocused('FirstName')}
-                            onSubmitEditing={() => { this.refs['FirstName'].focus() }}
-                            onChangeText = { (value) => this.setState({ confirmPassword: value }) }/>
-                        <Text style = {styles.textStyle}>Personal</Text>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'FirstName'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "First Name"
-                            onFocus={() => this.inputFocused('LastName')}
-                            onSubmitEditing={() => { this.refs['LastName'].focus() }}
-                            onChangeText = { (value) => this.setState({ firstname: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'LastName'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Last Name"
-                            onFocus={() => this.inputFocused('Gender')}
-                            onSubmitEditing={() => { this.refs['Gender'].focus() }}
-                            onChangeText = { (value) => this.setState({ lastname: value }) }/>              
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'Gender'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Gender"
-                            onFocus={() => this.inputFocused('PhoneNumber')}
-                            onSubmitEditing={() => { this.refs['PhoneNumber'].focus() }}
-                            onChangeText = { (value) => this.setState({ gender: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'PhoneNumber'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Phone Number"
-                            onFocus={() => this.inputFocused('Country')}
-                            onSubmitEditing={() => { this.refs['Country'].focus() }}
-                            onChangeText = { (value) => this.setState({ phone_number: value }) }/>
-                        <Text style = {styles.textStyle}>Date of Birth</Text>
-                        <DatePicker
-                            ref = {'DoB'}
-                            style = {{width: 200, marginVertical: 20}}
-                            date = {this.state.DoB}
-                            mode = "date"
-                            placeholder = "Select Date"
-                            format = "YYYY-MM-DD"
-                            minDate = "1910-01-01"
-                            maxDate = "2005-01-01"
-                            confirmBtnText = "Confirm"
-                            cancelBtnText = "Cancel"
-                            onDateChange={(date) => {this.setState({DoB: date})}}
-                            customStyles={{
-                                dateIcon: {
-                                  position: 'absolute',
-                                  left: 0,
-                                  top: 4,
-                                  marginLeft: 0
-                                },
-                                dateInput: {
-                                  marginLeft: 36
-                                },
-                                btnTextConfirm: {
-                                    color: '#1094f7'
-                                },
-                                btnTextCancel: {
-                                    color: '#1094f7'
-                                }
-                            }}/>
-                        <View style={{flexDirection: 'row'}}>
-                        <Text style = {styles.textStyle }>Location</Text>
-                        <Area location={this.updateState.bind(this)} 
-                                style={{ fontSize: 15, fontWeight: '400', textAlign: 'right', marginHorizontal: 50}}></Area>
-                        </View>
-                        
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'Country'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Country"
-                            onFocus={() => this.inputFocused('City')}
-                            onSubmitEditing={() => { this.refs['City'].focus() }}
-                            onChangeText = { (value) => this.setState({ country: value }) }
-                            
-                            />
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'City'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "City"
                             onFocus={() => this.inputFocused('SignUpButton')}
-                            onSubmitEditing={() => { this.refs['Province'].focus() }}
-                            onChangeText = { (value) => this.setState({ city: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'Province'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "next" }
-                            label = "Province"
-                            onFocus={() => this.inputFocused('SignUpButton')}
-                            onSubmitEditing={() => { this.refs['PostalCode'].focus() }}
-                            onChangeText = { (value) => this.setState({ province: value }) }/>
-                        <Reinput
-                            fontFamily = "raleway-light"
-                            ref = {'PostalCode'}
-                            autoCorrect = {false}
-                            underlineColorAndroid = "transparent"
-                            returnKeyType = { "done" }
-                            label = "Postal Code"
-                            onFocus={() => this.inputFocused('SignUpButton')}
-                            onSubmitEditing={() => this.inputFocused('SignUpButton') }
-                            onChangeText = { (value) => this.setState({ postalcode: value }) }/>
-                        <Text style = {styles.textStyle}>User Type</Text>
-                        <View>
-                            <Picker selectedValue = {this.state.userType} onValueChange = {(value) => this.setState({ userType: value })}>
-                                <Picker.Item label = "User" value = {false} />
-                                <Picker.Item label = "Employer" value = {true} />
-                            </Picker>
-                        </View>
+                            onSubmitEditing={() => { this.refs['SignUpButton'].focus() }}
+                            onChangeText = { (value) => this.setState({ password: value, password_error: "" }) }/>
+                       
                         <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
                             <TouchableOpacity onPress = {this.signUp}>
                                 <View style = {styles.signUpButton}>
@@ -315,6 +245,15 @@ class SignUp extends Component {
                             </TouchableOpacity>
                         </View>
                         <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
+
+                        <Text style = {styles.textStyle}>User Type</Text>
+                        <View>
+                            <Picker selectedValue = {this.state.userType} onValueChange = {(value) => this.setState({ userType: value })}>
+                                <Picker.Item label = "User" value = {false} />
+                                <Picker.Item label = "Employer" value = {true} />
+                            </Picker>
+                        </View>
+                        
                     </KeyboardAwareScrollView>
                 </Fragment>
             )}

@@ -11,13 +11,13 @@ import Amplify, { Auth } from 'aws-amplify';
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: 'us-west-2:a88e9101-8d00-45f7-a879-e47167f25a36', 
+        identityPoolId: 'us-west-2:316afdde-f978-4983-810e-879215b80363', 
         // REQUIRED - Amazon Cognito Region
         region: 'us-west-2', 
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'us-west-2_ybDxoo4oL',
+        userPoolId: 'us-west-2_CBWDFQaUL',
         // OPTIONAL - Amazon Cognito Web Client ID
-        userPoolWebClientId: '5213lor8ffaqd9b2pifkj2m53n', 
+        userPoolWebClientId: '2mamhmvgilo83g0o6eqfkd7a2k', 
     }
 });
 
@@ -214,11 +214,7 @@ class LogIn extends Component {
                                 <Text style = {styles.signUpButtonText}>Dashboard</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('NewSignUp')}>
-                            <View style = {styles.signUpButton}>
-                                <Text style = {styles.signUpButtonText}>new SignUp</Text>
-                            </View>
-                        </TouchableOpacity>
+                        
                     </View>
                 </View> 
                 </Fragment>

@@ -4,8 +4,7 @@
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -44,8 +43,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
 export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -84,8 +82,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
 export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -183,8 +180,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -214,8 +210,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -251,8 +246,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -282,8 +276,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -319,8 +312,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -350,8 +342,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -387,8 +378,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -464,8 +454,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -541,8 +530,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -620,8 +608,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -665,8 +652,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -710,8 +696,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -793,8 +778,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -824,8 +808,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -861,8 +844,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -892,8 +874,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -929,8 +910,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -960,8 +940,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email

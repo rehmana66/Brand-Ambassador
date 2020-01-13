@@ -4,8 +4,7 @@
 export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -49,8 +48,7 @@ export const listUsers = `query ListUsers(
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -137,8 +135,7 @@ export const getJob = `query GetJob($id: ID!) {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -215,8 +212,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -254,8 +250,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -350,8 +345,7 @@ export const getApplication = `query GetApplication($id: ID!) {
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -381,8 +375,7 @@ export const getApplication = `query GetApplication($id: ID!) {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -423,8 +416,7 @@ export const listApplications = `query ListApplications(
       status
       userID {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email

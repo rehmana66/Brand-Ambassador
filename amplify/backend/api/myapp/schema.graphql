@@ -1,7 +1,6 @@
 type User @model {
   id: ID!
-  firstName: String
-  lastName: String
+  fullName: String
   phone_number: AWSPhone
   user_type: Boolean
   email: AWSEmail

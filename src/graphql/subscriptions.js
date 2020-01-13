@@ -4,8 +4,7 @@
 export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -44,8 +43,7 @@ export const onCreateUser = `subscription OnCreateUser {
 export const onUpdateUser = `subscription OnUpdateUser {
   onUpdateUser {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -84,8 +82,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
 export const onDeleteUser = `subscription OnDeleteUser {
   onDeleteUser {
     id
-    firstName
-    lastName
+    fullName
     phone_number
     user_type
     email
@@ -183,8 +180,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -214,8 +210,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -251,8 +246,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -282,8 +276,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -319,8 +312,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
     id
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -350,8 +342,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -387,8 +378,7 @@ export const onCreateJob = `subscription OnCreateJob {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -464,8 +454,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -541,8 +530,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
     id
     employer {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -620,8 +608,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -665,8 +652,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -710,8 +696,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -793,8 +778,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -824,8 +808,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -861,8 +844,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -892,8 +874,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
@@ -929,8 +910,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
     status
     userID {
       id
-      firstName
-      lastName
+      fullName
       phone_number
       user_type
       email
@@ -960,8 +940,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
       id
       employer {
         id
-        firstName
-        lastName
+        fullName
         phone_number
         user_type
         email
