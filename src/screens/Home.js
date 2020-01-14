@@ -6,7 +6,7 @@ import {
     Text,
     Dimensions
 } from 'react-native';
-
+import { SafeAreaView } from 'react-navigation';
 import Shift from "../components/Shift";
 
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
@@ -33,6 +33,14 @@ Amplify.configure({
 });
 
 
+const GETUSER = `
+    query listUser($email: String!) {
+    listUsers(filter: {email: {contains: $email}})
+    {
+      items{id email user_type}
+    } 
+}`;
+
 class Home extends Component {
 
     constructor (props) {
@@ -40,11 +48,28 @@ class Home extends Component {
         this.state = {
             log: {},
             jobs: [],
+            user: "",
+            isLoaded: false
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
 
-    async componentDidMount() {
+
+    componentDidMount() {
+        Auth.currentAuthenticatedUser().then((data) => {
+            if (data) {
+                const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
+                    (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
+                );
+            }}).catch(err => console.log(err))
+    }
+
+    addUser() {
+        console.log(this.state.user)
+    }
+
+    getUser() {
+        
 
     }
     refreshScreen() {
@@ -60,16 +85,22 @@ class Home extends Component {
     }
 
     render() {
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
-                <Button onPress={this.logout} title="Sign Out"/>
-                <Button title="List Jobs"/>
-                <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
-                    <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
-                 </View>
-            </View>
-
-        );
+        const { isLoaded, user } = this.state;
+        if (isLoaded == false) {
+            return <View></View>
+        } else {
+            console.log(user)
+            return (
+                <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                    <Button onPress={this.logout} title="Sign Out"/>
+                    <Button onPress={this.addUser} title="List Jobs"/>
+                    <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
+                        <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
+                    </View>
+                </View>
+            
+            );
+        }
       }
 }
 

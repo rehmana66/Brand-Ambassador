@@ -24,14 +24,17 @@ Amplify.configure({
         userPoolId: 'us-west-2_CBWDFQaUL',
         // OPTIONAL - Amazon Cognito Web Client ID
         userPoolWebClientId: '2mamhmvgilo83g0o6eqfkd7a2k', 
-    }
+    },
+    "aws_appsync_graphqlEndpoint": "https://xtwbkpbhera2fdndfrvu2w4hb4.appsync-api.us-west-2.amazonaws.com/graphql",
+    "aws_appsync_region": "us-west-2",
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
 });
 
 const initialState = {
     username: "", 
     password: "", 
     email: "", 
-    phone_number: "+1", 
+    phone_number: "", 
     authenticationCode: "", 
     name: "",
     birthdate: "",
@@ -55,7 +58,7 @@ class SignUp extends Component {
             username: "", 
             password: "", 
             email: "", 
-            phone_number: "+1", 
+            phone_number: "", 
             authenticationCode: "", 
             name: "",
             birthdate: "",
@@ -70,19 +73,17 @@ class SignUp extends Component {
       }
     
     signUp = async () => {
-
-        const { username, password, email, phone_number, name
+        const { username, password, email, phone_number, name, birthdate
         } = this.state
         try {
             const success = await Auth.signUp({ username, password,
-                attributes: { email, phone_number, name}})
+                attributes: { email, phone_number, name, birthdate}})
             console.log('user successfully signed up!: ', success)
             this.setState({ showConfirmationForm: true })
         } catch (err) {
             console.log('error signing up: ', err)
             this.errorcheck(err)
         }
-        
     }
 
     checkEmpty() {
@@ -117,7 +118,7 @@ class SignUp extends Component {
             console.log('successully signed up!');
             //this.props.navigation.navigate('Login');
             alert('User signed up successfully!'); 
-            this.setState({ ...initialState });
+            //this.setState({ ...this.state });
             this.signIn();   
         } catch (err) {
             console.log('error confirming signing up: ', err)
@@ -137,10 +138,10 @@ class SignUp extends Component {
         });
     }
 
-    signIn = async () => {
+    signIn = () => {
         const { username, password } = this.state
         try {
-            const user = await Auth.signIn(username, password);
+            const user =  Auth.signIn(username, password).then(this.addUser).catch(err => console.log(err));
             this.setState({user})
             console.log(this.state.user.attributes);
             this.props.navigation.navigate('Dashboard')
@@ -149,6 +150,15 @@ class SignUp extends Component {
             console.log('error:', err)
         }
     };
+    //must be logged in
+    addUser = async () =>  {
+        const { email, phone_number, name, birthdate, userType
+        } = this.state
+        const todo = { email: email, fullName: name, user_type: userType, phone_number: phone_number };
+        //const todo = { email: "rehmana6@mymacewan.ca", fullName: "Abdul Rehman", user_type: "true", phone_number: "+17809329550" };
+        await API.graphql(graphqlOperation(mutations.createUser, { input: todo }));
+        console.log("Added user to DB");
+    }
 
     errorcheck(error) {
         if(error == "UserNotConfirmedException") {
@@ -158,7 +168,7 @@ class SignUp extends Component {
         } else if (error == "UserNotFoundException") {
             alert("Incorrect username or password")
         } else {
-            console.log("not working")
+            console.log("not working: ", error)
         }
         if (error == "Username cannot be empty") {
             this.setState({username_error: "Email address cannot be empty"});
@@ -217,7 +227,6 @@ class SignUp extends Component {
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = {'PhoneNumber'}
-                            keyboardType={"number-pad"}
                             autoCorrect = {false}
                             underlineColorAndroid = "transparent"
                             returnKeyType = { "next" }
@@ -243,6 +252,7 @@ class SignUp extends Component {
                                     <Text style = {styles.signUpButtonText}>Sign Up</Text>
                                 </View>
                             </TouchableOpacity>
+                            
                         </View>
                         <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
 

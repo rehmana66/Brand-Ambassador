@@ -15,7 +15,7 @@ export default class Initializing extends Component {
       this.ShowAlertWithDelay
         try {
             const user = await Auth.currentAuthenticatedUser()
-            console.log('user: ', user.attributes);
+            //console.log('user: ', user.attributes);
         if (user) {
             this.props.navigation.navigate('Home');
         } else {

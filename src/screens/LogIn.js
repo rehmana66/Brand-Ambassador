@@ -44,14 +44,12 @@ class LogIn extends Component {
         const { username, password } = this.state
         try {
             const user = await Auth.signIn(username, password);
-           //const user = await Auth.signIn("dfdf", "sd`")
-           //console.log('user successfully signed in!', user)
-           this.setState({user})
-           console.log(this.state.user.attributes);
-           this.props.navigation.navigate('Dashboard')
+            this.setState({user})
+            //console.log(this.state.user.attributes);
+            this.props.navigation.navigate('Dashboard')
         } catch (err) {
-          console.log('error:', err.code)
-          this.errorcheck(err.code);
+            console.log('error:', err.code)
+            this.errorcheck(err.code);
         }
     };
 
@@ -72,9 +70,7 @@ class LogIn extends Component {
         try {
             await Auth.confirmSignUp(username, authenticationCode);
             console.log('successully signed up!');
-            //this.props.navigation.navigate('Login');
             alert('User signed up successfully!');
-            //this.setState({ ...initialState });
             this.signIn();
         } catch (err) {
             console.log('error confirming signing up: ', err)
