@@ -38,7 +38,16 @@ const GETUSER = `
     query listUser($email: String!) {
     listUsers(filter: {email: {contains: $email}})
     {
-      items{id email user_type}
+        items {
+            id fullName phone_number user_type
+            email dateOfBirth gender
+            location {
+              id city country isoCountryCode
+              postalCode region street
+            }
+            jobs { nextToken }
+            apply { nextToken }
+        }
     } 
 }`;
 
