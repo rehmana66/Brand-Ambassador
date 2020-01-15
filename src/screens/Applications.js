@@ -6,7 +6,7 @@ import {
 
 } from 'react-native';
 
-class Groups extends Component {
+class Applications extends Component {
     render() {
         return (
             <View style={styles.container}>
@@ -17,7 +17,7 @@ class Groups extends Component {
 
 }
 
-export default Groups;
+export default Applications;
 
 const styles = StyleSheet.create({
     container: {

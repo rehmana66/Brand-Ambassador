@@ -5,7 +5,7 @@ import * as Font from 'expo-font';
 
 import Home from './src/screens/Home';
 import Search from './src/screens/Search';
-import Groups from './src/screens/Groups';
+import Applications from './src/screens/Applications';
 import Account from './src/screens/Account';
 import Detail from './src/screens/Detail';
 import LogIn from './src/screens/LogIn';
@@ -154,13 +154,13 @@ const SearchStack = createStackNavigator(
   },
 );
 
-const GroupStack = createStackNavigator(
+const ApplicationStack = createStackNavigator(
   {
-    Groups: {
-      screen: Groups,
+    Applications: {
+      screen: Applications,
       navigationOptions: ({ navigation }) => {
         return {
-          headerTitle: 'Groups',
+          headerTitle: 'Applications',
         };
       }
     },
@@ -202,7 +202,7 @@ const AccountStack = createStackNavigator(
 
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    Dashboard: {
+    "My Jobs": {
       screen: HomeStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
@@ -218,8 +218,8 @@ const DashboardTabNavigator = createBottomTabNavigator(
         },
       },
     },
-    Group: {
-      screen: GroupStack,
+    Applications: {
+      screen: ApplicationStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => {
             return <Ionicons name={"ios-chatboxes"} size={25} color={tintColor} />;
