@@ -5,6 +5,7 @@ import {
 import StarRating from 'react-native-star-rating';
 import { withNavigation } from 'react-navigation';
 import CachedImage from './CachedImage';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 
 const { height, width } = Dimensions.get('window');
@@ -37,7 +38,7 @@ class Shift extends Component {
             body: job.details.body,
             rate: job.details.rate,
             id: job.id,
-            employerName: job.employer.firstName + " " + job.employer.lastName,
+            employerName: job.employer.fullName,
             employerID: job.employer.id,
             date: job.date
         })
@@ -48,11 +49,24 @@ class Shift extends Component {
         this.setState({
             imageURI: require("../../assets/thumbs-up-filled.png")
         })
+        
+    }
+
+    giveDetails = () => {
+        //console.log("This job: ", this.state.job);
+        console.log(global.USERID);
+    }
+
+    userSwipedRight = () => {
+        console.log("asd");
     }
 
     render(){
+        
         return(
+            
             <View style={styles.container}>
+                
                 <View style={{width: width - 40, height:  width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
                     <View style={{height: 40, flexDirection: 'row'}}>
                         <View style={styles.profile}>
@@ -69,7 +83,7 @@ class Shift extends Component {
                             <CachedImage source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}/>
                     </View>
                     <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
-                        <TouchableOpacity style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
+                        <TouchableOpacity onPress={this.giveDetails} style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
                             <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.title}</Text>
                             <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc}</Text>
                             <Text style={{fontSize: 10, fontWeight: 'bold'}}>{this.state.rate}/hr</Text>

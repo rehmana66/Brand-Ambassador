@@ -51,7 +51,7 @@ class Search extends Component {
     }
     async componentDidMount() {
         try {
-            const allJobs = await API.graphql(graphqlOperation(queries.listJobs));
+            const allJobs = await API.graphql(graphqlOperation(queries.listJobs, {limit: 20}));
             this.setState({ jobs:allJobs.data.listJobs.items });
         } catch(err) {
             console.log("error: ", err)

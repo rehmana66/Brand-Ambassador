@@ -14,6 +14,7 @@ import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
+//import USERID from '../Other/User';
 const { height, width } = Dimensions.get('window')
 
 Amplify.configure({
@@ -40,6 +41,8 @@ const GETUSER = `
       items{id email user_type}
     } 
 }`;
+
+global.USERID = {};
 
 class Home extends Component {
 
@@ -89,7 +92,9 @@ class Home extends Component {
         if (isLoaded == false) {
             return <View></View>
         } else {
-            console.log(user)
+            USERID = user;
+            //console.log(user.id)
+            console.log("USERID: ", USERID);
             return (
                 <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                     <Button onPress={this.logout} title="Sign Out"/>
