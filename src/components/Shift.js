@@ -1,14 +1,29 @@
 import React, {Component} from 'react';
 import {
-    View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity, Platform, Dimensions
+    View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity, Platform, Dimensions, Alert
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
 import { withNavigation } from 'react-navigation';
 import CachedImage from './CachedImage';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 
+import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
 
 const { height, width } = Dimensions.get('window');
+
+const GETAPPLICATION = `
+    query listApplication($job:ID!){
+        listApplications(filter: {
+            job: {eq: $job}
+        }) {
+            items{id
+            jobID{id}
+            userID{id email fullName}}
+        }
+    }
+`;
 
 
 class Shift extends Component {
@@ -26,10 +41,10 @@ class Shift extends Component {
             employerName: "",
             employerID: "",
             date: "",
+            isLoaded: false,
         }
     }
     componentWillMount() {
-        //console.log("value: ", this.state.job);
         const job = this.state.job
         this.setState({
             title: job.details.title,
@@ -43,13 +58,47 @@ class Shift extends Component {
             date: job.date
         })
     }
-    //Todo: change lastname to lastName in db, check timestamp
+    
+    componentDidMount() {
+        API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
+            data => {
+                if (!data.data.listApplications.items[0]) {
+                } else {
+                    this.setState({
+                        imageURI: require("../../assets/thumbs-up-filled.png"),
+                        isLoaded: true
+                    })
+                }
+            }
+        ).catch(err => console.log(err));
+    }
     
     onPress = () => {
         this.setState({
             imageURI: require("../../assets/thumbs-up-filled.png")
         })
-        
+        currentDate = new Date();
+        //console.log("Date: ", currentDate)
+        const applicationDetails = {
+            applicationUserIDId: global.USERID.id, 
+            applicationJobIDId: this.state.id,
+            user: global.USERID.id,
+            job: this.state.id,
+            status: false,  
+            date: currentDate
+        }
+        const details = API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
+            data => {
+                if (!data.data.listApplications.items[0]) {
+                    API.graphql(graphqlOperation(mutations.createApplication,
+                        {input: applicationDetails})).catch(err => console.log(err));
+                    Alert.alert('Application Status', 'Application sent!')   
+                    
+                } else {
+                    Alert.alert('Application Status', 'Application is processing!') 
+                }
+            }
+        ).catch(err => console.log(err));
     }
 
     giveDetails = () => {
@@ -62,45 +111,47 @@ class Shift extends Component {
     }
 
     render(){
-        
-        return(
-            
-            <View style={styles.container}>
-                
-                <View style={{width: width - 40, height:  width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
-                    <View style={{height: 40, flexDirection: 'row'}}>
-                        <View style={styles.profile}>
-                            <CachedImage source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
+        const { isLoaded } = this.state;
+        if (isLoaded == false) {
+            return <View></View>
+        } else {
+            return(
+                <View style={styles.container}>
+                    <View style={{width: width - 40, height:  width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
+                        <View style={{height: 40, flexDirection: 'row'}}>
+                            <View style={styles.profile}>
+                                <CachedImage source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
+                            </View>
+                            <View style={{flex: 1, justifyContent:'center'}}>
+                                <Text style={{fontSize: 20, fontWeight: '400', paddingLeft: 5, maxWidth: width/1.5}}>{this.state.employerName}</Text>
+                            </View>
+                            <View style={{alignItems:'flex-end', justifyContent: 'center', paddingRight: 10}}>
+                                <CachedImage source={require('../../assets/more.png')} style={{width: 20, height: 20}}/>
+                            </View>
                         </View>
-                        <View style={{flex: 1, justifyContent:'center'}}>
-                            <Text style={{fontSize: 20, fontWeight: '400', paddingLeft: 5, maxWidth: width/1.5}}>{this.state.employerName}</Text>
+                        <View style={{flex: 1}}>
+                                <CachedImage source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}/>
                         </View>
-                        <View style={{alignItems:'flex-end', justifyContent: 'center', paddingRight: 10}}>
-                            <CachedImage source={require('../../assets/more.png')} style={{width: 20, height: 20}}/>
-                        </View>
-                    </View>
-                    <View style={{flex: 1}}>
-                            <CachedImage source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}/>
-                    </View>
-                    <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
-                        <TouchableOpacity onPress={this.giveDetails} style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
-                            <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.title}</Text>
-                            <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc}</Text>
-                            <Text style={{fontSize: 10, fontWeight: 'bold'}}>{this.state.rate}/hr</Text>
-                            <StarRating disabled={true} maxStars={5} rating={4} starSize={10}></StarRating>
-                        </TouchableOpacity>
-                        <View style={{justifyContent: 'flex-end', marginRight: 5}}>
-                            <TouchableOpacity onPress={this.onPress}>
-                                <CachedImage source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
+                        <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
+                            <TouchableOpacity onPress={this.giveDetails} style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
+                                <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.title}</Text>
+                                <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc}</Text>
+                                <Text style={{fontSize: 10, fontWeight: 'bold'}}>{this.state.rate}/hr</Text>
+                                <StarRating disabled={true} maxStars={5} rating={4} starSize={10}></StarRating>
                             </TouchableOpacity>
+                            <View style={{justifyContent: 'flex-end', marginRight: 5}}>
+                                <TouchableOpacity onPress={this.onPress}>
+                                    <CachedImage source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
+                    <View style={{marginLeft: 5}}>
+                        <Text style={{fontWeight: '200', opacity: 0.5, fontSize: 12}}>{this.state.date}</Text>
+                    </View>
                 </View>
-                <View style={{marginLeft: 5}}>
-                    <Text style={{fontWeight: '200', opacity: 0.5, fontSize: 12}}>{this.state.date}</Text>
-                </View>
-            </View>
-        );
+            );
+        }
     }
 }
 

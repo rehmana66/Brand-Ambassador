@@ -33,7 +33,10 @@ export const getUser = `query GetUser($id: ID!) {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -172,7 +175,10 @@ export const getJob = `query GetJob($id: ID!) {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -342,7 +348,10 @@ export const listCategorys = `query ListCategorys(
 export const getApplication = `query GetApplication($id: ID!) {
   getApplication(id: $id) {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
@@ -413,7 +422,10 @@ export const listApplications = `query ListApplications(
   listApplications(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      user
+      job
       status
+      date
       userID {
         id
         fullName

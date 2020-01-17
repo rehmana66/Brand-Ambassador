@@ -33,7 +33,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -72,7 +75,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -111,7 +117,10 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -415,7 +424,10 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -491,7 +503,10 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -567,7 +582,10 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -775,7 +793,10 @@ export const deleteCategory = `mutation DeleteCategory($input: DeleteCategoryInp
 export const createApplication = `mutation CreateApplication($input: CreateApplicationInput!) {
   createApplication(input: $input) {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
@@ -841,7 +862,10 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
 export const updateApplication = `mutation UpdateApplication($input: UpdateApplicationInput!) {
   updateApplication(input: $input) {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
@@ -907,7 +931,10 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
 export const deleteApplication = `mutation DeleteApplication($input: DeleteApplicationInput!) {
   deleteApplication(input: $input) {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName

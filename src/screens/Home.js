@@ -103,7 +103,7 @@ class Home extends Component {
         } else {
             USERID = user;
             //console.log(user.id)
-            console.log("USERID: ", USERID);
+            //console.log("USERID: ", USERID);
             return (
                 <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                     <Button onPress={this.logout} title="Sign Out"/>

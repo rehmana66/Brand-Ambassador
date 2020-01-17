@@ -33,7 +33,10 @@ export const onCreateUser = `subscription OnCreateUser {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -72,7 +75,10 @@ export const onUpdateUser = `subscription OnUpdateUser {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -111,7 +117,10 @@ export const onDeleteUser = `subscription OnDeleteUser {
     apply {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -415,7 +424,10 @@ export const onCreateJob = `subscription OnCreateJob {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -491,7 +503,10 @@ export const onUpdateJob = `subscription OnUpdateJob {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -567,7 +582,10 @@ export const onDeleteJob = `subscription OnDeleteJob {
     applications {
       items {
         id
+        user
+        job
         status
+        date
       }
       nextToken
     }
@@ -775,7 +793,10 @@ export const onDeleteCategory = `subscription OnDeleteCategory {
 export const onCreateApplication = `subscription OnCreateApplication {
   onCreateApplication {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
@@ -841,7 +862,10 @@ export const onCreateApplication = `subscription OnCreateApplication {
 export const onUpdateApplication = `subscription OnUpdateApplication {
   onUpdateApplication {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
@@ -907,7 +931,10 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
 export const onDeleteApplication = `subscription OnDeleteApplication {
   onDeleteApplication {
     id
+    user
+    job
     status
+    date
     userID {
       id
       fullName
