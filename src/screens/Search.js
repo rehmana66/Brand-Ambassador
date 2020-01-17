@@ -7,6 +7,7 @@ import {
     Platform,
     Dimensions,
     Button,
+    RefreshControl
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Shift from '../components/Shift';
@@ -59,16 +60,29 @@ class Search extends Component {
             jobs: [],
             location: null,
             isLoaded: false,
-            jobsLoaded: false
+            jobsLoaded: false,
+            refreshing: false,
+            refreshLoad: false
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
-    async componentDidMount() {
-            await API.graphql(graphqlOperation(queries.listJobs, {limit: 20})).then(data =>
+
+    fetchData = async() => {
+        API.graphql(graphqlOperation(queries.listJobs, {limit: 20})).then(data =>
+            {
+                this.setState({ jobs:data.data.listJobs.items, isLoaded: true})
+            }
+        ).catch(err=> console.log(err))
+    }
+
+    componentDidMount() {
+        this.fetchData();
+        /*
+        await API.graphql(graphqlOperation(queries.listJobs, {limit: 20})).then(data =>
             {
                 this.setState({ jobs:data.data.listJobs.items, isLoaded: true })
             }
-        )
+        )*/
     }
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
@@ -80,11 +94,51 @@ class Search extends Component {
     updateStatus() {
         this.setState({isLoaded: true, jobsLoaded: true});
     }
-
+    _onRefresh = () => {
+        this.setState({refreshing: true, isLoaded: false});
+        this.fetchData().then(() => {
+          this.setState({refreshing: false});
+        });
+      }
     render() {
-        const { isLoaded, jobs } = this.state;
+        const { isLoaded, jobs, refreshLoad } = this.state;
         if (isLoaded == false) {
-            return <View></View>
+            return (
+            <SafeAreaView style = {{ flex: 1 }}>
+                    <View style = {{ flex: 1, backgroundColor: 'white' }}>
+                        <View style = {styles.headerContainer}>
+                            <SearchInput SampleArray={this.state.SampleArray} onClick={this.refreshScreen}></SearchInput>
+                            <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
+                                <Tag name='Dates'></Tag>
+                                <Tag name='Filters'></Tag>
+                                <Tag name='Shifts'></Tag>
+                            </View>
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
+                                <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}>{Object.keys(jobs).length} shifts found</Text>
+                                <Area location={this.updateState.bind(this)} 
+                                    style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
+                            </View>
+                        </View>
+                        <ScrollView scrollEventThrottle={16}refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
+                            <View style={{ flex: 1, flexDirection: 'row', paddingTop: 10, paddingHorizontal: 15}}>
+                                <Text style={{fontSize: 20, fontWeight:'700'}}> Recent Searches:</Text>
+                            </View>
+                            <View style={{flex: 1, marginTop: 10, paddingHorizontal: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
+                                    {this.state.SampleArray.map((item, key) =>
+                                    <Tag item={item} key={item.id} name={item.name}/>)}
+                            </View>
+                            <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
+                                <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
+                                <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
+                                    
+                                </View>
+                            </View>
+                        </ScrollView>
+                    </View>
+            </SafeAreaView>
+            );
+                        
         } else {
             return (
                 <SafeAreaView style = {{ flex: 1 }}>
@@ -102,7 +156,8 @@ class Search extends Component {
                                     style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
                             </View>
                         </View>
-                        <ScrollView scrollEventThrottle={16} >
+                        <ScrollView scrollEventThrottle={16}refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
                             <View style={{ flex: 1, flexDirection: 'row', paddingTop: 10, paddingHorizontal: 15}}>
                                 <Text style={{fontSize: 20, fontWeight:'700'}}> Recent Searches:</Text>
                             </View>
@@ -114,7 +169,7 @@ class Search extends Component {
                                 <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                                 <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
                                     {this.state.jobs.map((jobs, i) => (
-                                    <Shift key={i} isLoaded={isLoaded} jobinfo={jobs} width={width} imageURI={require("../../assets/home.jpg")}></Shift>
+                                    <Shift key={i} jobinfo={jobs} width={width} imageURI={require("../../assets/home.jpg")}></Shift>
                                     ))}
                                 </View>
                             </View>

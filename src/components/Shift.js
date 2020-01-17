@@ -112,6 +112,7 @@ class Shift extends Component {
 
     render(){
         const { isLoaded } = this.state;
+        
         if (isLoaded == false) {
             return <View></View>
         } else {
