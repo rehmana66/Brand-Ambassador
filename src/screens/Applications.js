@@ -1,12 +1,16 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     RefreshControl,
     SafeAreaView,
-    ScrollView
+    ScrollView,
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
+import { ListItem, SearchBar } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
 
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
@@ -31,45 +35,114 @@ Amplify.configure({
 });
 
 
-
 class Applications extends Component {
     constructor(props) {
         super(props);
         this.state = {
           refreshing: false,
-          applications: {},
-          isLoaded: false
+          applications: [],
+          isLoaded: false,
+          search: '',
+          loading: false,
+          date: Date(Date.now()).toString()
         };
       }
     componentDidMount() {
         this.fetchData();
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.date !== this.state.date) {
+            console.log("State has changed")
+            console.log(prevState.date)
+            console.log(this.state.date)
+            this.fetchData();
+        }
     }
 
     fetchData = async() => {
         API.graphql(graphqlOperation(queries.listApplications, {limit: 20})).then(data =>
             {
                 //console.log(data);
-                this.setState({ applications:data.data.listApplications.items, isLoaded: true})
+                this.setState({ applications:data.data.listApplications.items, isLoaded: true, loading: true})
                 //console.log(this.state.applications);
             }
-        ).catch(err=> console.log(err))
+        ).catch(err=> {console.log(err)})
     }
-    render() {
 
-        const { applications, isLoaded } = this.state;
-        //console.log(applications);
+    updateSearch = search => {
+        this.setState({ search });
+      };
+     
+        /*
+    <SafeAreaView style={styles.container}>
+    <View>{this.state.applications.map((key, i) =>
+        <Text key={i}>{this.state.applications[i].id}</Text> 
+        
+        )}</View>
+</SafeAreaView>
+*/
+
+    _onRefresh = () => {
+        this.setState({refreshing: true, loading: false});
+        this.fetchData().then(() => {
+          this.setState({refreshing: false});
+        });
+      }
+      keyExtractor = (item, index) => index.toString();
+
+      renderItem = ({ item }) => (
+          <ListItem 
+          title={item.jobID.name}
+          subtitle={"Pay: " + item.jobID.details.rate + "\n" + 
+            "Application Date: " + new Date(item.date).toLocaleTimeString() + "\n" +
+            "Application Status: " + ((item.status) ? "Approved" : "Pending approval")}
+          onPress={()=> {console.log(item.jobID.name)}}
+          leftAvatar={(!item.status) ? <Ionicons name={"md-alert"} size={35} color={'red'} /> : <Ionicons name={"ios-checkmark-circle"} size={35} color={'green'} />}
+          bottomDivider
+          chevron
+          />
+      );
+
+    render() {
+        
+
+
+        const { applications, isLoaded, loading, search } = this.state;
+        console.log(applications);
 
         if (!isLoaded) {
-            return <View></View>
+            return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
+        } else if (!loading) {
+            return null;
         } else {
             return (
             
                 <SafeAreaView style={styles.container}>
-                    <View>
-                    {this.state.applications.map((key, i) => (
-                        <Text key={i}>{this.state.applications[i].id}</Text>
-                        ))}
-                    </View>
+                    <SearchBar placeholder="Type Here..."
+                        onChangeText={this.updateSearch}
+                        value={search}
+                        inputContainerStyle={{backgroundColor: 'white',    
+                        shadowOffset: {width:0, height:0},
+                        shadowColor: 'black',
+                        shadowOpacity: 0.2,
+                        elevation: 1,}}
+                        containerStyle={{
+                            
+                            shadowOffset: {width:0, height:0},
+                            shadowColor: 'black',
+                            shadowOpacity: 0.2,
+                            elevation: 1,}}
+                        lightTheme
+                    />
+                    <ScrollView scrollEventThrottle={16}refreshControl={
+                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} /> }>
+                        <FlatList
+                            keyExtractor={this.keyExtractor}
+                            data={this.state.applications}
+                            renderItem={this.renderItem}
+                        />
+                    </ScrollView>
+                    
                 </SafeAreaView>
             );
         }
@@ -83,7 +156,6 @@ export default Applications;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'center',
     },
     scrollView: {

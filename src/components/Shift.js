@@ -62,11 +62,12 @@ class Shift extends Component {
     componentDidMount() {
         API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
             data => {
+                this.setState({isLoaded: true})
                 if (!data.data.listApplications.items[0]) {
                 } else {
                     this.setState({
                         imageURI: require("../../assets/thumbs-up-filled.png"),
-                        isLoaded: true
+                       
                     })
                 }
             }
