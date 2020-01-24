@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import Shift from "../components/Shift";
+import {Calendar} from 'react-native-calendars';
 
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
@@ -108,9 +109,17 @@ class Home extends Component {
                 <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                     <Button onPress={this.logout} title="Sign Out"/>
                     <Button onPress={this.addUser} title="List Jobs"/>
-                    <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
-                        <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
-                    </View>
+                    <Calendar
+  // Collection of dates that have to be colored in a special way. Default = {}
+  markedDates={{
+    '2020-01-20': {textColor: 'green'},
+    '2020-01-22': {startingDay: true, color: 'green'},
+    '2020-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
+    '2020-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
+  }}
+  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
+  markingType={'period'}
+/>
                 </View>
             
             );

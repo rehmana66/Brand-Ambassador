@@ -61,7 +61,7 @@ type Application @model {
   id: ID!
   user: ID!
   job: ID!
-  status: Boolean
+  status: String
   date: AWSDateTime
   userID: User @connection(name: "userApplications")
   jobID: Job @connection(name: "jobApplications")

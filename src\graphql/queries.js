@@ -1,4 +1,4 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const getUser = `query GetUser($id: ID!) {
@@ -439,9 +439,6 @@ export const listApplications = `query ListApplications(
         id
         name
         date
-        details{
-          id misc title desc rate
-        }
       }
     }
     nextToken

@@ -7,7 +7,8 @@ import {
     SafeAreaView,
     ScrollView,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Button
 } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +18,7 @@ import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 Amplify.configure({
     Auth: {
@@ -44,7 +46,14 @@ class Applications extends Component {
           isLoaded: false,
           search: '',
           loading: false,
-          date: Date(Date.now()).toString()
+          date: Date(Date.now()).toString(),
+          approved: true,
+          progress: false,
+          denied: false,
+          approvedcolor: '#147efb',
+          progresscolor: 'grey',
+          deniedcolor: 'grey',
+
         };
       }
     componentDidMount() {
@@ -90,25 +99,30 @@ class Applications extends Component {
       }
       keyExtractor = (item, index) => index.toString();
 
-      renderItem = ({ item }) => (
-          <ListItem 
-          title={item.jobID.name}
-          subtitle={"Pay: " + item.jobID.details.rate + "\n" + 
-            "Application Date: " + new Date(item.date).toLocaleTimeString() + "\n" +
-            "Application Status: " + ((item.status) ? "Approved" : "Pending approval")}
-          onPress={()=> {console.log(item.jobID.name)}}
-          leftAvatar={(!item.status) ? <Ionicons name={"md-alert"} size={35} color={'red'} /> : <Ionicons name={"ios-checkmark-circle"} size={35} color={'green'} />}
-          bottomDivider
-          chevron
-          />
-      );
+    renderItem = ({ item }) => (
+        <ListItem 
+        title={item.jobID.name}
+        subtitle={"Pay: " + item.jobID.details.rate + "\n" + 
+        "Application Date: " + new Date(item.date).toLocaleDateString() + "\n" +
+        "Application Status: " + ((item.status=="true") ? "Approved" : (item.status == "false") ? "Denied" : "Pending approval")}
+        onPress={()=> {console.log(item.jobID.name)}}
+        leftAvatar={(item.status=="false") ? <Ionicons name={"md-alert"} size={35} color={'red'} /> : 
+        (item.status=="true") ? <Ionicons name={"ios-checkmark-circle"} size={35} color={'green'} /> : 
+            <Ionicons name={"md-alert"} size={35} color={'#D4AF37'} /> }
+        bottomDivider
+        chevron
+        />
+    );
+
+    changeText() {
+
+    }
+
 
     render() {
-        
-
 
         const { applications, isLoaded, loading, search } = this.state;
-        console.log(applications);
+        //console.log(applications);
 
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
@@ -118,6 +132,24 @@ class Applications extends Component {
             return (
             
                 <SafeAreaView style={styles.container}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', alignContent: 'center'}}>
+                        <View style={styles.menu}>
+                            <TouchableOpacity onPress={this.changeText}>
+                                <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.approvedcolor}}>Approved</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.menu}>
+                            <TouchableOpacity>
+                                <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.progresscolor}}>In Progress</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.menu}>
+                            <TouchableOpacity>
+                                <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.deniedcolor}}>Denied</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
                     <SearchBar placeholder="Type Here..."
                         onChangeText={this.updateSearch}
                         value={search}
@@ -163,5 +195,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'pink',
         alignItems: 'center',
         justifyContent: 'center',
-      },
+    },
+
+    menu: {
+        flex: 1,
+        padding: 7, 
+        backgroundColor: 'white', 
+        borderColor: '#dddddd', 
+        borderWidth: 1, 
+        borderRadius: 2, 
+        
+    }
 });

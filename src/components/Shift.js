@@ -85,7 +85,7 @@ class Shift extends Component {
             applicationJobIDId: this.state.id,
             user: global.USERID.id,
             job: this.state.id,
-            status: false,  
+            status: "progress",  
             date: currentDate
         }
         const details = API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
@@ -105,10 +105,6 @@ class Shift extends Component {
     giveDetails = () => {
         //console.log("This job: ", this.state.job);
         console.log(global.USERID);
-    }
-
-    userSwipedRight = () => {
-        console.log("asd");
     }
 
     render(){
