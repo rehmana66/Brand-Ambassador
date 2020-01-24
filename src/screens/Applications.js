@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     Button
 } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-elements';
+import { ListItem, SearchBar, Divider  } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
@@ -37,67 +37,60 @@ Amplify.configure({
 });
 
 
+const GETAPPLICATION = `
+    query listApplication($status :String){
+        listApplications(filter: {
+            status: {eq: $status}
+        }) {
+            items{id job user status date
+            jobID{id date name
+                details {
+                    id misc title desc rate
+                }
+            }}
+        }
+    }
+`;
+
+
 class Applications extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          refreshing: false,
-          applications: [],
-          isLoaded: false,
-          search: '',
-          loading: false,
-          date: Date(Date.now()).toString(),
-          approved: true,
-          progress: false,
-          denied: false,
-          approvedcolor: '#147efb',
-          progresscolor: 'grey',
-          deniedcolor: 'grey',
-
+            refreshing: false,
+            applications: [],
+            inMemorydata: [],
+            isLoaded: false,
+            search: '',
+            loading: false,
+            date: Date(Date.now()).toString(),
+            approvedcolor: '#147efb',
+            progresscolor: 'grey',
+            deniedcolor: 'grey',
         };
       }
     componentDidMount() {
-        this.fetchData();
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if(prevState.date !== this.state.date) {
-            console.log("State has changed")
-            console.log(prevState.date)
-            console.log(this.state.date)
-            this.fetchData();
-        }
+        this.fetchData("true");
     }
 
-    fetchData = async() => {
-        API.graphql(graphqlOperation(queries.listApplications, {limit: 20})).then(data =>
+    fetchData = async(stat) => {
+        const { value } = this.state;
+        API.graphql(graphqlOperation(GETAPPLICATION, {status: stat})).then(data =>
             {
-                //console.log(data);
-                this.setState({ applications:data.data.listApplications.items, isLoaded: true, loading: true})
-                //console.log(this.state.applications);
+                this.setState({ applications:data.data.listApplications.items,
+                        inMemorydata: data.data.listApplications.items,
+                        isLoaded: true, loading: true})
             }
         ).catch(err=> {console.log(err)})
     }
 
-    updateSearch = search => {
-        this.setState({ search });
-      };
-     
-        /*
-    <SafeAreaView style={styles.container}>
-    <View>{this.state.applications.map((key, i) =>
-        <Text key={i}>{this.state.applications[i].id}</Text> 
-        
-        )}</View>
-</SafeAreaView>
-*/
-
     _onRefresh = () => {
         this.setState({refreshing: true, loading: false});
-        this.fetchData().then(() => {
-          this.setState({refreshing: false});
+        this.fetchData("true").then(() => {
+          this.setState({refreshing: false, search: ''});
         });
       }
-      keyExtractor = (item, index) => index.toString();
+    keyExtractor = (item, index) => index.toString();
 
     renderItem = ({ item }) => (
         <ListItem 
@@ -114,16 +107,50 @@ class Applications extends Component {
         />
     );
 
-    changeText() {
+    searchApplications = value => {
+        const filteredApplications = this.state.inMemorydata.filter(application => {
+            let job = (application.jobID.name).toLowerCase();
+            
+            let searchTerm = (value).toLowerCase();
 
+            return job.indexOf(searchTerm) > -1;
+        });
+        this.setState({applications: filteredApplications});
+    }
+
+    changeText(value) {
+        if (value == 0) {
+            this.setState({
+                approvedcolor: '#147efb',
+                progresscolor: 'grey',
+                deniedcolor: 'grey',
+                applications: []
+            });
+            this.fetchData("true");
+        } else if (value == 1) {
+            this.setState({
+                approvedcolor: 'grey',
+                progresscolor: '#147efb',
+                deniedcolor: 'grey',
+                applications: []
+            });
+            this.fetchData("progress");
+        } else {
+            this.setState({
+                approvedcolor: 'grey',
+                progresscolor: 'grey',
+                deniedcolor: '#147efb',
+                applications: []
+            });
+            this.fetchData("false");
+        }
     }
 
 
     render() {
 
         const { applications, isLoaded, loading, search } = this.state;
-        //console.log(applications);
-
+        //console.log("new: ", this.state.applications);
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else if (!loading) {
@@ -132,46 +159,39 @@ class Applications extends Component {
             return (
             
                 <SafeAreaView style={styles.container}>
+                    <SearchBar placeholder="Type Here..."
+                        onChangeText={(search) => {this.setState({search}); this.searchApplications(search)}}
+                        value = {search}
+                        inputContainerStyle={styles.searchinputContainer}
+                        containerStyle={styles.searchContainer}
+                        lightTheme
+                    />
                     <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', alignContent: 'center'}}>
                         <View style={styles.menu}>
-                            <TouchableOpacity onPress={this.changeText}>
+                            <TouchableOpacity onPress={() => this.changeText(0)}>
                                 <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.approvedcolor}}>Approved</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menu}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.changeText(1)}>
                                 <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.progresscolor}}>In Progress</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menu}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.changeText(2)}>
                                 <Text style={{fontWeight: '500', fontSize: 15, textAlign: 'center', color: this.state.deniedcolor}}>Denied</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-
-                    <SearchBar placeholder="Type Here..."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        inputContainerStyle={{backgroundColor: 'white',    
-                        shadowOffset: {width:0, height:0},
-                        shadowColor: 'black',
-                        shadowOpacity: 0.2,
-                        elevation: 1,}}
-                        containerStyle={{
-                            
-                            shadowOffset: {width:0, height:0},
-                            shadowColor: 'black',
-                            shadowOpacity: 0.2,
-                            elevation: 1,}}
-                        lightTheme
-                    />
+                    <Divider style={{ backgroundColor: 'grey' }} />
                     <ScrollView scrollEventThrottle={16}refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} /> }>
                         <FlatList
-                            keyExtractor={this.keyExtractor}
                             data={this.state.applications}
                             renderItem={this.renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                            ListEmptyComponent={() => (<View></View>)}
+                            extraData={this.state.applications}
                         />
                     </ScrollView>
                     
@@ -192,18 +212,27 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
-        backgroundColor: 'pink',
         alignItems: 'center',
         justifyContent: 'center',
     },
-
+    searchinputContainer: {
+        backgroundColor: 'white',    
+        shadowOffset: {width:0, height:0},
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 1,
+    },
+    searchContainer: {
+        shadowOffset: {width:0, height:0},
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 1
+    },
     menu: {
         flex: 1,
         padding: 7, 
         backgroundColor: 'white', 
-        borderColor: '#dddddd', 
-        borderWidth: 1, 
-        borderRadius: 2, 
+        borderColor: '#dddddd',
         
     }
 });

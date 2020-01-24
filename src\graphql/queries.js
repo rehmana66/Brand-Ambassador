@@ -439,6 +439,9 @@ export const listApplications = `query ListApplications(
         id
         name
         date
+        details{
+          rate
+        }
       }
     }
     nextToken
