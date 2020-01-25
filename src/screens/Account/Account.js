@@ -5,13 +5,10 @@ import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicato
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import CachedImage from '../components/CachedImage';
+import CachedImage from '../../components/CachedImage';
 import { ListItem, SearchBar, Divider, Header, Text } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as queries from '../graphql/queries';
-import * as mutations from '../graphql/mutations';
-import * as subscriptions from '../graphql/subscriptions';
 
 
 const GETUSER = `
@@ -34,34 +31,34 @@ const GETUSER = `
 const AccountList = [
     {
         name: 'Account & Settings',
-        icon: require("../../assets/profile/account.png"),
+        icon: require("../../../assets/profile/account.png"),
     },
     {
         name: 'Upload Resume',
-        icon: require("../../assets/profile/resume.png"),
+        icon: require("../../../assets/profile/resume.png"),
     },
     {
         name: 'Reviews',
-        icon: require("../../assets/profile/reviews.png"),
+        icon: require("../../../assets/profile/reviews.png"),
     },
     {
         name: 'Feedback & Support',
-        icon: require("../../assets/profile/feedback.png"),
+        icon: require("../../../assets/profile/feedback.png"),
     },
     {
         name: 'About Brand Ambassadors',
-        icon: require("../../assets/profile/about.png"),
+        icon: require("../../../assets/profile/about.png"),
     },
     {
         name: 'Logout',
-        icon: require("../../assets/profile/logout.png"),
+        icon: require("../../../assets/profile/logout.png"),
     }
 ]
 
 class Account extends Component {
 
     state = {
-        image: require("../../assets/profile/profile.jpg"),
+        image: require("../../../assets/profile/profile.jpg"),
         user: null,
         isLoaded: false
     };

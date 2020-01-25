@@ -6,7 +6,7 @@ import * as Font from 'expo-font';
 import Home from './src/screens/Home';
 import Search from './src/screens/Search';
 import Applications from './src/screens/Applications';
-import Account from './src/screens/Account';
+import Account from './src/screens/Account/Account';
 import Detail from './src/screens/Detail';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
