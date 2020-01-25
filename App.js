@@ -7,6 +7,10 @@ import Home from './src/screens/Home';
 import Search from './src/screens/Search';
 import Applications from './src/screens/Applications';
 import Account from './src/screens/Account/Account';
+import Reviews from './src/screens/Account/Reviews';
+import Settings from './src/screens/Account/Settings';
+import Feedback from './src/screens/Account/Feedback';
+import About from './src/screens/Account/About';
 import Detail from './src/screens/Detail';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
@@ -217,6 +221,38 @@ const AccountStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: "Edit Account",
+        };
+      },
+    },
+    About: {
+      screen: About,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: "About Brand Ambassadors",
+        };
+      },
+    },
+    Reviews: {
+      screen: About,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: "Job Reviews",
+        };
+      },
+    },
+    Settings: {
+      screen: About,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: "Account Settings",
+        };
+      },
+    },
+    Feedback: {
+      screen: About,
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: "Provide Feedback",
         };
       },
     },

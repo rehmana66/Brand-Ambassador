@@ -93,19 +93,37 @@ class Account extends Component {
     };
 
     componentDidMount() {
+        this.setState({isLoaded: true})
+        /*
         Auth.currentAuthenticatedUser().then((data) => {
             if (data) {
                 const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
                     (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
                 );
-            }}).catch(err => console.log(err))
+            }}).catch(err => console.log(err))*/
     };
 
     accountProcess(value) {
         console.log(value)
-        if (value == "Logout") {
-            this.logout();
-        }
+        switch(value) {
+            case "Logout":
+                this.logout();
+              break;
+            case "About Brand Ambassadors":
+                this.props.navigation.navigate('About');
+              break;
+            case "Account & Settings":
+                this.props.navigation.navigate('Settings');
+                break;
+            case "Reviews":
+                this.props.navigation.navigate('Reviews');
+                break;
+            case "Feedback & Support":
+                this.props.navigation.navigate('Feedback');
+                break;
+            default:
+              // code block
+          }
     };
     
     renderItem = ({ item }) => (
@@ -130,8 +148,8 @@ class Account extends Component {
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
-            let phone = user.phone_number.slice(0, 2) + " (" + user.phone_number.slice(2, 5) + ")" + " " +
-                user.phone_number.slice(5, 8) + "-" + user.phone_number.slice(8)
+            let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
+            USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
             return (
                 <View style={styles.container}>
                     <View style = {styles.profileContainer}>
@@ -142,7 +160,7 @@ class Account extends Component {
                                 <Image source = {this.state.image} style = {styles.imgStyle}/>}
                             </TouchableOpacity>
                         </View>
-                        <View style={{flex: 4}}>
+                        <View style={{flex: 4, marginLeft: 10}}>
                             <View style={{marginTop: 5, marginLeft: 10, flexDirection: 'column'}}>
                                 <Text h4 style={{fontWeight: '500',}} >{USERID.fullName}</Text>
                                 <Text h5 style={{color: 'grey'}} >{phone}</Text>
