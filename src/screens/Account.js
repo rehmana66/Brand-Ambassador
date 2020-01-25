@@ -1,18 +1,74 @@
 import React, { Component } from 'react';
-import { View, Image,Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import Divider from 'react-native-divider';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
+    FlatList
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import CachedImage from '../components/CachedImage';
+import { ListItem, SearchBar, Divider, Header, Text } from 'react-native-elements';
+import StarRating from 'react-native-star-rating';
+import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+import * as subscriptions from '../graphql/subscriptions';
+
+
+const GETUSER = `
+    query listUser($email: String!) {
+    listUsers(filter: {email: {contains: $email}})
+    {
+        items {
+            id fullName phone_number user_type
+            email dateOfBirth gender
+            location {
+              id city country isoCountryCode
+              postalCode region street
+            }
+            jobs { nextToken }
+            apply { nextToken }
+        }
+    } 
+}`;
+
+const AccountList = [
+    {
+        name: 'Account & Settings',
+        icon: require("../../assets/profile/account.png"),
+    },
+    {
+        name: 'Upload Resume',
+        icon: require("../../assets/profile/resume.png"),
+    },
+    {
+        name: 'Reviews',
+        icon: require("../../assets/profile/reviews.png"),
+    },
+    {
+        name: 'Feedback & Support',
+        icon: require("../../assets/profile/feedback.png"),
+    },
+    {
+        name: 'About Brand Ambassadors',
+        icon: require("../../assets/profile/about.png"),
+    },
+    {
+        name: 'Logout',
+        icon: require("../../assets/profile/logout.png"),
+    }
+]
 
 class Account extends Component {
 
     state = {
-        image: null,
-    }
+        image: require("../../assets/profile/profile.jpg"),
+        user: null,
+        isLoaded: false
+    };
+    
     pickImage = async () => {
         if (Constants.platform.ios) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL).catch(err=> console.log(err));
             if (status !== 'granted') {
               alert('Sorry, we need camera roll permissions to make this work!');
             }
@@ -21,66 +77,104 @@ class Account extends Component {
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [4, 3],
-                });
-                console.log(result);
-
-                if (!result.cancelled) {
-                this.setState({ image: result.uri });
-                };
+                }).catch(err=> console.log(err));
+                console.log(result.cancelled)
+                if(!result.cancelled) {
+                    this.setState({image: result.uri})
+                }
             };
         };
     };
 
+    logout = async () => {
+        try {
+            await Auth.signOut()
+            this.props.navigation.navigate('Initializing')
+        } catch (err) {
+            console.log('error signing out...: ', err)
+        }
+    };
+
     componentDidMount() {
-        this.setState({image: 'https://facebook.github.io/react-native/docs/assets/favicon.png'})
+        Auth.currentAuthenticatedUser().then((data) => {
+            if (data) {
+                const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
+                    (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
+                );
+            }}).catch(err => console.log(err))
+    };
+
+    accountProcess(value) {
+        console.log(value)
+        if (value == "Logout") {
+            this.logout();
+        }
     };
     
-    render() {
-        let { image } = this.state;
+    renderItem = ({ item }) => (
+        <ListItem
+          title={item.name}
+          leftIcon={<CachedImage source = {item.icon} style = {{height: 40, width: 40}}/>}
+          onPress={() => this.accountProcess(item.name)}
+          chevron
+        />
+    );
 
+    renderSeperator = () => {
         return (
-            <View style={styles.container}>
-                <View style = {styles.upperContainer}>
-                    <View style = {styles.upperContainerRow}>
-                        <Text>Shifts Completed</Text>
-                        <Text>10</Text>
-                    </View>
-                    <View style = {styles.upperContainerRow}>
-                        <TouchableOpacity style = {styles.imageContainer} onPress = {this.pickImage}>
-                            {image &&
-                            <Image source = {{ uri: image }} style = {styles.imgStyle}/>}
-                        </TouchableOpacity>
-                    </View>
-                    <View style = {styles.upperContainerRow}>
-                        <Text>Upcoming Shifts</Text>
-                        <Text>2</Text>
-                    </View>
-                </View>
-                <Divider borderColor = '#3f51b5' color = 'black' orientation = 'center'>Deangelo Vickers</Divider>
-                <View style = {styles.publicInfoContainer}>  
-                    <Text> I don't care what your favorite flavor is. Here's a bowl of ice cream, you either like it or you don't. 
-                        That's my attitude right now in this room, that's my attitude on Ice Cream Thursdays. Alright? Clear? Any questions?
-                    </Text>
-                </View>
-                <View style = {{flex: 2}}>
-                    <View style = {styles.lineStyle}></View>
-                    <TouchableOpacity style = {styles.buttonPanel}>
-                                <Text style = {styles.buttonPanelText}>View Shifts</Text>
-                                <Image style = {{width: 25, height: 25}} source = {require('../../assets/right-arrow.png')}/>
-                    </TouchableOpacity>
-                    <View style = {styles.lineStyle}></View>
-                    <TouchableOpacity style = {styles.buttonPanel}>
-                                <Text style = {styles.buttonPanelText}>View Resume</Text>
-                                <Image style = {{width: 25, height: 25}} source = {require('../../assets/right-arrow.png')}/>
-                    </TouchableOpacity>
-                    <View style = {styles.lineStyle}></View>
-                    <TouchableOpacity style = {styles.buttonPanel} onPress = {() => this.props.navigation.navigate('EditAccount')}>
-                                <Text style = {styles.buttonPanelText}>Edit Account</Text>
-                                <Image style = {{width: 25, height: 25}} source = {require('../../assets/right-arrow.png')}/>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 20, marginRight: 20 }} />
         );
+    };
+
+    render() {
+        let { image, user, isLoaded } = this.state;
+        
+        //console.log(user)
+        if (!isLoaded) {
+            return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
+        } else {
+            let phone = user.phone_number.slice(0, 2) + " (" + user.phone_number.slice(2, 5) + ")" + " " +
+                user.phone_number.slice(5, 8) + "-" + user.phone_number.slice(8)
+            return (
+                <View style={styles.container}>
+                    <View style = {styles.profileContainer}>
+                        
+                        <View style = {{flex: 1, marginLeft: 10}}>
+                            <TouchableOpacity style = {styles.imageContainer} onPress = {this.pickImage}>
+                                {image &&
+                                <Image source = {this.state.image} style = {styles.imgStyle}/>}
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flex: 4}}>
+                            <View style={{marginTop: 5, marginLeft: 10, flexDirection: 'column'}}>
+                                <Text h4 style={{fontWeight: '500',}} >{USERID.fullName}</Text>
+                                <Text h5 style={{color: 'grey'}} >{phone}</Text>
+                            </View>
+                            <View style={{marginTop: 5, marginLeft: 10, flexDirection: 'row'}}>
+                                <StarRating disabled={true} maxStars={5} rating={4} starSize={10}></StarRating>
+                                <Text style={{color: 'grey', fontSize: 10, marginLeft: 5}}>400/500 ratings</Text>
+                            </View>
+                        </View>
+                       
+                    </View>
+                    <View style={{flex: 7}}>
+
+                    <Divider style={{height: 1, marginTop: 20, backgroundColor: '#c5c7c4', marginLeft: 20, marginRight: 20 }} />
+                    <ScrollView style={{marginTop: 10}} scrollEventThrottle={16}>
+                        <FlatList
+                            data={AccountList}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                            ListEmptyComponent={() => (<View></View>)}
+                            ItemSeparatorComponent={this.renderSeperator}
+                        />
+                        <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 20, marginRight: 20 }} />
+                    </ScrollView>
+                    
+                    </View>
+                </View>
+            );
+        }
     }
 
 }
@@ -90,60 +184,27 @@ export default Account;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#dff3fd',
-    },
-    lineStyle:{
-        alignSelf: 'center',
-        borderWidth: 0.5,
-        borderColor: '#3f51b5',
-        margin:5,
-        width: '97%',
+        backgroundColor: 'white',
     },
     imageContainer: {
         alignSelf: 'center',
         height: 81,
         width: 81,
         borderRadius: 40,
-        borderWidth: 1,
     },
     imgStyle: {
         height: 80,
         width: 80,
         borderRadius: 40,
     },
-    upperContainer: {
+    profileContainer: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 10,
-        paddingTop: 10 , 
-        flex: 1
+        paddingTop: 10, 
+        
     },
-    upperContainerRow: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        flex: 1,
-    },
-    publicInfoContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#dff3fd',
-        marginHorizontal: 15,
-        marginVertical: 20,
-        width : Dimensions.get('window').width - 30,
-    },
-    buttonPanelText: {
-        color: 'black',
-        padding: 8,
-        fontSize: 16,
-    },
-    buttonPanel: {
-        flex: 1, 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        backgroundColor: '#dff3fd', 
-        width : Dimensions.get('window').width
-    },
+
 });

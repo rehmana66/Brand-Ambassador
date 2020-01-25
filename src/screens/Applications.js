@@ -94,16 +94,16 @@ class Applications extends Component {
 
     renderItem = ({ item }) => (
         <ListItem 
-        title={item.jobID.name}
-        subtitle={"Pay: " + item.jobID.details.rate + "\n" + 
-        "Application Date: " + new Date(item.date).toLocaleDateString() + "\n" +
-        "Application Status: " + ((item.status=="true") ? "Approved" : (item.status == "false") ? "Denied" : "Pending approval")}
-        onPress={()=> {console.log(item.jobID.name)}}
-        leftAvatar={(item.status=="false") ? <Ionicons name={"md-alert"} size={35} color={'red'} /> : 
-        (item.status=="true") ? <Ionicons name={"ios-checkmark-circle"} size={35} color={'green'} /> : 
-            <Ionicons name={"md-alert"} size={35} color={'#D4AF37'} /> }
-        bottomDivider
-        chevron
+            title={item.jobID.name}
+            subtitle={"Pay: " + item.jobID.details.rate + "\n" + 
+            "Application Date: " + new Date(item.date).toLocaleDateString() + "\n" +
+            "Application Status: " + ((item.status=="true") ? "Approved" : (item.status == "false") ? "Denied" : "Pending approval")}
+            onPress={()=> {console.log(item.jobID.name)}}
+            leftAvatar={(item.status=="false") ? <Ionicons name={"md-alert"} size={35} color={'red'} /> : 
+            (item.status=="true") ? <Ionicons name={"ios-checkmark-circle"} size={35} color={'green'} /> : 
+                <Ionicons name={"md-alert"} size={35} color={'#D4AF37'} /> }
+            bottomDivider
+            chevron
         />
     );
 

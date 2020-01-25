@@ -51,14 +51,14 @@ class App extends Component {
     const fonts = await Font.loadAsync({
       'raleway-light': require('./assets/fonts/Raleway-Light.ttf'),
       'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
-    })
+    }).catch(err=> console.log(err))
     console.log("done");
   }
 
-  
+  /*
   componentWillUnmount() {
     this._isMounted = false;
-  }
+  }*/
 
   render() {
     if (!this.state.fontsLoaded) {
@@ -136,6 +136,18 @@ const HomeStack = createStackNavigator(
       screen: Detail
     },
   },
+  {
+    initialRouteName: 'Home',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#147efb',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      }
+    }
+  }
 );
 
 const SearchStack = createStackNavigator(
@@ -152,6 +164,18 @@ const SearchStack = createStackNavigator(
       screen: Detail
     }
   },
+  {
+    initialRouteName: 'Search',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#147efb',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      }
+    }
+  }
 );
 
 const ApplicationStack = createStackNavigator(
@@ -164,7 +188,18 @@ const ApplicationStack = createStackNavigator(
         };
       }
     },
-  },
+  }, {
+    initialRouteName: 'Applications',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#147efb',
+      },
+      headerTintColor: '#dff3fd',
+      headerTitleStyle: {
+        fontFamily: 'raleway-regular'
+      }
+    }
+  }
 );
 
 const AccountStack = createStackNavigator(
@@ -190,7 +225,7 @@ const AccountStack = createStackNavigator(
     initialRouteName: 'Account',
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#3f51b5',
+        backgroundColor: '#147efb',
       },
       headerTintColor: '#dff3fd',
       headerTitleStyle: {

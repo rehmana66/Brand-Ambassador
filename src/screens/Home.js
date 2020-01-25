@@ -70,6 +70,7 @@ class Home extends Component {
 
     componentDidMount() {
         Auth.currentAuthenticatedUser().then((data) => {
+            //console.log(data)
             if (data) {
                 const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
                     (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
