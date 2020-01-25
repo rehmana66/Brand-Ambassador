@@ -1,4 +1,4 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = `subscription OnCreateUser {
@@ -37,6 +37,16 @@ export const onCreateUser = `subscription OnCreateUser {
         job
         status
         date
+      }
+      nextToken
+    }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
       }
       nextToken
     }
@@ -82,6 +92,16 @@ export const onUpdateUser = `subscription OnUpdateUser {
       }
       nextToken
     }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -124,6 +144,46 @@ export const onDeleteUser = `subscription OnDeleteUser {
       }
       nextToken
     }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateReviews = `subscription OnCreateReviews {
+  onCreateReviews {
+    id
+    employer_id
+    user_id
+    review
+    rating
+  }
+}
+`;
+export const onUpdateReviews = `subscription OnUpdateReviews {
+  onUpdateReviews {
+    id
+    employer_id
+    user_id
+    review
+    rating
+  }
+}
+`;
+export const onDeleteReviews = `subscription OnDeleteReviews {
+  onDeleteReviews {
+    id
+    employer_id
+    user_id
+    review
+    rating
   }
 }
 `;
@@ -214,6 +274,9 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -278,6 +341,9 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -346,6 +412,9 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -410,6 +479,9 @@ export const onCreateJob = `subscription OnCreateJob {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -491,6 +563,9 @@ export const onUpdateJob = `subscription OnUpdateJob {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     name
     employees {
@@ -568,6 +643,9 @@ export const onDeleteJob = `subscription OnDeleteJob {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -824,6 +902,9 @@ export const onCreateApplication = `subscription OnCreateApplication {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -893,6 +974,9 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -960,6 +1044,9 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }

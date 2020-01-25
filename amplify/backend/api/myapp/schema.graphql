@@ -10,6 +10,15 @@ type User @model {
   resume: Resume @connection
   jobs: [UserJobs] @connection(name: "userjobs")
   apply: [Application] @connection(name: "userApplications")
+  reviews: [Reviews] @connection
+}
+
+type Reviews @model {
+  id: ID!
+  employer_id: ID!
+  user_id: ID!
+  review: String
+  rating: Int
 }
 
 type Location @model {
@@ -27,7 +36,7 @@ type Resume @model {
   resume_key: String
 }
 
-type UserJobs @model (queries: null){
+type UserJobs @model (queries: null) {
   id: ID!
   userID: User @connection(name: "userjobs")
   jobID: Job @connection(name: "employees")

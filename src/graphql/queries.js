@@ -1,4 +1,4 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const getUser = `query GetUser($id: ID!) {
@@ -40,6 +40,16 @@ export const getUser = `query GetUser($id: ID!) {
       }
       nextToken
     }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -76,6 +86,36 @@ export const listUsers = `query ListUsers(
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getReviews = `query GetReviews($id: ID!) {
+  getReviews(id: $id) {
+    id
+    employer_id
+    user_id
+    review
+    rating
+  }
+}
+`;
+export const listReviewss = `query ListReviewss(
+  $filter: ModelReviewsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listReviewss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      employer_id
+      user_id
+      review
+      rating
     }
     nextToken
   }
@@ -161,6 +201,9 @@ export const getJob = `query GetJob($id: ID!) {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -379,6 +422,9 @@ export const getApplication = `query GetApplication($id: ID!) {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -439,9 +485,6 @@ export const listApplications = `query ListApplications(
         id
         name
         date
-        details{
-          rate
-        }
       }
     }
     nextToken

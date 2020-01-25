@@ -1,4 +1,4 @@
-/* eslint-disable */
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
@@ -37,6 +37,16 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
         job
         status
         date
+      }
+      nextToken
+    }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
       }
       nextToken
     }
@@ -82,6 +92,16 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       }
       nextToken
     }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -124,6 +144,46 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       }
       nextToken
     }
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createReviews = `mutation CreateReviews($input: CreateReviewsInput!) {
+  createReviews(input: $input) {
+    id
+    employer_id
+    user_id
+    review
+    rating
+  }
+}
+`;
+export const updateReviews = `mutation UpdateReviews($input: UpdateReviewsInput!) {
+  updateReviews(input: $input) {
+    id
+    employer_id
+    user_id
+    review
+    rating
+  }
+}
+`;
+export const deleteReviews = `mutation DeleteReviews($input: DeleteReviewsInput!) {
+  deleteReviews(input: $input) {
+    id
+    employer_id
+    user_id
+    review
+    rating
   }
 }
 `;
@@ -214,6 +274,9 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -278,6 +341,9 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -346,6 +412,9 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -410,6 +479,9 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -491,6 +563,9 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     name
     employees {
@@ -568,6 +643,9 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
@@ -824,6 +902,9 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -893,6 +974,9 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
       apply {
         nextToken
       }
+      reviews {
+        nextToken
+      }
     }
     jobID {
       id
@@ -960,6 +1044,9 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         nextToken
       }
       apply {
+        nextToken
+      }
+      reviews {
         nextToken
       }
     }
