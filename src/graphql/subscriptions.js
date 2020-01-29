@@ -47,6 +47,7 @@ export const onCreateUser = `subscription OnCreateUser {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -99,6 +100,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -151,6 +153,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -162,8 +165,43 @@ export const onCreateReviews = `subscription OnCreateReviews {
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -172,8 +210,43 @@ export const onUpdateReviews = `subscription OnUpdateReviews {
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -182,8 +255,43 @@ export const onDeleteReviews = `subscription OnDeleteReviews {
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -308,6 +416,9 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -377,6 +488,9 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -446,6 +560,9 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -530,6 +647,17 @@ export const onCreateJob = `subscription OnCreateJob {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -612,6 +740,17 @@ export const onUpdateJob = `subscription OnUpdateJob {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -694,6 +833,17 @@ export const onDeleteJob = `subscription OnDeleteJob {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -730,6 +880,9 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -774,6 +927,9 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -818,6 +974,9 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -936,6 +1095,9 @@ export const onCreateApplication = `subscription OnCreateApplication {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }
@@ -1008,6 +1170,9 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }
@@ -1080,6 +1245,9 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }

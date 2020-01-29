@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
-    FlatList
+    FlatList, SafeAreaView
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -27,6 +27,23 @@ const GETUSER = `
         }
     } 
 }`;
+
+const GETREVIEWS = `
+    query listReviews($ID: ID!) {
+        listReviewss(filter: {user_id: {eq: $ID}}) {
+        items { id employer_id review rating date
+            job{ id name 
+                employer {
+                id fullName
+                }
+                details {
+                id misc title desc rate body
+                }
+            }
+        }
+        }
+    }
+`
 
 const AccountList = [
     {
@@ -60,7 +77,10 @@ class Account extends Component {
     state = {
         image: require("../../../assets/profile/profile.jpg"),
         user: null,
-        isLoaded: false
+        isLoaded: false,
+        rating: 0,
+        reviews: 0,
+        reviewsData: null,
     };
     
     pickImage = async () => {
@@ -94,6 +114,20 @@ class Account extends Component {
 
     componentDidMount() {
         this.setState({isLoaded: true})
+
+        API.graphql(graphqlOperation(GETREVIEWS, {ID: USERID.id})).then( (reviews) => {
+            data = reviews.data.listReviewss.items;
+            len = Object.keys(data).length;
+            if (len != 0)  {
+                counter = 0;
+                for (key in data) {
+                     counter += data[key].rating;
+                }
+                this.setState({rating: counter/len, reviews: len, reviewsData: data})
+            }}
+        ).catch(err=> console.log(err));
+        
+
         /*
         Auth.currentAuthenticatedUser().then((data) => {
             if (data) {
@@ -104,25 +138,25 @@ class Account extends Component {
     };
 
     accountProcess(value) {
-        console.log(value)
+        const {navigation } = this.props
+        const {reviewsData, reviews, rating } = this.state
         switch(value) {
             case "Logout":
                 this.logout();
               break;
             case "About Brand Ambassadors":
-                this.props.navigation.navigate('About');
+                navigation.navigate('About');
               break;
             case "Account & Settings":
-                this.props.navigation.navigate('Settings');
+                navigation.navigate('Settings');
                 break;
             case "Reviews":
-                this.props.navigation.navigate('Reviews');
+                navigation.navigate('Reviews', {data: reviewsData, reviews: reviews, rating: rating});
                 break;
             case "Feedback & Support":
-                this.props.navigation.navigate('Feedback');
+                navigation.navigate('Feedback');
                 break;
             default:
-              // code block
           }
     };
     
@@ -151,7 +185,7 @@ class Account extends Component {
             let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
             USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
             return (
-                <View style={styles.container}>
+                <SafeAreaView style={styles.container}>
                     <View style = {styles.profileContainer}>
                         
                         <View style = {{flex: 1, marginLeft: 10}}>
@@ -166,8 +200,8 @@ class Account extends Component {
                                 <Text h5 style={{color: 'grey'}} >{phone}</Text>
                             </View>
                             <View style={{marginTop: 5, marginLeft: 10, flexDirection: 'row'}}>
-                                <StarRating disabled={true} maxStars={5} rating={4} starSize={10}></StarRating>
-                                <Text style={{color: 'grey', fontSize: 10, marginLeft: 5}}>400/500 ratings</Text>
+                                <StarRating disabled={true} maxStars={5} rating={this.state.rating} starSize={10}></StarRating>
+                                <Text style={{color: 'grey', fontSize: 10, marginLeft: 5}}>{this.state.reviews} ratings</Text>
                             </View>
                         </View>
                        
@@ -187,7 +221,7 @@ class Account extends Component {
                     </ScrollView>
                     
                     </View>
-                </View>
+                </SafeAreaView>
             );
         }
     }

@@ -96,7 +96,7 @@ class Shift extends Component {
                     Alert.alert('Application Status', 'Application sent!')   
                     
                 } else {
-                    Alert.alert('Application Status', 'Application is processing!') 
+                    Alert.alert('Application Status', 'You have already applied!') 
                 }
             }
         ).catch(err => console.log(err));

@@ -212,7 +212,7 @@ const AccountStack = createStackNavigator(
       screen: Account,
       navigationOptions: ({ navigation }) => {
         return {
-          headerTitle: 'Account Settings',
+          headerTitle: 'Account Settings'
         };
       }
     },
@@ -233,15 +233,15 @@ const AccountStack = createStackNavigator(
       },
     },
     Reviews: {
-      screen: About,
+      screen: Reviews,
       navigationOptions: ({ navigation }) => {
         return {
-          title: "Job Reviews",
+          title: "Job Reviews"
         };
       },
     },
     Settings: {
-      screen: About,
+      screen: Settings,
       navigationOptions: ({ navigation }) => {
         return {
           title: "Account Settings",
@@ -249,7 +249,7 @@ const AccountStack = createStackNavigator(
       },
     },
     Feedback: {
-      screen: About,
+      screen: Feedback,
       navigationOptions: ({ navigation }) => {
         return {
           title: "Provide Feedback",
