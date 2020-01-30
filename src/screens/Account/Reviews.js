@@ -22,7 +22,8 @@ class Reviews extends Component {
         four: 0,
         three: 0,
         two: 0,
-        one: 0
+        one: 0,
+        image: require("../../../assets/profile/profile.jpg"),
     };
 
     componentDidMount() {
@@ -94,34 +95,70 @@ class Reviews extends Component {
             } else {
                 return (
                     <SafeAreaView style={styles.container}>
-                        <View style={{flex: 1}}>
-                            <View style={{flex: 1, 
-                            marginBottom: 25, marginLeft: 25, marginRight: 25, marginTop: 25,
-                            borderRadius: 12, borderColor: '#c5c7c4', borderWidth: 1, flexDirection: 'row'
-                            }}>
-                                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: '#c5c7c4'}}>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <Text style={{fontWeight: '300', fontSize: 40}}>{rating}</Text>
-                                        <Text style={{fontWeight: '300', alignSelf: 'flex-end', marginBottom: 5, fontSize: 20}}>/5</Text>
+                        <ScrollView scrollEventThrottle={16}>
+                            <View style={{flex: 1,}}>
+                            
+                                <View style={styles.reviewBox}>
+                                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: '#c5c7c4'}}>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <Text style={{fontWeight: '300', fontSize: 40}}>{rating}</Text>
+                                            <Text style={{fontWeight: '300', alignSelf: 'flex-end', marginBottom: 5, fontSize: 20}}>/5</Text>
+                                        </View>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <StarRating disabled={true} maxStars={5} rating={rating} starSize={30}
+                                            emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
+                                        </View>
+                                        <Text style={{fontWeight: '300', color: '#666666', marginTop: 5}}>{reviews} reviews</Text>
                                     </View>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <StarRating disabled={true} maxStars={5} rating={rating} starSize={30}
-                                        emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
+                                    <View style={{flex: 1, marginTop: 15, marginBottom: 15 }}>
+                                    {this.progressBar(5, five, total)}
+                                    {this.progressBar(4, four, total)}
+                                    {this.progressBar(3, three, total)}
+                                    {this.progressBar(2, two, total)}
+                                    {this.progressBar(1, one, total)}
                                     </View>
-                                    <Text style={{fontWeight: '300', color: '#666666', marginTop: 5}}>{reviews} reviews</Text>
                                 </View>
-                                <View style={{flex: 1, marginTop: 15 }}>
-                                   {this.progressBar(5, five, total)}
-                                   {this.progressBar(4, four, total)}
-                                   {this.progressBar(3, three, total)}
-                                   {this.progressBar(2, two, total)}
-                                   {this.progressBar(1, one, total)}
-                                </View>
+                                
                             </View>
-                        </View>
-                        <View  style={{flex:3}}>
-
-                        </View>
+                            <View  style={{flex: 1, marginBottom: 10, backgroundColor: 'blue'}}>
+                                <View style={{flex: 1, backgroundColor: 'red', flexDirection: 'row', marginLeft: 25, marginRight: 25, marginTop: 5}}>
+                                    <Image source = {this.state.image} style = {styles.imgStyle}/>
+                                    <View style={{justifyContent: 'flex-start', marginLeft: 10, marginBottom: 15}}>
+                                        <Text style={{marginBottom: 3}}>name here</Text>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <StarRating disabled={true} maxStars={5} rating={rating} starSize={14}
+                                            emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
+                                        </View>
+                                        <Text style={{marginTop: 3}}>Date here</Text>
+                                    </View>
+                                </View>
+                                <View style={{flex: 3}}>
+                                    <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25, backgroundColor: 'green'}}>
+                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a 
+                                        </Text>
+                                </View>
+                                <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
+                            </View>
+                            <View  style={{flex: 1, marginBottom: 10, backgroundColor: 'blue'}}>
+                                <View style={{flex: 1, backgroundColor: 'red', flexDirection: 'row', marginLeft: 25, marginRight: 25, marginTop: 5}}>
+                                    <Image source = {this.state.image} style = {styles.imgStyle}/>
+                                    <View style={{justifyContent: 'flex-start', marginLeft: 10, marginBottom: 15}}>
+                                        <Text style={{marginBottom: 3}}>name here</Text>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <StarRating disabled={true} maxStars={5} rating={rating} starSize={14}
+                                            emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
+                                        </View>
+                                        <Text style={{marginTop: 3}}>Date here</Text>
+                                    </View>
+                                </View>
+                                <View style={{flex: 3}}>
+                                    <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25, backgroundColor: 'green'}}>
+                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a 
+                                        </Text>
+                                </View>
+                                <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
+                            </View>
+                        </ScrollView>
                     </SafeAreaView>
                 );
             }
@@ -144,7 +181,8 @@ const styles = StyleSheet.create({
         marginTop: 25,
         borderRadius: 12, 
         borderColor: '#c5c7c4', 
-        borderWidth: 1
+        borderWidth: 1,
+        flexDirection: 'row'
     },
     starBar: {
         backgroundColor: '#f2b01e', 
@@ -157,5 +195,10 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 10, 
         borderTopRightRadius: 10,
         maxWidth: 100
-    }
+    },
+    imgStyle: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+    },
 });
