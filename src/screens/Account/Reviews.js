@@ -49,9 +49,45 @@ class Reviews extends Component {
 
         this.setState({
             isLoaded: true, data: data, reviews: reviews, rating: rating,
-            one: onestar, two: twostar, three: threestar, four: four, five: fivestar
+            one: onestar, two: twostar, three: threestar, four: fourstar, five: fivestar
         });
+        this.listReview;
     }
+
+
+    listReview = (key, item) => {
+        //console.log(key, item)
+      //  var utcDate = '2011-06-29T16:52:48.000Z';  // ISO-8601 formatted date returned from server
+    //        var localDate = new Date(utcDate);
+
+        date = item.date;
+        const local = new Date(date).toLocaleDateString();
+
+        return (
+            <View key={key} style={{flex: 1, marginBottom: 10,}}>
+            <View style={{flex: 1, flexDirection: 'row', marginLeft: 25, marginRight: 25, marginTop: 5}}>
+                <Image source = {this.state.image} style = {styles.imgStyle}/>
+                <View style={{justifyContent: 'flex-start', marginLeft: 10, marginBottom: 15}}>
+                    <Text style={{marginBottom: 3}}>{item.job.employer.fullName}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <StarRating disabled={true} maxStars={5} rating={item.rating} starSize={14}
+                        emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
+                    </View>
+                    <Text style={{marginTop: 3}}>{local}</Text>
+                </View>
+            </View>
+            <View style={{flex: 3}}>
+                <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25,}}>
+                    {item.review}
+                </Text>
+            </View>
+            <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
+        </View>
+        );
+
+    
+    }
+
 
     noReviews = () => {
         return (
@@ -87,6 +123,7 @@ class Reviews extends Component {
         const {isLoaded, data, rating, reviews } = this.state;
         const { one, two, three, four, five } = this.state;
         const total = one + two + three + four + five;
+        //console.log(data)
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
@@ -120,44 +157,7 @@ class Reviews extends Component {
                                 </View>
                                 
                             </View>
-                            <View  style={{flex: 1, marginBottom: 10, backgroundColor: 'blue'}}>
-                                <View style={{flex: 1, backgroundColor: 'red', flexDirection: 'row', marginLeft: 25, marginRight: 25, marginTop: 5}}>
-                                    <Image source = {this.state.image} style = {styles.imgStyle}/>
-                                    <View style={{justifyContent: 'flex-start', marginLeft: 10, marginBottom: 15}}>
-                                        <Text style={{marginBottom: 3}}>name here</Text>
-                                        <View style={{flexDirection: 'row'}}>
-                                            <StarRating disabled={true} maxStars={5} rating={rating} starSize={14}
-                                            emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
-                                        </View>
-                                        <Text style={{marginTop: 3}}>Date here</Text>
-                                    </View>
-                                </View>
-                                <View style={{flex: 3}}>
-                                    <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25, backgroundColor: 'green'}}>
-                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a 
-                                        </Text>
-                                </View>
-                                <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
-                            </View>
-                            <View  style={{flex: 1, marginBottom: 10, backgroundColor: 'blue'}}>
-                                <View style={{flex: 1, backgroundColor: 'red', flexDirection: 'row', marginLeft: 25, marginRight: 25, marginTop: 5}}>
-                                    <Image source = {this.state.image} style = {styles.imgStyle}/>
-                                    <View style={{justifyContent: 'flex-start', marginLeft: 10, marginBottom: 15}}>
-                                        <Text style={{marginBottom: 3}}>name here</Text>
-                                        <View style={{flexDirection: 'row'}}>
-                                            <StarRating disabled={true} maxStars={5} rating={rating} starSize={14}
-                                            emptyStarColor="#f2b01e" fullStarColor="#f2b01e"></StarRating>
-                                        </View>
-                                        <Text style={{marginTop: 3}}>Date here</Text>
-                                    </View>
-                                </View>
-                                <View style={{flex: 3}}>
-                                    <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25, backgroundColor: 'green'}}>
-                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a 
-                                        </Text>
-                                </View>
-                                <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
-                            </View>
+                            {data.map((item, key) => this.listReview(key, item) )}
                         </ScrollView>
                     </SafeAreaView>
                 );

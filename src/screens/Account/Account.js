@@ -182,8 +182,10 @@ class Account extends Component {
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
-            let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
-            USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
+            
+                let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
+                USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
+            
             return (
                 <SafeAreaView style={styles.container}>
                     <View style = {styles.profileContainer}>
