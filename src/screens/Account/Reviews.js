@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicato
     FlatList, SafeAreaView
 } from 'react-native';
 import * as Progress from 'react-native-progress';
+import ViewMoreText from 'react-native-view-more-text';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -10,6 +11,9 @@ import CachedImage from '../../components/CachedImage';
 import { ListItem, SearchBar, Divider, Header, Text } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
+
+
+
 
 class Reviews extends Component {
 
@@ -54,6 +58,17 @@ class Reviews extends Component {
         this.listReview;
     }
 
+    renderViewMore(onPress){
+        return(
+          <Text onPress={onPress} style={styles.readMore}>Read more</Text>
+        )
+    };
+
+    renderViewLess(onPress){
+        return(
+          <Text onPress={onPress} style={styles.readMore}>Read less</Text>
+        )
+    };
 
     listReview = (key, item) => {
         //console.log(key, item)
@@ -77,9 +92,17 @@ class Reviews extends Component {
                 </View>
             </View>
             <View style={{flex: 3}}>
-                <Text style={{marginBottom: 10, marginLeft: 25, marginRight: 25,}}>
-                    {item.review}
-                </Text>
+                
+                <ViewMoreText numberOfLines={3}
+                renderViewMore={this.renderViewMore} renderViewLess={this.renderViewLess}
+                textStyle={{marginBottom: 10, marginLeft: 25, marginRight: 25,}}>
+                    <Text style={{}}>
+                        {item.review} askjhajkshjakhsjkahsjkahskjahsjahskjahsjkahjkshajkshakjshajkshakjhsjakshakjshakjshakjshajksh
+                        asdhjsjkadhkjashdkjshadkjsahkdjshadjkhaskjdhaskjdhkjashdskajhdskjdh
+                        aksdjklsajdlkashdlkasjdlkjasldkjasl
+                        ashdjkhsadkjhaskjdhkj
+                    </Text>
+                </ViewMoreText>
             </View>
             <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 25, marginRight: 25}} />
         </View>
@@ -197,8 +220,15 @@ const styles = StyleSheet.create({
         maxWidth: 100
     },
     imgStyle: {
-        height: 40,
-        width: 40,
-        borderRadius: 20,
+        height: 50,
+        width: 50,
+        borderRadius: 25,
     },
+    readMore: {
+        marginTop: 5, 
+        marginLeft: 25, 
+        marginRight: 25, 
+        marginBottom: 10, 
+        color: '#147efb'
+    }
 });

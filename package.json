@@ -34,6 +34,7 @@
     "react-native-progress": "^4.0.3",
     "react-native-star-rating": "^1.1.0",
     "react-native-swiper": "^1.5.14",
+    "react-native-view-more-text": "^2.1.0",
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.1",
     "reinput": "^3.7.0"
