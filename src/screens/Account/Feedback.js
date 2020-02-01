@@ -10,17 +10,29 @@ import { ListItem, SearchBar, Divider, Header, Text } from 'react-native-element
 import StarRating from 'react-native-star-rating';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
+
 class Feedback extends Component {
 
     state = {
         isLoaded: false
     };
+
+    componentDidMount() {
+        this.setState({isLoaded: true})
+    }
+
     render() {
         const {isLoaded } = this.state
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
-            return <View></View>
+            return (
+                <View style={styles.container}>
+                    <ScrollView scrollEventThrottle={16}>
+                    
+                    </ScrollView>
+                </View>
+            );
         }
     }
 }
@@ -31,5 +43,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
+        marginBottom: 40
     },
 });
