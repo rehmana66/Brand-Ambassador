@@ -54,6 +54,7 @@ const GETUSER = `
 }`;
 
 global.USERID = {};
+global.iOSBlue = '#147efb';
 
 class Home extends Component {
 
