@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
-    FlatList, Alert
+    FlatList, Alert, SafeAreaView
 } from 'react-native';
 import TextArea from "@freakycoder/react-native-text-area";
 import * as ImagePicker from 'expo-image-picker'; 
@@ -45,7 +45,7 @@ class Feedback extends Component {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
             return (
-                <View style={styles.container}>
+                <SafeAreaView style={styles.container}>
                     <View style={{flex: 1, marginTop: 25, alignItems: 'center',}}>
                         <Text h4 style= {{fontWeight: '300'}}>What do you think of EZshift?</Text>
                         <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center'}}>
@@ -67,7 +67,7 @@ class Feedback extends Component {
                         <Button title="Submit" raised containerStyle={{marginTop: 30}} buttonStyle={{height: 50}}
                         onPress={() => this.submitFeedback() }></Button>
                     </View>
-                </View>
+                </SafeAreaView>
             );
         }
     }

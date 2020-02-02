@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
-    FlatList
+    FlatList, SafeAreaView
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -34,7 +34,7 @@ class About extends Component {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
             return (
-                <View style={styles.container}>
+                <SafeAreaView style={styles.container}>
                     <ScrollView scrollEventThrottle={16}>
                     <View style={{flex: 1, marginTop: 25, marginBottom: 10}}>
                         <Text h3 style={{fontWeight: '300', textAlign: 'center'}}>Brand Ambassadors</Text>
@@ -47,7 +47,7 @@ class About extends Component {
                         </Text>
                     </View>
                     </ScrollView>
-                </View>
+                </SafeAreaView>
             );
         }
     }
