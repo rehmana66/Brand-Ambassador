@@ -1272,7 +1272,8 @@ export const createDetails = `mutation CreateDetails($input: CreateDetailsInput!
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1299,7 +1300,8 @@ export const updateDetails = `mutation UpdateDetails($input: UpdateDetailsInput!
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1326,7 +1328,8 @@ export const deleteDetails = `mutation DeleteDetails($input: DeleteDetailsInput!
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1336,7 +1339,8 @@ export const deleteDetails = `mutation DeleteDetails($input: DeleteDetailsInput!
 export const createJobDates = `mutation CreateJobDates($input: CreateJobDatesInput!) {
   createJobDates(input: $input) {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title
@@ -1363,7 +1367,8 @@ export const createJobDates = `mutation CreateJobDates($input: CreateJobDatesInp
 export const updateJobDates = `mutation UpdateJobDates($input: UpdateJobDatesInput!) {
   updateJobDates(input: $input) {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title
@@ -1390,7 +1395,8 @@ export const updateJobDates = `mutation UpdateJobDates($input: UpdateJobDatesInp
 export const deleteJobDates = `mutation DeleteJobDates($input: DeleteJobDatesInput!) {
   deleteJobDates(input: $input) {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title

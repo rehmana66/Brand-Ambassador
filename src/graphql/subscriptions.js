@@ -1272,7 +1272,8 @@ export const onCreateDetails = `subscription OnCreateDetails {
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1299,7 +1300,8 @@ export const onUpdateDetails = `subscription OnUpdateDetails {
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1326,7 +1328,8 @@ export const onDeleteDetails = `subscription OnDeleteDetails {
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -1336,7 +1339,8 @@ export const onDeleteDetails = `subscription OnDeleteDetails {
 export const onCreateJobDates = `subscription OnCreateJobDates {
   onCreateJobDates {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title
@@ -1363,7 +1367,8 @@ export const onCreateJobDates = `subscription OnCreateJobDates {
 export const onUpdateJobDates = `subscription OnUpdateJobDates {
   onUpdateJobDates {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title
@@ -1390,7 +1395,8 @@ export const onUpdateJobDates = `subscription OnUpdateJobDates {
 export const onDeleteJobDates = `subscription OnDeleteJobDates {
   onDeleteJobDates {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title

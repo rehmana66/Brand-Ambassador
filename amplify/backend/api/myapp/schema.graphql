@@ -92,6 +92,7 @@ type Details @model {
 
 type JobDates @model {
   id: ID!
-  date: AWSDateTime
+  start_date: AWSDateTime
+  end_date: AWSDateTime
   details: Details @connection(name: "jobdate")
 }

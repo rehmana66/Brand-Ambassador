@@ -573,7 +573,8 @@ export const getDetails = `query GetDetails($id: ID!) {
     dates {
       items {
         id
-        date
+        start_date
+        end_date
       }
       nextToken
     }
@@ -613,7 +614,8 @@ export const listDetailss = `query ListDetailss(
 export const getJobDates = `query GetJobDates($id: ID!) {
   getJobDates(id: $id) {
     id
-    date
+    start_date
+    end_date
     details {
       id
       title
@@ -645,7 +647,8 @@ export const listJobDatess = `query ListJobDatess(
   listJobDatess(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      date
+      start_date
+      end_date
       details {
         id
         title
