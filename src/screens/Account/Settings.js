@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
-    FlatList
+    FlatList, TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import PhoneInput from 'react-native-phone-input';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import CachedImage from '../../components/CachedImage';
-import { ListItem, SearchBar, Divider, Header, Text, Button, ButtonGroup } from 'react-native-elements';
+import { ListItem, SearchBar, Divider, Input, Text, Button, ButtonGroup } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-navigation';
@@ -23,11 +23,15 @@ const GETUSER = `
               id city country isoCountryCode
               postalCode region street
             }
-            jobs { nextToken }
-            apply { nextToken }
         }
     } 
 }`;
+
+const DismissKeyboard = ({children}) => (
+    <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
+        {children}
+    </TouchableWithoutFeedback>
+);
 
 class Settings extends Component {
 
@@ -49,6 +53,8 @@ class Settings extends Component {
             isValidPhoneNumber: false,
             countryCode: '',
             isoCode: '',
+
+            icon: require("../../../assets/profile/profile.jpg"),
         };
     }
     selectCountry(country) {
@@ -89,6 +95,8 @@ class Settings extends Component {
         this.setState({ cca2: cca2 });
     };
 
+
+
     render() {
         
         const {isLoaded, user, count,
@@ -104,36 +112,52 @@ class Settings extends Component {
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
-            //console.log(user)
+            console.log(user)
             console.log(isValidPhoneNumber, countryCode, isoCode)
             return (
-                <SafeAreaView style={styles.container}>
-                    <View style={styles.phoneForm}>
-    
-                        <PhoneInput
-                            ref={this.setPhoneRef}
-                            style={styles.phoneInput}
-                            onPressFlag={this.onPressFlag}
-                            initialCountry={initialCountry.toLowerCase()}
-                            autoFormat
-                            textProps={{ placeholder, keyboardType: 'phone-pad', textContentType: 'telephoneNumber',
-                                color:  (initialValue && count==0) ? 'green' : (!isValidPhoneNumber) ? 'red' : 'green'}}
-                            value={initialValue}
-                            onChangePhoneNumber={this.handlesOnInputChange}
-                            onSelectCountry={(cca2) => this.handlesOnSelectCountry(cca2)}>
-                            {cca2}
-                        </PhoneInput>
-                        <View>
-                            <Text>
-                            Phone number is valid:{' '}
-                            {!isValidPhoneNumber ? 'NOT A VALID NUMBER' : 'VALID!'}
-                            </Text>
-                            <Text>country code: {countryCode || ''}</Text>
-                            <Text>iso code: {isoCode || ''}</Text>
-                        </View>
-                    </View>
-                </SafeAreaView>
                 
+                <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                    <SafeAreaView style={{flex: 1}}>
+                        <View style={{borderColor: '#EEEEEE', borderWidth: 1, borderRadius : 1, backgroundColor: '#F8F8F8'}}>
+                            <Text style={{marginLeft: 15, fontSize: 15, fontWeight: '500', marginTop: 5, marginBottom: 5}}>Personal Details</Text>
+                        </View>
+                        <View style={styles.container}>
+                            <View style={{flex: 1,  justifyContent: 'center'}}>
+                                <View style={{borderColor: '#EEEEEE', borderWidth: 1, borderRadius : 1}}>
+                                    <Input style={{}} disabledInputStyle
+                                        placeholder='INPUT WITH CUSTOM ICON'
+                                        leftIcon={<CachedImage style={{height: 25, width: 25}} source = {require("../../../assets/profile/account.png")}/>}
+                                        leftIconContainerStyle={{}}
+                                        />
+                                        
+                               
+
+                                </View>
+                            </View>
+                            <View style={{flex: 1, backgroundColor: 'green'}}>
+                                <PhoneInput
+                                        ref={this.setPhoneRef}
+                                        style={styles.phoneInput}
+                                        onPressFlag={this.onPressFlag}
+                                        initialCountry={initialCountry.toLowerCase()}
+                                        autoFormat
+                                        textProps={{ placeholder, keyboardType: 'phone-pad', textContentType: 'telephoneNumber',
+                                            color:  (initialValue && count==0) ? 'green' : (!isValidPhoneNumber) ? 'red' : 'green'}}
+                                        value={initialValue}
+                                        onChangePhoneNumber={this.handlesOnInputChange}
+                                        onSelectCountry={(cca2) => this.handlesOnSelectCountry(cca2)}>
+                                        {cca2}
+                                    </PhoneInput>
+                                <Text>
+                                Phone number is valid:{' '}
+                                {!isValidPhoneNumber ? 'NOT A VALID NUMBER' : 'VALID!'}
+                                </Text>
+                                <Text>country code: {countryCode || ''}</Text>
+                                <Text>iso code: {isoCode || ''}</Text>
+                            </View>
+                        </View>
+                    </SafeAreaView>
+                </TouchableWithoutFeedback>
             );
         }
     }
@@ -145,16 +169,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        marginLeft: 25,
-        marginRight: 25,
-        justifyContent: 'center'
+
     },
     phoneInput: {
         height: 50,
+        alignContent: 'stretch',
         backgroundColor: '#FFFFFF',
-        paddingHorizontal: 10,
-        borderColor: '#EEEEEE',
-        borderWidth: 1,
-        borderRadius: 1,
+        marginLeft: 25
     }
 });
