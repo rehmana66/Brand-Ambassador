@@ -5,7 +5,7 @@ import {
     Button,
     Text,
     Dimensions,
-    ScrollView
+    ScrollView,
     ActivityIndicator
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
@@ -122,10 +122,16 @@ class Home extends Component {
             if (data) {
                 const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
                     (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
-                );
+                ).then(() => {
+                    const getJobs = API.graphql(graphqlOperation(GETUSERJOBS, {id: this.state.user.id})).then(
+                        (info) => this.setState({userJobs: info.data.getUser.jobs}))
+                        .then(this.loadJobs.bind(this));
+                    }
+                    );
+                /*
                 const getJobs = API.graphql(graphqlOperation(GETUSERJOBS, {id: "aed51214-b88d-4886-82d6-0b26e5654650"})).then(
                     (info) => this.setState({userJobs: info.data.getUser.jobs}))
-                    .then(this.loadJobs.bind(this));
+                    .then(this.loadJobs.bind(this));*/
             }}).catch(err => console.log(err));
         //console.log(this.userJobs);
         //this.loadJobs();
@@ -200,7 +206,7 @@ class Home extends Component {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>
         } else {
             USERID = user;
-            //console.log(user.id)
+            console.log(user.id)
             //console.log("USERID: ", USERID);
             //<Button onPress={this.logout} title="Sign Out"/>
             //<Button onPress={this.addUser} title="List Jobs"/>
