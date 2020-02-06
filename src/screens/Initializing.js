@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native'
 
 import { Auth } from 'aws-amplify'
@@ -11,8 +12,20 @@ import PropTypes from 'prop-types'
 
 export default class Initializing extends Component {
 
-    async componentDidMount() {
-      this.ShowAlertWithDelay
+    componentDidMount() {
+      this.ShowAlertWithDelay();
+      Auth.currentAuthenticatedUser().then((user)=> {
+        //console.log(user);
+        if (user) {
+          this.props.navigation.navigate('Home');
+        } else {
+          this.props.navigation.navigate('Login');
+        }
+      }).catch((err) => {
+        console.log("Initializing Error: ", err); 
+        this.props.navigation.navigate('Login'); 
+      })
+      /*
         try {
             const user = await Auth.currentAuthenticatedUser()
             //console.log('user: ', user.attributes);
@@ -21,9 +34,9 @@ export default class Initializing extends Component {
         } else {
             this.props.navigation.navigate('Login');
         }} catch (err) {
-            console.log('error: ', err)
+            console.log('Initializing error: ', err)
             this.props.navigation.navigate('Login');
-        }
+        }*/
     }
     _storeData = async () => {
       try {
@@ -51,10 +64,8 @@ export default class Initializing extends Component {
 
   render() {
         return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>Loading</Text>
-        </View>
-        )
+          <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>
+        );
     }
 }
 

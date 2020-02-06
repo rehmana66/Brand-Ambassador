@@ -47,6 +47,7 @@ export const getUser = `query GetUser($id: ID!) {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -99,8 +100,43 @@ export const getReviews = `query GetReviews($id: ID!) {
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -114,8 +150,14 @@ export const listReviewss = `query ListReviewss(
       id
       employer_id
       user_id
+      job {
+        id
+        name
+        date
+      }
       review
       rating
+      date
     }
     nextToken
   }
@@ -252,6 +294,17 @@ export const getJob = `query GetJob($id: ID!) {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -287,6 +340,9 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     nextToken
   }
@@ -325,6 +381,9 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -456,6 +515,9 @@ export const getApplication = `query GetApplication($id: ID!) {
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }

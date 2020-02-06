@@ -47,6 +47,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -99,6 +100,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -151,6 +153,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
         user_id
         review
         rating
+        date
       }
       nextToken
     }
@@ -162,8 +165,43 @@ export const createReviews = `mutation CreateReviews($input: CreateReviewsInput!
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -172,8 +210,43 @@ export const updateReviews = `mutation UpdateReviews($input: UpdateReviewsInput!
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -182,8 +255,43 @@ export const deleteReviews = `mutation DeleteReviews($input: DeleteReviewsInput!
     id
     employer_id
     user_id
+    job {
+      id
+      employer {
+        id
+        fullName
+        phone_number
+        user_type
+        email
+        dateOfBirth
+        gender
+      }
+      name
+      employees {
+        nextToken
+      }
+      applications {
+        nextToken
+      }
+      details {
+        id
+        title
+        body
+        desc
+        misc
+        rate
+      }
+      search {
+        nextToken
+      }
+      date
+      reviews {
+        nextToken
+      }
+    }
     review
     rating
+    date
   }
 }
 `;
@@ -308,6 +416,9 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -377,6 +488,9 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -446,6 +560,9 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     verify
   }
@@ -530,6 +647,17 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -612,6 +740,17 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -694,6 +833,17 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
       nextToken
     }
     date
+    reviews {
+      items {
+        id
+        employer_id
+        user_id
+        review
+        rating
+        date
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -730,6 +880,9 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -774,6 +927,9 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -818,6 +974,9 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
     category {
       id
@@ -936,6 +1095,9 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }
@@ -1008,6 +1170,9 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }
@@ -1080,6 +1245,9 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         nextToken
       }
       date
+      reviews {
+        nextToken
+      }
     }
   }
 }

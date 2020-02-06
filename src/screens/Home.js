@@ -6,6 +6,7 @@ import {
     Text,
     Dimensions,
     ScrollView
+    ActivityIndicator
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import Shift from "../components/Shift";
@@ -86,6 +87,7 @@ const GETUSERJOBS = `query getUserJobs($id: ID!) {
   }`;
 
 global.USERID = {};
+global.iOSBlue = '#147efb';
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 "July", "Aug", "Sept", "Oct", "Nov", "Dec"
@@ -195,7 +197,7 @@ class Home extends Component {
     render() {
         const { isLoaded, user } = this.state;
         if (isLoaded == false) {
-            return <View></View>
+            return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>
         } else {
             USERID = user;
             //console.log(user.id)

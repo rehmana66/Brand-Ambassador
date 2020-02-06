@@ -133,7 +133,7 @@ class Search extends Component {
                             </View>
                             <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
                                 <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
-                                <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
+                                <View style={{marginTop: 10, justifyContent: 'space-between'}}>
                                     
                                 </View>
                             </View>

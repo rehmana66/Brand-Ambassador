@@ -17,8 +17,10 @@ type Reviews @model {
   id: ID!
   employer_id: ID!
   user_id: ID!
+  job: Job @connection
   review: String
   rating: Int
+  date: AWSDateTime
 }
 
 type Location @model {
@@ -52,6 +54,7 @@ type Job @model {
   details: Details @connection
   search: [JobSearch] @connection(name: "jobsearch")
   date: AWSDateTime
+  reviews: [Reviews] @connection
 }
 
 type JobSearch @model {
