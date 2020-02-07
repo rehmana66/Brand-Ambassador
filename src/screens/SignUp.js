@@ -191,10 +191,6 @@ class SignUp extends Component {
         }, 50);
     }
 
-    async componentDidMount() {
-    }
-
-    
     render () {
         return (
         // Main Container
