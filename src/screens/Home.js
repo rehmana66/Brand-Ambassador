@@ -162,15 +162,28 @@ class Home extends Component {
                     this.state.testJobs.push(newObject);
                     var myDate = newObject.JobStartDate.substring(0, newObject.JobStartDate.indexOf('T'));
                     this.state.myMarkedDays.push(myDate);
-                    this.state.testJobs.sort(this.compare);
             }
         }
+        this.state.myMarkedDays.sort(this.compareMarked);
+        this.state.testJobs.sort(this.compare);
         this.createMarkedDates();
     }
 
     compare(a, b) {
         const dateA = new Date(a.JobStartDate);
         const dateB = new Date(b.JobStartDate);
+
+        let comp = 0;
+        if (dateA > dateB)
+            comp = 1;
+        else if (dateA < dateB)
+            comp = -1;
+        return comp;
+    }
+
+    compareMarked(a, b) {
+        const dateA = new Date(a);
+        const dateB = new Date(b);
 
         let comp = 0;
         if (dateA > dateB)
