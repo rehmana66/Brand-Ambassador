@@ -76,7 +76,8 @@ const GETUSERJOBS = `query getUserJobs($id: ID!) {
               rate
               dates {
                 items{
-                  date
+                  start_date
+                  end_date
                 }
               }
             }
@@ -158,23 +159,58 @@ class Home extends Component {
         for(i = 0; i < jobs['items'].length; i++){
             for(j = 0; j < jobs.items[i].jobID.details.dates['items'].length; j++){
                 var newObject = {JobID: jobs.items[i].jobID.id, JobName: jobs.items[i].jobID.name, Details: jobs.items[i].jobID.details, 
-                    Employer: jobs.items[i].jobID.employer, JobDate: jobs.items[i].jobID.details.dates.items[j].date};
+                    Employer: jobs.items[i].jobID.employer, JobStartDate: jobs.items[i].jobID.details.dates.items[j].start_date, JobEndDate: jobs.items[i].jobID.details.dates.items[j].end_date};
                     this.state.testJobs.push(newObject);
-                    var myDate = newObject.JobDate.substring(0, newObject.JobDate.indexOf('T'));
+                    var myDate = newObject.JobStartDate.substring(0, newObject.JobStartDate.indexOf('T'));
                     this.state.myMarkedDays.push(myDate);
             }
         }
+        this.state.myMarkedDays.sort(this.compareMarked);
+        this.state.testJobs.sort(this.compare);
         this.createMarkedDates();
     }
 
-    pressTest = (item) => {
-        console.log(this.state.myMarkedDays);
+    compare(a, b) {
+        const dateA = new Date(a.JobStartDate);
+        const dateB = new Date(b.JobStartDate);
+
+        let comp = 0;
+        if (dateA > dateB)
+            comp = 1;
+        else if (dateA < dateB)
+            comp = -1;
+        return comp;
+    }
+
+    compareMarked(a, b) {
+        const dateA = new Date(a);
+        const dateB = new Date(b);
+
+        let comp = 0;
+        if (dateA > dateB)
+            comp = 1;
+        else if (dateA < dateB)
+            comp = -1;
+        return comp;
+    }
+
+    pressTest(jobDetails) {
+        const {navigation} = this.props
+        navigation.navigate('Details', {jobDetails: jobDetails});
+        console.log("mhm");
         //console.log(item);
+    }
+
+    convertToTwelve = (time) => {
+        var hour = +time.substr(0, 2);
+        var modHour = hour % 12 || 12;
+        var ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
+        return modHour + time.substr(2, 3) + " " + ampm;
     }
 
     scrollTest = (day) => {
         var pressedDay = day.dateString;
-        console.log(pressedDay)
+        //console.log(pressedDay)
         if (this.state.myMarkedDays.includes(pressedDay)){
             var indexOfDate = this.state.myMarkedDays.indexOf(pressedDay)
             this.flatListRef.scrollToIndex({animated: true, index: indexOfDate, viewPosition: 0});
@@ -191,9 +227,9 @@ class Home extends Component {
             subtitle={item.Employer.fullName}
             leftElement={
             <View style={{alignItems: 'center', borderRightWidth: 2, borderRightColor: 'grey', paddingRight: 10}}>
-                <Text>{monthNames[item.JobDate.substring(6,7)-1]}</Text>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.JobDate.substring(8,10)}</Text>
-                <Text>{item.JobDate.substring(item.JobDate.indexOf('T')+1, item.JobDate.indexOf('.')-3)}</Text>
+                <Text>{monthNames[item.JobStartDate.substring(6,7)-1]}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.JobStartDate.substring(8,10)}</Text>
+                <Text>{this.convertToTwelve(item.JobStartDate.substring(item.JobStartDate.indexOf('T')+1, item.JobStartDate.indexOf('.')-3))}</Text>
             </View>}
             bottomDivider
             chevron
