@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView,
-    FlatList, TouchableWithoutFeedback, Keyboard
+    FlatList, TouchableWithoutFeedback, Keyboard, Alert
 } from 'react-native';
 import Reinput from 'reinput';
 import PhoneInput from 'react-native-phone-input';
@@ -27,6 +27,23 @@ const GETUSER = `
         }
     } 
 }`;
+
+const UPDATEUSER = `
+    mutation updateUser($id: ID!, $name: String!, $dob: AWSDate!, $gender: String!, $dob: AWSDate!, $phone: AWSPhone!){
+        updateUser(input: {
+            id: $id,
+            fullName: $name,
+            dateOfBirth: $dob,
+            gender: $gender
+            phone_number: $phone
+        }) {
+            id
+        }
+    }
+`
+//id: "c338dafc-d9cb-4766-968e-a83afbf2c70d",
+//dateOfBirth: "2020-02-18T10:30:00.000Z"
+
 
 const DismissKeyboard = ({children}) => (
     <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
@@ -57,7 +74,7 @@ class Settings extends Component {
             selectedIndex: 0,
             name: require("../../../assets/profile/account.png"),
             gender: require("../../../assets/profile/gender.png"),
-            date: "",
+            date: null,
             fullName: "",
             gen: "",
             dob: "",
@@ -65,6 +82,7 @@ class Settings extends Component {
             buttonText: "Edit",
             editColor: 'rgba(52, 52, 52, 0.1)',
             editCount: 0,
+            nameError: '',
         };
         this.updateIndex = this.updateIndex.bind(this)
     }
@@ -92,10 +110,13 @@ class Settings extends Component {
                 const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
                     (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true,
                         initialValue: info.data.listUsers.items[0].phone_number, isValidPhoneNumber: true,
-                        gen: (info.data.listUsers.items[0].gender == null) ? "" : info.data.listUsers.items[0].gender,
                         fullName: (info.data.listUsers.items[0].fullName != null) ? info.data.listUsers.items[0].fullName : "",
                         dob: (info.data.listUsers.items[0].dateOfBirth != null) ? info.data.listUsers.items[0].dateOfBirth : "Birth date",
-                        selectedIndex: (info.data.listUsers.items[0].gender == 'Male' ? 0 : info.data.listUsers.items[0].gender == 'Female' ? 1 : 2)
+                        selectedIndex: (info.data.listUsers.items[0].gender == 'Male' ? 0 : info.data.listUsers.items[0].gender == 'Female' ? 1 : 
+                                        info.data.listUsers.items[0].gender == 'Other' ? 2 : 0),
+                        gen: (info.data.listUsers.items[0].gender == null) ? "Male" : info.data.listUsers.items[0].gender,
+                        cca2: info.data.listUsers.items[0].phone_number,
+                        date: info.data.listUsers.items[0].dateOfBirth,
                         })
                 );
             }}).catch(err => console.log(err))
@@ -124,18 +145,40 @@ class Settings extends Component {
     }
 
     handleDateChange(date) {
-        this.setState({date: date, dob: new Date(date)});
-        
-        console.log(this.state.dob)
+        this.setState({date: date, dob: new Date(date).toString()});
     }
 
     updateAccount(num) {
+        const {user, fullName, isValidPhoneNumber, date, gen, cca2
+            } = this.state;
         if (num == 0) {
             this.setState({buttonText: 'Save', editColor: 'rgba(52, 52, 52, 0)', disabled: 'none'});
             return;
         } else {
-            console.log("hello")
+            if (fullName != "" && isValidPhoneNumber == true && date != null && gen != "") {
+                API.graphql(graphqlOperation(UPDATEUSER, 
+                    {id: user.id, name: fullName, phone: cca2, dob: date, gender: gen}))
+                    .then().catch(err => console.log("Updating account error: ", err));
+                    Alert.alert('Updating Account', 'Sucessful!');
+                    this.props.navigation.navigate('Account');
+            } else {
+                console.log("name: ", fullName);
+                console.log("number: ", (isValidPhoneNumber) ? "true" : "false");
+                console.log("phone: ", cca2);
+                console.log("date: ", date);
+                console.log("gender: ", gen);
+                Alert.alert('Updating Account', 'Missing one or more fields');
+            }
         }
+    }
+
+    fullNameCheck(name) {
+        if (name == "") {
+            this.setState({nameError: "Name cannot be empty"});
+        } else {
+            this.setState({nameError: ""});
+        }
+        this.setState({fullName: name});   
     }
 
     render() {
@@ -149,9 +192,8 @@ class Settings extends Component {
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
         } else {
-            console.log(user)
+            //console.log(user)
             return (
-                
                 <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
                     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
                         <View style={{borderColor: '#EEEEEE', borderWidth: 1, borderRadius : 1, backgroundColor: '#F8F8F8'}}>
@@ -169,13 +211,12 @@ class Settings extends Component {
                                     underlineColor='black'
                                     onSubmitEditing={() => { this.refs['phone'].focus() }}
                                     icon={<Image source = {this.state.name} style = {styles.imgStyle}/>}
-                                    onChangeText={(name) => this.setState({fullName: name})}
+                                    onChangeText={(name) => this.fullNameCheck(name)}
                                     style={{marginTop: 5}}
                                     activeColor='black'
                                     marginTop= {5}
                                     fontSize={18}
-                                    error=""
-                                />
+                                    error={this.state.nameError}/>
                             </View>
                             <PhoneInput
                                 ref={this.setPhoneRef}
@@ -227,6 +268,7 @@ class Settings extends Component {
                         </View>
                         <Text style={{marginTop: 70}}>name: {fullName}</Text>
                         <Text>phone: {(isValidPhoneNumber) ? "true" : "false"}</Text>
+                        <Text>{cca2}</Text>
                         <Text>dob: {dob}</Text>
                         <Text>gender: {gen}</Text>
                     </SafeAreaView>
@@ -240,7 +282,6 @@ export default Settings;
 
 const styles = StyleSheet.create({
     container: {
-       
         backgroundColor: 'white',
     },
     phoneInput: {
