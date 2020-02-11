@@ -77,6 +77,7 @@ const GETUSERJOBS = `query getUserJobs($id: ID!) {
               dates {
                 items{
                   start_date
+                  end_date
                 }
               }
             }
@@ -193,8 +194,10 @@ class Home extends Component {
         return comp;
     }
 
-    pressTest = (item) => {
-        //console.log(this.state.myMarkedDays);
+    pressTest(jobDetails) {
+        const {navigation} = this.props
+        navigation.navigate('Details', {jobDetails: jobDetails});
+        console.log("mhm");
         //console.log(item);
     }
 

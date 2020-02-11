@@ -11,12 +11,12 @@ import Reviews from './src/screens/Account/Reviews';
 import Settings from './src/screens/Account/Settings';
 import Feedback from './src/screens/Account/Feedback';
 import About from './src/screens/Account/About';
-import Detail from './src/screens/Detail';
 import LogIn from './src/screens/LogIn';
 import SignUp from './src/screens/SignUp';
 import EditAccount from './src/screens/EditAccount';
 import Initializing from './src/screens/Initializing';
 import PropTypes from 'prop-types'
+import Details from './src/screens/Detail';
 
 import {
   createSwitchNavigator,
@@ -136,9 +136,14 @@ const HomeStack = createStackNavigator(
         };
       }
     },
-    Detail: {
-      screen: Detail
-    },
+    Details: {
+      screen: Details,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Job Details',
+        };
+      }
+    }
   },
   {
     initialRouteName: 'Home',
@@ -165,7 +170,7 @@ const SearchStack = createStackNavigator(
       }
     },
     Detail: {
-      screen: Detail
+      screen: Details
     }
   },
   {
