@@ -108,6 +108,7 @@ class Applications extends Component {
     );
 
     searchApplications = value => {
+        console.log(this.state.applications)
         const filteredApplications = this.state.inMemorydata.filter(application => {
             let job = (application.jobID.name).toLowerCase();
             

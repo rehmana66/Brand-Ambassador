@@ -5,7 +5,7 @@ import {
 import StarRating from 'react-native-star-rating';
 import { withNavigation } from 'react-navigation';
 import CachedImage from './CachedImage';
-
+import moment from 'moment';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
@@ -42,6 +42,7 @@ class Shift extends Component {
             employerID: "",
             date: "",
             isLoaded: false,
+            dates: []
         }
     }
     componentWillMount() {
@@ -55,7 +56,8 @@ class Shift extends Component {
             id: job.id,
             employerName: job.employer.fullName,
             employerID: job.employer.id,
-            date: job.date
+            date: job.date,
+            dates: job.details.dates.items
         })
     }
     
@@ -79,7 +81,6 @@ class Shift extends Component {
             imageURI: require("../../assets/thumbs-up-filled.png")
         })
         currentDate = new Date();
-        //console.log("Date: ", currentDate)
         const applicationDetails = {
             applicationUserIDId: global.USERID.id, 
             applicationJobIDId: this.state.id,
@@ -107,12 +108,17 @@ class Shift extends Component {
         console.log(global.USERID);
     }
 
+
     render(){
-        const { isLoaded } = this.state;
+        const { isLoaded, date, job, dates } = this.state;
+
         
         if (isLoaded == false) {
             return <View></View>
         } else {
+            dates.sort(function(a, b) {
+                return new Date(a.start_date) - new Date(b.start_date);
+            });
             return(
                 <View style={styles.container}>
                     <View style={{width: width - 40, height:  width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
@@ -132,10 +138,15 @@ class Shift extends Component {
                         </View>
                         <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
                             <TouchableOpacity onPress={this.giveDetails} style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
-                                <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.title}</Text>
-                                <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc}</Text>
+                                <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.job.name} - Job Name</Text>
+                                <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc} - </Text>
                                 <Text style={{fontSize: 10, fontWeight: 'bold'}}>{this.state.rate}/hr</Text>
-                                <StarRating disabled={true} maxStars={5} rating={4} starSize={10}></StarRating>
+                                {this.state.dates.map((dates, i) => 
+                                    (<Text key={i} style= {{fontSize: 10, fontWeight: '300'}}>
+                                        {moment(dates.start_date).format('MMMM Do YYYY, h:mm a').toString()} {"- "}
+                                         {moment(dates.end_date).format('h:mm a').toString()}
+                                    </Text>
+                                     ))}
                             </TouchableOpacity>
                             <View style={{justifyContent: 'flex-end', marginRight: 5}}>
                                 <TouchableOpacity onPress={this.onPress}>
@@ -145,7 +156,7 @@ class Shift extends Component {
                         </View>
                     </View>
                     <View style={{marginLeft: 5}}>
-                        <Text style={{fontWeight: '200', opacity: 0.5, fontSize: 12}}>{this.state.date}</Text>
+                        <Text style={{fontWeight: '200', opacity: 0.5, fontSize: 12}}>Posted {moment(this.state.date).fromNow()}</Text>
                     </View>
                 </View>
             );

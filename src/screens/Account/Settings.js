@@ -41,9 +41,6 @@ const UPDATEUSER = `
         }
     }
 `
-//id: "c338dafc-d9cb-4766-968e-a83afbf2c70d",
-//dateOfBirth: "2020-02-18T10:30:00.000Z"
-
 
 const DismissKeyboard = ({children}) => (
     <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
@@ -52,7 +49,6 @@ const DismissKeyboard = ({children}) => (
 );
 
 class Settings extends Component {
-
 
     constructor() {
         super();
@@ -99,7 +95,6 @@ class Settings extends Component {
             isoCode: this.phone.getISOCode(),
         });
     }
-
 
     setPhoneRef = (ref) => (this.phone = ref);
 

@@ -7,8 +7,8 @@ import {
     SafeAreaView,
     ScrollView
 } from 'react-native';
-
-
+import moment from 'moment';
+import CachedImage from '../components/CachedImage';
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 ];
@@ -62,37 +62,37 @@ class Detail extends Component {
         const { navigation } = this.props;
         const details = navigation.getParam('jobDetails', null);
         //this.setState({jobDetails: jobdetails})
-        console.log(details);
+        
         return (
             <SafeAreaView style={styles.container}>
                 <View style = {{flex: 1}}>
                 <ScrollView>
-                    <Card
+                    <Card 
                     containerStyle = {{marginBottom: 5}}
                     title = {details.JobName}
                     image = {require('../../assets/home.jpg')}>
                         <Text style={{marginBottom: 10}}>This is {details.Details.desc}. There will most likely
                         be more here but lets just leave it at this for now.</Text>
                         <Button
-                        buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title='VERIFY' />
+                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                            title='VERIFY' />
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         <ListItem
                         title={monthNames[details.JobStartDate.substring(6,7)-1] + ", " + details.JobStartDate.substring(8,10) + ", " + details.JobStartDate.substring(0,4)}
-                        leftAvatar={{ source: require('../../assets/profile/about.png')}}
+                        leftIcon={<CachedImage source = {require('../../assets/calendar.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <ListItem
                         title={this.convertToTwelve(details.JobStartDate.substring(details.JobStartDate.indexOf('T')+1, details.JobStartDate.indexOf('.')-3))
                             + " " + "-" + " " + this.convertToTwelve(details.JobEndDate.substring(details.JobEndDate.indexOf('T')+1, details.JobEndDate.indexOf('.')-3))}
-                        leftAvatar={{ source: require('../../assets/profile/about.png')}}
+                            leftIcon={<CachedImage source = {require('../../assets/time.png')} style = {{height: 40, width: 40}}/>}
                         />
-                        <ListItem
+                        <ListItem 
                             title={details.Details.rate}
-                            leftAvatar={{ source: require('../../assets/profile/about.png')}}
+                            leftIcon={<CachedImage source = {require('../../assets/money.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <ListItem
                             title="My Location"
-                            leftAvatar={{ source: require('../../assets/profile/about.png')}}
+                            leftIcon={<CachedImage source = {require('../../assets/location.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         <ListItem
@@ -102,7 +102,7 @@ class Detail extends Component {
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         <ListItem
                             containerStyle={{marginBottom: 2}}
-                            title="Posted blah blah days ago"
+                            title={"Shift is " + moment(details.JobStartDate).fromNow()}
                             titleStyle={{color: 'grey', fontSize: 10}}
                         />
                     </Card>

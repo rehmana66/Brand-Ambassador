@@ -8,14 +8,15 @@ import {
     Dimensions,
     Button,
     RefreshControl,
-    ActivityIndicator
+    ActivityIndicator,
+    StatusBar  
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Shift from '../components/Shift';
 import Tag from '../components/Tag';
 import Area from '../components/Area';
 import SearchInput from '../components/SearchInput';
-
+import { ListItem, SearchBar, Divider  } from 'react-native-elements';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
 import * as queries from '../graphql/queries';
@@ -51,6 +52,23 @@ const GETAPPLICATION = `
     }
 `;
 
+const LISTJOBS = `query listJobs{
+     listJobs{ items {
+        id name date 
+        employer{
+            id fullName
+        }
+        details{
+            title body desc misc rate
+            dates{ items{
+            start_date end_date
+            }}
+        }
+        }
+    }
+}
+`;
+
 class Search extends Component {
 
     constructor(props){
@@ -59,19 +77,33 @@ class Search extends Component {
             SampleArray: [{id: 2, name: 'Bartender'}, {id: 1, name: 'Barissta'}, {id: 0, name: 'Construction'}],
             lastRefresh: Date(Date.now()).toString(),
             jobs: [],
+            inMemorydata: [],
             location: null,
             isLoaded: false,
             jobsLoaded: false,
             refreshing: false,
-            refreshLoad: false
+            refreshLoad: false,
+            search: '',
+
         }
         this.refreshScreen = this.refreshScreen.bind(this)
     }
+    
+    searchJobs = value => {
+        const filteredJobs = this.state.inMemorydata.filter(jobs => {
+            let job = (jobs.name).toLowerCase();
+            let searchTerm = (value).toLowerCase();
+            return job.indexOf(searchTerm) > -1;
+        });
+        this.setState({jobs: filteredJobs});
+    }
 
-    fetchData = async() => {
-        API.graphql(graphqlOperation(queries.listJobs, {limit: 20})).then(data =>
+    fetchData = () => {
+        API.graphql(graphqlOperation(LISTJOBS, {limit: 20})).then(data =>
             {
-                this.setState({ jobs:data.data.listJobs.items, isLoaded: true})
+                this.setState({ jobs:data.data.listJobs.items, 
+                    inMemorydata: data.data.listJobs.items,
+                    isLoaded: true, refreshing: false})
             }
         ).catch(err=> console.log(err))
     }
@@ -97,58 +129,28 @@ class Search extends Component {
     }
     _onRefresh = () => {
         this.setState({refreshing: true, isLoaded: false});
-        this.fetchData().then(() => {
-          this.setState({refreshing: false});
-        });
+        this.fetchData();
       }
+      
     render() {
-        const { isLoaded, jobs, refreshLoad } = this.state;
+        const { isLoaded, jobs, refreshLoad, search } = this.state;
         
         if (isLoaded == false) {
-            
-            return (
-            <SafeAreaView style = {{ flex: 1 }}>
-                    <View style = {{ flex: 1, backgroundColor: 'white' }}>
-                        <View style = {styles.headerContainer}>
-                            <SearchInput SampleArray={this.state.SampleArray} onClick={this.refreshScreen}></SearchInput>
-                            <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
-                                <Tag name='Dates'></Tag>
-                                <Tag name='Filters'></Tag>
-                                <Tag name='Shifts'></Tag>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
-                                <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}>{Object.keys(jobs).length} shifts found</Text>
-                                <Area location={this.updateState.bind(this)} 
-                                    style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
-                            </View>
-                        </View>
-                        <ScrollView scrollEventThrottle={16}refreshControl={
-                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
-                            <View style={{ flex: 1, flexDirection: 'row', paddingTop: 10, paddingHorizontal: 15}}>
-                                <Text style={{fontSize: 20, fontWeight:'700'}}> Recent Searches:</Text>
-                            </View>
-                            <View style={{flex: 1, marginTop: 10, paddingHorizontal: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    {this.state.SampleArray.map((item, key) =>
-                                    <Tag item={item} key={item.id} name={item.name}/>)}
-                            </View>
-                            <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
-                                <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
-                                <View style={{marginTop: 10, justifyContent: 'space-between'}}>
-                                    
-                                </View>
-                            </View>
-                        </ScrollView>
-                    </View>
-            </SafeAreaView>
-            
-            );
-                        
+            return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;               
         } else {
             return (
                 <SafeAreaView style = {{ flex: 1 }}>
+                    <ScrollView scrollEventThrottle={16}refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
                     <View style = {{ flex: 1, backgroundColor: 'white' }}>
                         <View style = {styles.headerContainer}>
-                            <SearchInput SampleArray={this.state.SampleArray} onClick={this.refreshScreen}></SearchInput>
+                            <SearchBar placeholder="Type Here..."
+                                onChangeText={(search) => {this.setState({search}); this.searchJobs(search)}}
+                                value = {search}
+                                inputContainerStyle={styles.searchinputContainer}
+                                containerStyle={styles.searchContainer}
+                                lightTheme
+                            />
                             <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
                                 <Tag name='Dates'></Tag>
                                 <Tag name='Filters'></Tag>
@@ -160,15 +162,7 @@ class Search extends Component {
                                     style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
                             </View>
                         </View>
-                        <ScrollView scrollEventThrottle={16}refreshControl={
-                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
-                            <View style={{ flex: 1, flexDirection: 'row', paddingTop: 10, paddingHorizontal: 15}}>
-                                <Text style={{fontSize: 20, fontWeight:'700'}}> Recent Searches:</Text>
-                            </View>
-                            <View style={{flex: 1, marginTop: 10, paddingHorizontal: 20, flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    {this.state.SampleArray.map((item, key) =>
-                                    <Tag item={item} key={item.id} name={item.name}/>)}
-                            </View>
+                           
                             <View style={{flex: 1, marginTop: 20, paddingHorizontal: 20}}>
                                 <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                                 <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
@@ -177,8 +171,9 @@ class Search extends Component {
                                     ))}
                                 </View>
                             </View>
-                        </ScrollView>
+                        
                     </View>
+                    </ScrollView>
                 </SafeAreaView>
             );
         }
@@ -201,15 +196,39 @@ const styles = StyleSheet.create({
         borderBottomColor: '#dddddd'
     },
     searchContainer: {
-        flexDirection: 'row',
-        padding: 10,
-        backgroundColor: 'white',
-        marginHorizontal: 20,
         shadowOffset: {width:0, height:0},
         shadowColor: 'black',
         shadowOpacity: 0.2,
         elevation: 1,
-        marginTop: Platform.OS == 'android' ? 30: 15
-    }
+        backgroundColor: 'white',
+        marginLeft: 20,
+        marginRight: 20,
+        height: 50
+    },
+    searchinputContainer: {
+        backgroundColor: 'white',    
+        shadowOffset: {width:0, height:0},
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 
 });
+
+/*
+    searchinputContainer: {
+        backgroundColor: 'white',    
+        shadowOffset: {width:0, height:0},
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 1,
+    },
+    searchContainer: {
+        shadowOffset: {width:0, height:0},
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 1
+    },
+*/

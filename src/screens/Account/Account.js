@@ -113,6 +113,11 @@ class Account extends Component {
     };
 
     componentDidMount() {
+        this.fetchData();
+    };
+
+
+    fetchData() {
         this.setState({isLoaded: true})
 
         API.graphql(graphqlOperation(GETREVIEWS, {ID: USERID.id})).then( (reviews) => {
@@ -126,16 +131,7 @@ class Account extends Component {
                 this.setState({rating: counter/len, reviews: len, reviewsData: data})
             }}
         ).catch(err=> console.log(err));
-        
-
-        /*
-        Auth.currentAuthenticatedUser().then((data) => {
-            if (data) {
-                const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
-                    (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
-                );
-            }}).catch(err => console.log(err))*/
-    };
+    }
 
     accountProcess(value) {
         const {navigation } = this.props
@@ -185,7 +181,7 @@ class Account extends Component {
             
                 let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
                 USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
-            
+
             return (
                 <SafeAreaView style={styles.container}>
                     <View style = {styles.profileContainer}>
