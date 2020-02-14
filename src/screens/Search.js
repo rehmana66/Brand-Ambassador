@@ -9,13 +9,12 @@ import {
     Button,
     RefreshControl,
     ActivityIndicator,
-    StatusBar  
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Shift from '../components/Shift';
 import Tag from '../components/Tag';
 import Area from '../components/Area';
-import SearchInput from '../components/SearchInput';
+import CachedImage from '../components/CachedImage';
 import { ListItem, SearchBar, Divider  } from 'react-native-elements';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
@@ -89,6 +88,8 @@ class Search extends Component {
         this.refreshScreen = this.refreshScreen.bind(this)
     }
     
+
+    
     searchJobs = value => {
         const filteredJobs = this.state.inMemorydata.filter(jobs => {
             let job = (jobs.name).toLowerCase();
@@ -110,13 +111,24 @@ class Search extends Component {
 
     componentDidMount() {
         this.fetchData();
-        /*
-        await API.graphql(graphqlOperation(queries.listJobs, {limit: 20})).then(data =>
-            {
-                this.setState({ jobs:data.data.listJobs.items, isLoaded: true })
-            }
-        )*/
+       
     }
+
+    static navigationOptions = ({ navigation }) => {
+        
+        if(USERID.user_type == true) {
+            return {
+                headerRight: ( 
+                    <TouchableOpacity onPress={()=> navigation.navigate('CreateJob')}>
+                        <CachedImage source = {require('../../assets/plus.png')} 
+                        style = {{height: 30, width: 30, marginRight: 10}}/>
+                    </TouchableOpacity>
+                )
+            };
+        }
+    }; 
+    
+
     refreshScreen() {
         this.setState({ lastRefresh: Date(Date.now()).toString() })
     }
@@ -140,9 +152,9 @@ class Search extends Component {
         } else {
             return (
                 <SafeAreaView style = {{ flex: 1 }}>
-                    <ScrollView scrollEventThrottle={16}refreshControl={
+                    <ScrollView scrollEventThrottle={16} refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />} >
-                    <View style = {{ flex: 1, backgroundColor: 'white' }}>
+                    <View style = {{ flex: 1, backgroundColor: 'white', marginTop: 15 }}>
                         <View style = {styles.headerContainer}>
                             <SearchBar placeholder="Type Here..."
                                 onChangeText={(search) => {this.setState({search}); this.searchJobs(search)}}
@@ -151,13 +163,13 @@ class Search extends Component {
                                 containerStyle={styles.searchContainer}
                                 lightTheme
                             />
-                            <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 10}}>
+                            <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 15}}>
                                 <Tag name='Dates'></Tag>
                                 <Tag name='Filters'></Tag>
                                 <Tag name='Shifts'></Tag>
                             </View>
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: 10, paddingTop: 15, marginRight: 10}}>
-                                <Text style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'left', paddingLeft: 5}}>{Object.keys(jobs).length} shifts found</Text>
+                                <Text style={{flex: 1, fontSize: 15, fontWeight: '300', textAlign: 'left', paddingLeft: 5}}>{Object.keys(jobs).length} shifts found</Text>
                                 <Area location={this.updateState.bind(this)} 
                                     style={{flex: 1, fontSize: 15, fontWeight: '400', textAlign: 'right'}}></Area>
                             </View>

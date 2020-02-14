@@ -2,14 +2,13 @@ import React, {Component} from 'react';
 import {
     View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity, Platform, Dimensions, Alert
 } from 'react-native';
-import StarRating from 'react-native-star-rating';
+import ViewMoreText from 'react-native-view-more-text';
 import { withNavigation } from 'react-navigation';
 import CachedImage from './CachedImage';
 import moment from 'moment';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
-import * as subscriptions from '../graphql/subscriptions';
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -103,10 +102,17 @@ class Shift extends Component {
         ).catch(err => console.log(err));
     }
 
-    giveDetails = () => {
-        //console.log("This job: ", this.state.job);
-        console.log(global.USERID);
-    }
+    renderViewMore(onPress){
+        return(
+          <Text onPress={onPress} style={styles.readMore}>Show more dates</Text>
+        )
+    };
+
+    renderViewLess(onPress){
+        return(
+          <Text onPress={onPress} style={styles.readMore}>Show less</Text>
+        )
+    };
 
 
     render(){
@@ -121,8 +127,8 @@ class Shift extends Component {
             });
             return(
                 <View style={styles.container}>
-                    <View style={{width: width - 40, height:  width/1.5, borderWidth: 0.5, borderColor: '#dddddd' }}>
-                        <View style={{height: 40, flexDirection: 'row'}}>
+                    <View style={{width: width - 40, height:  width/1.4, borderWidth: 0.5, borderColor: '#dddddd' }}>
+                        <View style={{height: 50, flexDirection: 'row'}}>
                             <View style={styles.profile}>
                                 <CachedImage source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
                             </View>
@@ -137,20 +143,25 @@ class Shift extends Component {
                                 <CachedImage source={this.props.imageURI} style={{flex: 1, width: null, height: null, resizeMode: 'cover'}}/>
                         </View>
                         <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
-                            <TouchableOpacity onPress={this.giveDetails} style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
+                            <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'space-evenly', paddingLeft: 10}}>
                                 <Text style={{fontSize: 10, fontWeight: 'bold', color: '#b63838'}}>{this.state.job.name} - Job Name</Text>
                                 <Text style={{fontSize: 12, fontWeight: 'bold'}}>{this.state.desc} - </Text>
                                 <Text style={{fontSize: 10, fontWeight: 'bold'}}>{this.state.rate}/hr</Text>
-                                {this.state.dates.map((dates, i) => 
-                                    (<Text key={i} style= {{fontSize: 10, fontWeight: '300'}}>
-                                        {moment(dates.start_date).format('MMMM Do YYYY, h:mm a').toString()} {"- "}
-                                         {moment(dates.end_date).format('h:mm a').toString()}
-                                    </Text>
-                                     ))}
-                            </TouchableOpacity>
-                            <View style={{justifyContent: 'flex-end', marginRight: 5}}>
-                                <TouchableOpacity onPress={this.onPress}>
-                                    <CachedImage source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover'}}/>
+                                
+                                <ViewMoreText numberOfLines={1}
+                                    renderViewMore={this.renderViewMore} renderViewLess={this.renderViewLess}>
+                                       {this.state.dates.map((dates, i) =>(
+                                            <Text key={i} style= {{fontSize: 10, fontWeight: '300'}}>
+                                                {moment(dates.start_date).format('MMMM Do YYYY, h:mm a').toString()} {"- "}
+                                                {moment(dates.end_date).format('h:mm a').toString()} {"\n"}
+                                            </Text>
+                                        ))}
+                                </ViewMoreText>
+
+                            </View>
+                            <View style={{justifyContent: 'center', marginRight: 5}}>
+                                <TouchableOpacity onPress={this.onPress} >
+                                    <CachedImage source={this.state.imageURI} style={{width: 30, height: 30, resizeMode: 'cover',}}/>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -183,6 +194,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         marginLeft: 10,
         marginTop: 5
+    },
+    readMore: { 
+        color: '#147efb',
+        fontSize: 12
     }
-
 })

@@ -72,6 +72,13 @@ class Applications extends Component {
     componentDidMount() {
         this.fetchData("true");
     }
+    /*
+    static navigationOptions = ({ navigation }) => {
+        
+        if(USERID.user_type == true) {
+            navigation.navigate('CreateJob')
+        };
+    }*/
 
     fetchData = async(stat) => {
         const { value } = this.state;

@@ -17,6 +17,7 @@ import EditAccount from './src/screens/EditAccount';
 import Initializing from './src/screens/Initializing';
 import PropTypes from 'prop-types'
 import Details from './src/screens/Detail';
+import CreateJob from './src/screens/CreateJob';
 
 import {
   createSwitchNavigator,
@@ -163,14 +164,18 @@ const SearchStack = createStackNavigator(
   {
     Search: {
       screen: Search,
-      navigationOptions: ({ navigation}) => {
-        return {
-          header: null,
-        }
+      navigationOptions: {
+        title: 'Search'
       }
     },
     Detail: {
       screen: Details
+    },
+    CreateJob: {
+      screen: CreateJob,
+      navigationOptions: {
+        title: 'New Job'
+      }
     }
   },
   {
@@ -182,7 +187,7 @@ const SearchStack = createStackNavigator(
       headerTintColor: '#dff3fd',
       headerTitleStyle: {
         fontFamily: 'raleway-regular'
-      }
+      },
     }
   }
 );
