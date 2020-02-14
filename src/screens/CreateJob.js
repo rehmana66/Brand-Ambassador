@@ -12,6 +12,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import CachedImage from '../components/CachedImage';
 import { ListItem, SearchBar, Divider, CheckBox  } from 'react-native-elements';
 import TextInput from "react-native-improved-text-input";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 
 import * as queries from '../graphql/queries';
@@ -100,7 +101,7 @@ class CreateJob extends Component {
             return ( 
                 <SafeAreaView style={styles.container}>
                     <ScrollView>
-                        <View style={{marginLeft: 20, marginRight: 20}}>
+                        <KeyboardAwareScrollView style={{marginLeft: 20, marginRight: 20}}>
                             <ListItem style={{marginTop: 0, marginLeft: -20}}
                                 leftIcon={<CachedImage source = {require("../../assets/profile/profile.jpg")} style = {{height: 50, width: 50}}/>}
                                 title={USERID.fullName}
@@ -145,7 +146,6 @@ class CreateJob extends Component {
                                         placeholderTextColor= '#808080'
                                         maxLength={200}
                                         multiline
-                                        numberOfLines={5}
                                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17, marginTop: 5}}
                                         style={{fontSize: 17, fontWeight: '300', marginRight: 5}}
                                     />
@@ -164,7 +164,7 @@ class CreateJob extends Component {
                                     <Text style={{fontWeight: '200', fontSize: 17, marginLeft: 10}}>{this.state.location}</Text>
                                 </View>
                             </View>
-                    </View>
+                    </KeyboardAwareScrollView>
                 </ScrollView>
             </SafeAreaView>
             );
