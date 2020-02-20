@@ -20,8 +20,9 @@ export const getUser = `query GetUser($id: ID!) {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -78,8 +79,9 @@ export const listUsers = `query ListUsers(
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -236,8 +238,9 @@ export const getJob = `query GetJob($id: ID!) {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -472,8 +475,9 @@ export const getApplication = `query GetApplication($id: ID!) {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken

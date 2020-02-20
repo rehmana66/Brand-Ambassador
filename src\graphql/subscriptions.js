@@ -20,8 +20,9 @@ export const onCreateUser = `subscription OnCreateUser {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -73,8 +74,9 @@ export const onUpdateUser = `subscription OnUpdateUser {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -126,8 +128,9 @@ export const onDeleteUser = `subscription OnDeleteUser {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -373,8 +376,9 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -445,8 +449,9 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -517,8 +522,9 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -589,8 +595,9 @@ export const onCreateJob = `subscription OnCreateJob {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -682,8 +689,9 @@ export const onUpdateJob = `subscription OnUpdateJob {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -775,8 +783,9 @@ export const onDeleteJob = `subscription OnDeleteJob {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1052,8 +1061,9 @@ export const onCreateApplication = `subscription OnCreateApplication {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1127,8 +1137,9 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1202,8 +1213,9 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken

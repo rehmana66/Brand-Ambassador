@@ -20,8 +20,9 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -73,8 +74,9 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -126,8 +128,9 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       street
     }
     resume {
-      id
-      resume_key
+      bucket
+      region
+      key
     }
     jobs {
       items {
@@ -373,8 +376,9 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -445,8 +449,9 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -517,8 +522,9 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -589,8 +595,9 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -682,8 +689,9 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -775,8 +783,9 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1052,8 +1061,9 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1127,8 +1137,9 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken
@@ -1202,8 +1213,9 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         street
       }
       resume {
-        id
-        resume_key
+        bucket
+        region
+        key
       }
       jobs {
         nextToken

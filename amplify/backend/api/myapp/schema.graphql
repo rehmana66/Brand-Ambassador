@@ -7,10 +7,16 @@ type User @model {
   dateOfBirth: AWSDate
   gender: String
   location: Location @connection
-  resume: Resume @connection
+  resume: S3Object
   jobs: [UserJobs] @connection(name: "userjobs")
   apply: [Application] @connection(name: "userApplications")
   reviews: [Reviews] @connection
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
 }
 
 type Reviews @model {
