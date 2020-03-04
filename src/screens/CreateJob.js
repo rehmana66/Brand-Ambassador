@@ -1,21 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     SafeAreaView,
     Dimensions,
-    Button,
     ActivityIndicator,
+    TouchableHighlight,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import CachedImage from '../components/CachedImage';
-import { ListItem, SearchBar, Divider, CheckBox  } from 'react-native-elements';
+import { ListItem, SearchBar, Divider, CheckBox, Button  } from 'react-native-elements';
 import TextInput from "react-native-improved-text-input";
+import DatePicker from 'react-native-datepicker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
-
+import MapView from 'react-native-maps'
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import * as queries from '../graphql/queries';
+import Modal from 'react-native-modal';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 const { height, width } = Dimensions.get('window')
@@ -35,12 +39,23 @@ class CreateJob extends Component {
             title: '',
             desc: '',
             msic: '',
-            location: 'Location'
+            location: 'Location',
+            latitude: null,
+            longitude: null,
+            location: null,
+            locationText: "Location",
+            errorMessage: null,
+            locationResult: null,
+            isLocationModalVisible: false,
+            counter: 0,
+            timeArray: [],
+            date: null,
         }
     }
 
     componentDidMount() {
-        this.setState({isLoaded: true})
+        
+        this._getLocationAsync();
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -92,15 +107,111 @@ class CreateJob extends Component {
         );
     }
 
-    render() {
-        const { isLoaded } = this.state;
+    locationView = () => {
+        return (
+            <View style={{flex: 1, height: height - 300, width: width - 50, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}> 
+                <MapView style={{flex: 1}}
+                >
+
+                </MapView>
+            </View>
+        )
+    }
+
+    openModal = () => {
+        this.setState({isLocationModalVisible: true});
+    }
+
+    _getLocationAsync = async () => {
+        try {
+            let { status } = await Permissions.askAsync(Permissions.LOCATION);
+            
+            let location = await Location.getCurrentPositionAsync({});
+            let geocode = await Location.reverseGeocodeAsync(location.coords).then( 
+
+            this.setState({ 
+                location,
+                locationResult: geocode,
+                errorMessage: null,
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                isLoaded: true
+            }))
+            
         
+            } catch(error) {
+                console.log(error)
+            }
+    }
+  
+    _handleAddTime() {
+        let newly_added_data = { date: null, time: 'Select date' };
+    
+        this.setState({
+            timeArray: [...this.state.timeArray, newly_added_data]
+        });
+    }
+
+    _handleRemoveTime() {
+        const newTimeArray = this.state.timeArray.slice();
+        newTimeArray.pop()
+        this.setState({timeArray: newTimeArray})
+        console.log(this.state.timeArray)
+    }
+    handleDateChange(date, index) {
+        const newTimeArray = this.state.timeArray.slice();
+        newTimeArray[index] = {date: date, time: new Date(date).toLocaleString()};
+        this.setState({timeArray: newTimeArray})
+        console.log(this.state.timeArray)
+    }
+
+    render() {
+        const { isLoaded, latitude, longitude, locationResult, timeArray, date } = this.state;
+        let added_text = timeArray.map( (data, index) => {
+            return (
+                <View key={index} style={{marginTop: 5, flexDirection: 'row', marginBottom: 50}}>
+                    <View style={{flex: 2}}>
+                        <DatePicker
+                            style={{width: 200, marginTop: 5, marginLeft: -50}}
+                            date={data.date}
+                            mode="date"
+                            placeholder={data.time}
+                            format="YYYY-MM-DD"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={dateStyles}
+                            onDateChange={(date) => this.handleDateChange(date, index)}
+                        />
+                    </View>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: -20, marginLeft: -10}}>
+                        <Text style={{fontSize: 20, fontFamily: "raleway-light"}}>To</Text>
+                    </View>
+                    <View style={{flex: 2}}>
+                        <DatePicker
+                            showIcon={false}
+                            style={{width: 200, marginTop: 5, marginLeft: -50}}
+                            date={data.date}
+                            mode="date"
+                            placeholder={data.time}
+                            format="YYYY-MM-DD"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={dateStyles}
+                            onDateChange={(date) => this.handleDateChange(date, index)}
+                        />
+                    </View>
+                    
+            </View>
+            )
+        });
         if (isLoaded == false) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;               
         } else {
             return ( 
                 <SafeAreaView style={styles.container}>
+                    
                     <ScrollView>
+                        
                         <KeyboardAwareScrollView style={{marginLeft: 20, marginRight: 20}}>
                             <ListItem style={{marginTop: 0, marginLeft: -20}}
                                 leftIcon={<CachedImage source = {require("../../assets/profile/profile.jpg")} style = {{height: 50, width: 50}}/>}
@@ -160,9 +271,43 @@ class CreateJob extends Component {
                                     />
                                 </View>
                                 <Text style={{marginTop: 5, fontWeight: '200', fontSize: 12}}>Optional</Text>
-                                <View style={styles.textInputStyle}>
-                                    <Text style={{fontWeight: '200', fontSize: 17, marginLeft: 10}}>{this.state.location}</Text>
-                                </View>
+                                <TouchableHighlight onPress={this.openModal} style={styles.textInputStyle}>
+                                    <Text style={{fontWeight: '200', fontSize: 17, marginLeft: 10}}>{this.state.locationText}</Text>
+                                </TouchableHighlight>
+                                <Modal 
+                                    onModalHide={()=> {this.setState({locationText: "Hello"})}}
+                                    isVisible={this.state.isLocationModalVisible} 
+                                    onBackdropPress = {() => this.setState({ isLocationModalVisible: false })}
+                                    style = {{alignSelf: 'center'}}>
+                                        <View style={{ height: height - 300, width: width - 50, backgroundColor: global.iOSBlue, alignItems: 'center', justifyContent: 'center',}}> 
+                                            <View style={{flex: 1}}>
+                                                <View style={styles.locationTextInput}>
+                                                    <TextInput placeholder="Choose Location"
+                                                        inputContainerStyle={{ borderBottomWidth: 0}}
+                                                        placeholderTextColor= '#808080'
+                                                        maxLength={100}
+                                                        placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
+                                                        style={{flex: 1, fontSize: 17, fontWeight: '300'}}
+                                                    />
+                                                </View>
+                                            </View>
+                                            <MapView style={styles.map}
+                                            showsUserLocation
+                                            initialRegion={{latitude, longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421,}}>
+                                            </MapView>
+                                            <View style={{backgroundColor: global.iOSBlue}}>
+                                                <Button title="Confirm" buttonStyle={{backgroundColor: global.iOSBlue}} containerStyle={{width: width-50}}></Button>
+                                            </View>
+                                        </View>
+                                </Modal>
+                                <Text>{latitude} {longitude}</Text>
+                                <TouchableHighlight style={{marginTop: 20}} onPress={this._handleAddTime.bind(this)}>
+                                        <Text>Add</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={{marginTop: 20}} onPress={this._handleRemoveTime.bind(this)}>
+                                        <Text>Remove</Text>
+                                </TouchableHighlight>
+                            {added_text}
                             </View>
                     </KeyboardAwareScrollView>
                 </ScrollView>
@@ -178,7 +323,10 @@ export default CreateJob;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
+    },
+    map: {
+        flex: 5.5,
+        width: width - 50,
     },
     addPhotoStyles: {
         flex: 1, 
@@ -207,6 +355,16 @@ const styles = StyleSheet.create({
         height:50, 
         justifyContent: 'center'
     },
+    locationTextInput: {
+        marginTop: 20, 
+        borderColor: '#c5c7c4', 
+        borderWidth: 1, 
+        borderRadius: 10, 
+        height:50, 
+        justifyContent: 'center',
+        width: width - 70,
+        backgroundColor: 'white'
+    },
     descInputStyle: {
         flex: 1, 
         marginTop: 20, 
@@ -217,3 +375,29 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
 });
+
+const dateStyles = {
+    dateIcon: {
+        position: 'absolute',
+        left: 4,
+        top: 20,
+    },
+    dateInput: {
+        top: 15,
+        marginLeft: 50,
+        borderBottomColor: 'black',
+        borderColor: 'white',
+        fontSize: 30
+    },
+    dateText: {
+        fontSize: 18,
+        alignSelf: 'flex-start',
+        fontFamily: "raleway-light"
+    },
+    placeholderText: {
+        fontSize: 18,
+        alignSelf: 'flex-start',
+        color: 'grey',
+        fontFamily: "raleway-light"
+    }
+}

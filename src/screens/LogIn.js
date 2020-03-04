@@ -139,6 +139,9 @@ class LogIn extends Component {
         this.setState({ isNewPassModalVisible: !this.state.isNewPassModalVisible });
     };
 
+
+    
+
     render() {
         return (
             <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
