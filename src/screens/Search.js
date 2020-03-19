@@ -179,7 +179,7 @@ class Search extends Component {
                                 <Text style={{fontSize: 20, fontWeight: '700'}}>New Listings: </Text>
                                 <View style={{ marginTop: 10, justifyContent: 'space-between' }}>
                                     {this.state.jobs.map((jobs, i) => (
-                                    <Shift key={i} jobinfo={jobs} width={width} imageURI={require("../../assets/home.jpg")}></Shift>
+                                    <Shift key={i} jobinfo={jobs} width={width} imageURI={require("../../assets/default1.jpg")}></Shift>
                                     ))}
                                 </View>
                             </View>

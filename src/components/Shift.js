@@ -130,7 +130,7 @@ class Shift extends Component {
                     <View style={{width: width - 40, height:  width/1.4, borderWidth: 0.5, borderColor: '#dddddd' }}>
                         <View style={{height: 50, flexDirection: 'row'}}>
                             <View style={styles.profile}>
-                                <CachedImage source={require('../../assets/logo.png')} style={{ flex: 1, width: null, height: null }}/>
+                                <CachedImage source={require('../../assets/profile/nouser.jpg')} style={{ flex: 1, width: null, height: null }}/>
                             </View>
                             <View style={{flex: 1, justifyContent:'center'}}>
                                 <Text style={{fontSize: 20, fontWeight: '400', paddingLeft: 5, maxWidth: width/1.5}}>{this.state.employerName}</Text>
@@ -193,7 +193,8 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         overflow: 'hidden',
         marginLeft: 10,
-        marginTop: 5
+        marginTop: 8,
+        marginRight: 5
     },
     readMore: { 
         color: '#147efb',

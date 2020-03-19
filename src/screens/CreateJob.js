@@ -7,6 +7,7 @@ import {
     Dimensions,
     ActivityIndicator,
     TouchableHighlight,
+    Alert
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import CachedImage from '../components/CachedImage';
@@ -22,6 +23,7 @@ import * as queries from '../graphql/queries';
 import Modal from 'react-native-modal';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
+import { nominalTypeHack } from 'prop-types';
 const { height, width } = Dimensions.get('window')
 
 
@@ -38,7 +40,7 @@ class CreateJob extends Component {
             companyName: '',
             title: '',
             desc: '',
-            msic: '',
+            misc: '',
             location: 'Location',
             latitude: null,
             longitude: null,
@@ -48,28 +50,110 @@ class CreateJob extends Component {
             locationResult: null,
             isLocationModalVisible: false,
             counter: 0,
-            timeArray: [],
+            timeArray: [[{date: null, time: 'Select date', datetime: null }, {date: null, time: 'Select date', datetime: null }]],
             date: null,
+            errormissing: "",
         }
     }
 
     componentDidMount() {
-        
+        this.props.navigation.setParams({ addJob: this.addJob })
         this._getLocationAsync();
     }
 
     static navigationOptions = ({ navigation }) => {
-        
+        const { params = {} } = navigation.state;
         if(USERID.user_type == true) {
             return {
                 headerRight: ( 
-                    <TouchableOpacity onPress={()=> navigation.navigate('CreateJob')}>
+                    <TouchableOpacity onPress={()=> {params.addJob()}}>
                         <Text style={{marginRight: 20, color:"white", fontWeight: '300', fontSize: 20}}>Save</Text>
                     </TouchableOpacity>
                 )
             };
         }
-    }; 
+    };
+    
+    addJob = () => {
+        const {price1, price2, companyName, title, desc, checked, timeArray, misc} = this.state;   
+        check = this.errorCheck()
+
+        if (check.length >= 1) {
+            Alert.alert('Please enter the following:', check)   
+        } else {
+            if (checked == true) {
+                totalPrice = "$" + price1 + "-" + price2
+            } else {
+                totalPrice = "$" + price1
+            }
+
+            const jobCreate = {
+                name: companyName,
+                date: new Date(),
+                jobEmployerId: global.USERID.id,
+                jobDetailsId: '' // this needs to be added
+            }
+            const jobDetails = {
+                title: title,
+                desc: desc,
+                misc: (misc.length >= 1) ? misc : "None",
+                rate: totalPrice,
+                body: 'None',
+            }
+
+            API.graphql(graphqlOperation(mutations.createDetails,
+                {input: jobDetails})).then((data) => {
+                    detailsID = data.data.createDetails.id
+                    jobCreate.jobDetailsId = detailsID;
+                    for (i in timeArray) {
+                        let newTime = {start_date: timeArray[i][0].datetime, end_date: timeArray[i][1].datetime,
+                            jobDatesDetailsId: detailsID
+                        };
+                        API.graphql(graphqlOperation(mutations.createJobDates, {input: newTime})).then(() => {
+                            API.graphql(graphqlOperation(mutations.createJob, {input: jobCreate})).then((data) => {
+
+                                console.log(data)
+                                this.props.navigation.navigate('Search');
+                                Alert.alert('Job Creation', 'Successful!')   
+
+                            }).catch(err=> console.log(err))}
+                            ).catch(err => console.log(err))
+                    }
+                }) 
+                .catch(err => console.log(err));
+            }
+    }
+
+    errorCheck = () => {
+        const {price1, price2, companyName, title, desc, checked, timeArray, misc} = this.state;   
+        errorMessage = ""
+
+        if (companyName == '') {
+            errorMessage = errorMessage + "Enter a company name\n"
+        }
+        if (price1 == '' && checked == false) {
+            errorMessage = errorMessage + "Enter a price\n"
+        }
+        if (price2 == '' && checked == true) {
+            errorMessage = errorMessage + "Enter a price range\n"
+        }
+        if (title == '') {
+            errorMessage = errorMessage + "Enter a title\n"
+        }
+        if (desc == '') {
+            errorMessage = errorMessage + "Enter a description\n"
+        }
+        if (timeArray[0][0].date == null || timeArray[0][1].date == null) {
+            errorMessage = errorMessage + "Enter a date\n"
+        }
+
+        if (errorMessage == "") {
+            return errorMessage;
+        } else {
+            this.setState({errormissing: errorMessage})
+            return errorMessage;
+        }
+    }
 
     priceView = () => {
         return (
@@ -82,7 +166,7 @@ class CreateJob extends Component {
                         placeholderTextColor= '#808080'
                         maxLength={50}
                         value={this.state.price1}
-                        onChangeText={(price) => {this.setState({price1: price}); console.log(this.state.price)}}
+                        onChangeText={(price) => {this.setState({price1: price}); console.log(price)}}
                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
                         style={{flex: 1, fontSize: 17, fontWeight: '300', marginLeft: 10, }}
                         keyboardType="number-pad"
@@ -96,7 +180,7 @@ class CreateJob extends Component {
                         placeholderTextColor= '#808080'
                         maxLength={50}
                         value={this.state.price2}
-                        onChangeText={(price) => {this.setState({price2: price}); console.log(this.state.price)}}
+                        onChangeText={(price) => {this.setState({price2: price}); console.log(price)}}
                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
                         style={{flex: 1, fontSize: 17, fontWeight: '300', marginLeft: 10, }}
                         keyboardType="number-pad"
@@ -110,9 +194,7 @@ class CreateJob extends Component {
     locationView = () => {
         return (
             <View style={{flex: 1, height: height - 300, width: width - 50, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}> 
-                <MapView style={{flex: 1}}
-                >
-
+                <MapView style={{flex: 1}}>
                 </MapView>
             </View>
         )
@@ -145,7 +227,7 @@ class CreateJob extends Component {
     }
   
     _handleAddTime() {
-        let newly_added_data = { date: null, time: 'Select date' };
+        let newly_added_data = [{date: null, time: 'Select date', datetime: null }, {date: null, time: 'Select date', datetime: null}];
     
         this.setState({
             timeArray: [...this.state.timeArray, newly_added_data]
@@ -158,46 +240,54 @@ class CreateJob extends Component {
         this.setState({timeArray: newTimeArray})
         console.log(this.state.timeArray)
     }
-    handleDateChange(date, index) {
+
+    handleDateChange(date, index, num) {
         const newTimeArray = this.state.timeArray.slice();
-        newTimeArray[index] = {date: date, time: new Date(date).toLocaleString()};
+        var arr = date.split(/-|\s|:/);
+        time1 = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4]).toDateString();
+        time2 = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4]).toString();
+        time3 = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4]).toISOString();
+        newTimeArray[index][num] = {date: date, time: time2, datetime: time3};
         this.setState({timeArray: newTimeArray})
-        console.log(this.state.timeArray)
     }
 
     render() {
         const { isLoaded, latitude, longitude, locationResult, timeArray, date } = this.state;
+        //console.log("---------------New-------------------")
+        //console.log(timeArray)
+        //console.log("----------------------------------")
         let added_text = timeArray.map( (data, index) => {
+           
             return (
                 <View key={index} style={{marginTop: 5, flexDirection: 'row', marginBottom: 50}}>
                     <View style={{flex: 2}}>
                         <DatePicker
                             style={{width: 200, marginTop: 5, marginLeft: -50}}
-                            date={data.date}
-                            mode="date"
-                            placeholder={data.time}
-                            format="YYYY-MM-DD"
+                            date={data[0].date}
+                            mode="datetime"
+                            placeholder={data[0].time}
+                            format="YYYY-MM-DD hh:mm"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={dateStyles}
-                            onDateChange={(date) => this.handleDateChange(date, index)}
+                            onDateChange={(date) => this.handleDateChange(date, index, 0)}
                         />
                     </View>
-                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: -20, marginLeft: -10}}>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: -10, marginLeft: -10}}>
                         <Text style={{fontSize: 20, fontFamily: "raleway-light"}}>To</Text>
                     </View>
                     <View style={{flex: 2}}>
                         <DatePicker
                             showIcon={false}
                             style={{width: 200, marginTop: 5, marginLeft: -50}}
-                            date={data.date}
-                            mode="date"
-                            placeholder={data.time}
-                            format="YYYY-MM-DD"
+                            date={data[1].date}
+                            mode="datetime"
+                            placeholder={data[1].time}
+                            format="YYYY-MM-DD hh:mm"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={dateStyles}
-                            onDateChange={(date) => this.handleDateChange(date, index)}
+                            onDateChange={(date) => this.handleDateChange(date, index, 1)}
                         />
                     </View>
                     
@@ -234,21 +324,25 @@ class CreateJob extends Component {
                                         placeholderTextColor= '#808080'
                                         maxLength={50}
                                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
-                                        style={{fontSize: 17, fontWeight: '300'}}
+                                        style={{marginLeft: 10, fontSize: 17, fontWeight: '300'}}
+                                        value={this.state.companyName}
+                                        onChangeText={(text) => {this.setState({companyName: text})}}
                                     />
                                 </View>
+                                
                                 {this.priceView()}
-                                <CheckBox title='Price Range' checked={this.state.checked} 
-                                onPress={() => this.setState({checked: !this.state.checked})}
-                                containerStyle={styles.checkBoxContainer}
-                                textStyle={{fontSize: 10}}/>
+                                <CheckBox title='Price Range' checked={this.state.checked} onPress={() => this.setState({checked: !this.state.checked})}
+                                containerStyle={styles.checkBoxContainer} textStyle={{fontSize: 10}}/>
+
                                 <View style={styles.textInputStyle}>
                                     <TextInput placeholder="Title"
                                         inputContainerStyle={{ borderBottomWidth: 0}}
                                         placeholderTextColor= '#808080'
                                         maxLength={50}
                                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
-                                        style={{fontSize: 17, fontWeight: '300'}}
+                                        style={{marginLeft: 10, fontSize: 17, fontWeight: '300'}}
+                                        value={this.state.title}
+                                        onChangeText={(text) => {this.setState({title: text})}}
                                     />
                                 </View>
                                 <View style={styles.descInputStyle}>
@@ -258,7 +352,9 @@ class CreateJob extends Component {
                                         maxLength={200}
                                         multiline
                                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17, marginTop: 5}}
-                                        style={{fontSize: 17, fontWeight: '300', marginRight: 5}}
+                                        style={{marginLeft: 10, fontSize: 17, fontWeight: '300', marginRight: 5, marginTop: 5}}
+                                        value={this.state.desc}
+                                        onChangeText={(text) => {this.setState({desc: text})}}
                                     />
                                 </View>
                                 <View style={styles.textInputStyle}>
@@ -267,7 +363,9 @@ class CreateJob extends Component {
                                         placeholderTextColor= '#808080'
                                         maxLength={50}
                                         placeholderStyle={{fontWeight: '300', marginLeft: 10, fontSize: 17}}
-                                        style={{fontSize: 17, fontWeight: '300'}}
+                                        style={{marginLeft: 10, fontSize: 17, fontWeight: '300'}}
+                                        value={this.state.misc}
+                                        onChangeText={(text) => {this.setState({misc: text})}}
                                     />
                                 </View>
                                 <Text style={{marginTop: 5, fontWeight: '200', fontSize: 12}}>Optional</Text>
@@ -300,14 +398,21 @@ class CreateJob extends Component {
                                             </View>
                                         </View>
                                 </Modal>
-                                <Text>{latitude} {longitude}</Text>
-                                <TouchableHighlight style={{marginTop: 20}} onPress={this._handleAddTime.bind(this)}>
-                                        <Text>Add</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight style={{marginTop: 20}} onPress={this._handleRemoveTime.bind(this)}>
-                                        <Text>Remove</Text>
-                                </TouchableHighlight>
+                                <View style={{flexDirection: 'row', marginTop: 30}}>
+                                    <Text style={{flex: 1, fontWeight: '200', fontSize: 22, alignSelf: 'baseline',}}>Dates: </Text>
+
+                                    
+                                    <TouchableOpacity style={{alignSelf: 'flex-end', marginRight: 20}} onPress={this._handleAddTime.bind(this)}>
+                                        <CachedImage source = {require("../../assets/add.png")} style = {{height: 25, width: 25}}/>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{alignSelf: 'flex-end'}} onPress={this._handleRemoveTime.bind(this)}>
+                                        <CachedImage source = {require("../../assets/minus.png")} style = {{height: 23, width: 23}}/>
+                                    </TouchableOpacity> 
+                                   
+                                </View>
+                                
                             {added_text}
+                                <Text>{this.state.errormissing}</Text>
                             </View>
                     </KeyboardAwareScrollView>
                 </ScrollView>
