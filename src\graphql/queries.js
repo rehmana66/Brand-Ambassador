@@ -113,6 +113,7 @@ export const getReviews = `query GetReviews($id: ID!) {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -154,6 +155,7 @@ export const listReviewss = `query ListReviewss(
       user_id
       job {
         id
+        employerID
         name
         date
       }
@@ -252,6 +254,7 @@ export const getJob = `query GetJob($id: ID!) {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -324,6 +327,7 @@ export const listJobs = `query ListJobs($filter: ModelJobFilterInput, $limit: In
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -365,6 +369,7 @@ export const getJobSearch = `query GetJobSearch($id: ID!) {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -408,6 +413,7 @@ export const listJobSearchs = `query ListJobSearchs(
       id
       job {
         id
+        employerID
         name
         date
       }
@@ -500,6 +506,7 @@ export const getApplication = `query GetApplication($id: ID!) {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -549,6 +556,7 @@ export const listApplications = `query ListApplications(
       }
       jobID {
         id
+        employerID
         name
         date
       }

@@ -61,7 +61,7 @@ class LogIn extends Component {
         } else if (code == "UserNotFoundException") {
             alert("Incorrect username or password")
         } else {
-            console.log("not working")
+            console.log("not working", code)
         }
     }
 

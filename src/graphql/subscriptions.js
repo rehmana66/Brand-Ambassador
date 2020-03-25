@@ -179,6 +179,7 @@ export const onCreateReviews = `subscription OnCreateReviews {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -224,6 +225,7 @@ export const onUpdateReviews = `subscription OnUpdateReviews {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -269,6 +271,7 @@ export const onDeleteReviews = `subscription OnDeleteReviews {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -401,6 +404,7 @@ export const onCreateUserJobs = `subscription OnCreateUserJobs {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -474,6 +478,7 @@ export const onUpdateUserJobs = `subscription OnUpdateUserJobs {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -547,6 +552,7 @@ export const onDeleteUserJobs = `subscription OnDeleteUserJobs {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -609,6 +615,7 @@ export const onCreateJob = `subscription OnCreateJob {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -703,6 +710,7 @@ export const onUpdateJob = `subscription OnUpdateJob {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -797,6 +805,7 @@ export const onDeleteJob = `subscription OnDeleteJob {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -870,6 +879,7 @@ export const onCreateJobSearch = `subscription OnCreateJobSearch {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -917,6 +927,7 @@ export const onUpdateJobSearch = `subscription OnUpdateJobSearch {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -964,6 +975,7 @@ export const onDeleteJobSearch = `subscription OnDeleteJobSearch {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1086,6 +1098,7 @@ export const onCreateApplication = `subscription OnCreateApplication {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1162,6 +1175,7 @@ export const onUpdateApplication = `subscription OnUpdateApplication {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1238,6 +1252,7 @@ export const onDeleteApplication = `subscription OnDeleteApplication {
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken

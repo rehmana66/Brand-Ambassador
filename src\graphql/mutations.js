@@ -179,6 +179,7 @@ export const createReviews = `mutation CreateReviews($input: CreateReviewsInput!
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -224,6 +225,7 @@ export const updateReviews = `mutation UpdateReviews($input: UpdateReviewsInput!
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -269,6 +271,7 @@ export const deleteReviews = `mutation DeleteReviews($input: DeleteReviewsInput!
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -401,6 +404,7 @@ export const createUserJobs = `mutation CreateUserJobs($input: CreateUserJobsInp
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -474,6 +478,7 @@ export const updateUserJobs = `mutation UpdateUserJobs($input: UpdateUserJobsInp
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -547,6 +552,7 @@ export const deleteUserJobs = `mutation DeleteUserJobs($input: DeleteUserJobsInp
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -609,6 +615,7 @@ export const createJob = `mutation CreateJob($input: CreateJobInput!) {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -703,6 +710,7 @@ export const updateJob = `mutation UpdateJob($input: UpdateJobInput!) {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -797,6 +805,7 @@ export const deleteJob = `mutation DeleteJob($input: DeleteJobInput!) {
         nextToken
       }
     }
+    employerID
     name
     employees {
       items {
@@ -870,6 +879,7 @@ export const createJobSearch = `mutation CreateJobSearch($input: CreateJobSearch
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -917,6 +927,7 @@ export const updateJobSearch = `mutation UpdateJobSearch($input: UpdateJobSearch
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -964,6 +975,7 @@ export const deleteJobSearch = `mutation DeleteJobSearch($input: DeleteJobSearch
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1086,6 +1098,7 @@ export const createApplication = `mutation CreateApplication($input: CreateAppli
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1162,6 +1175,7 @@ export const updateApplication = `mutation UpdateApplication($input: UpdateAppli
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken
@@ -1238,6 +1252,7 @@ export const deleteApplication = `mutation DeleteApplication($input: DeleteAppli
         dateOfBirth
         gender
       }
+      employerID
       name
       employees {
         nextToken

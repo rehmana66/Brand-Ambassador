@@ -54,6 +54,7 @@ type UserJobs @model (queries: null) {
 type Job @model {
   id: ID!
   employer: User @connection
+  employerID: ID
   name: String
   employees: [UserJobs] @connection(name: "employees")
   applications: [Application] @connection(name: "jobApplications")
