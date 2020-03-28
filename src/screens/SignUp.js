@@ -4,6 +4,7 @@ import Reinput from 'reinput';
 import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withNavigation } from 'react-navigation';
+import { ListItem, SearchBar, Divider, CheckBox, ButtonGroup  } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import DateTimePicker from "react-native-modal-datetime-picker";
 
@@ -64,7 +65,7 @@ class SignUp extends Component {
             birthdate: "",
             userType: false,
             showConfirmationForm: false,
-        
+            selectedIndex: 0,
             username_error: "",
             name_error: "",
             phone_error: "",
@@ -190,11 +191,20 @@ class SignUp extends Component {
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(findNodeHandle(this.refs[refName]),100,true);
         }, 50);
     }
+    updateIndex (value) {
+        type = false;
+
+        if (value == 1) {
+            type = true
+        }
+
+        this.setState({selectedIndex: value, userType: type})
+    }
 
     render () {
         return (
         // Main Container
-        <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
+        <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: 'white' }} onPress ={ () => {
             Keyboard.dismiss() }}>
             {!this.state.showConfirmationForm && (
                 <Fragment> 
@@ -209,7 +219,7 @@ class SignUp extends Component {
                             keyboardType = {'email-address'}
                             error = {this.state.username_error}
                             onSubmitEditing={() => { this.refs['FullName'].focus() }}
-                            onChangeText = { (value) => this.setState({ email: value, username: value, username_error: "" }) }/>
+                            onChangeText = { (value) => {check = value.toLowerCase(); this.setState({ email: check, username: check, username_error: "" })} }/>
                         <Reinput
                             fontFamily = "raleway-light"
                             ref = {'FullName'}
@@ -242,23 +252,22 @@ class SignUp extends Component {
                             onSubmitEditing={() => { this.refs['SignUpButton'].focus() }}
                             onChangeText = { (value) => this.setState({ password: value, password_error: "" }) }/>
                        
+                       <Text style = {styles.textStyle}>User Type</Text>
+                       <ButtonGroup
+                            onPress={this.updateIndex.bind(this)}
+                            selectedIndex={this.state.selectedIndex}
+                            buttons={["User", "Employer"]}
+                            containerStyle={{height: 40, marginBottom: 30}}
+                        />
+
                         <View ref = {'test'} style = {{flexDirection: 'row', justifyContent: 'center'}}>
                             <TouchableOpacity onPress = {this.signUp}>
                                 <View style = {styles.signUpButton}>
                                     <Text style = {styles.signUpButtonText}>Sign Up</Text>
                                 </View>
                             </TouchableOpacity>
-                            
                         </View>
                         <View ref = {'SignUpButton'} style = {{paddingTop: 25}}></View>
-
-                        <Text style = {styles.textStyle}>User Type</Text>
-                        <View>
-                            <Picker selectedValue = {this.state.userType} onValueChange = {(value) => this.setState({ userType: value })}>
-                                <Picker.Item label = "User" value = {false} />
-                                <Picker.Item label = "Employer" value = {true} />
-                            </Picker>
-                        </View>
                         
                     </KeyboardAwareScrollView>
                 </Fragment>
@@ -294,17 +303,18 @@ class SignUp extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        backgroundColor: 'white'
     },
     mainScroll: {
         flexGrow: 1,
-        backgroundColor: '#dff3fd',
+        backgroundColor: 'white',
         marginHorizontal: 15,
         marginVertical: 20,
         width : Dimensions.get('window').width - 30
     },
     signUpButton: {
         justifyContent: 'center',
-        backgroundColor: '#3f51b5',
+        backgroundColor: global.iOSBlue,
         width: Dimensions.get('window').width - 30,
         margin: 5,
         height: 50,
@@ -312,16 +322,17 @@ const styles = StyleSheet.create({
     },
     signUpButtonText: {
         fontFamily: "raleway-regular",
-        color: '#dff3fd',
+        color: 'white',
         padding: 14,
         fontSize: 16,
         alignSelf: 'center'
     },
     textStyle: {
         fontFamily: "raleway-regular",
-        color: '#3f51b5',
+        color: global.iOSBlue,
         paddingBottom: 10,
         fontSize: 24,
+        alignSelf: 'center'
     }
 });
 

@@ -116,7 +116,7 @@ const SignedOut = createStackNavigator(
       gesturesEnabled: false,
       
       headerStyle: {
-        backgroundColor: '#3f51b5',
+        backgroundColor: global.iOSBlue,
       },
       headerTintColor: '#dff3fd',
       headerTitleStyle: {

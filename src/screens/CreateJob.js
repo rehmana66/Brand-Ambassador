@@ -90,6 +90,7 @@ class CreateJob extends Component {
             const jobCreate = {
                 name: companyName,
                 date: new Date(),
+                employerID: global.USERID.id,
                 jobEmployerId: global.USERID.id,
                 jobDetailsId: '' // this needs to be added
             }

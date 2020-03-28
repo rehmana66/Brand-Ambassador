@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { Dimensions, View, Text, StyleSheet, Image, Button, TouchableOpacity, Alert, Keyboard } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, Image, TouchableOpacity, Alert, Keyboard } from 'react-native';
+import { ListItem, SearchBar, Divider, CheckBox, Button  } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
 import  Reinput  from 'reinput';
 import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types'
-//import Amplify from 'aws-amplify';
+import CachedImage from '../components/CachedImage';
 import Amplify, { Auth } from 'aws-amplify';
-
+import TextInput from "react-native-improved-text-input";
+const { height, width } = Dimensions.get('window')
 Amplify.configure({
     Auth: {
         // REQUIRED - Amazon Cognito Identity Pool ID
@@ -140,20 +142,27 @@ class LogIn extends Component {
     };
 
 
-    
+    inputFocused (refName) {
+        setTimeout(() => {
+            let scrollResponder = this.refs.scrollView.getScrollResponder();
+            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(findNodeHandle(this.refs[refName]),100,true);
+        }, 50);
+    }
 
     render() {
         return (
-            <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: '#dff3fd' }} onPress ={ () => {
+            <SafeAreaView forceInset = {{ bottom: 'always' }} style = {{ flex: 1, backgroundColor: 'white' }} onPress ={ () => {
                 Keyboard.dismiss() }}>
                 {!this.state.showConfirmationForm && (
                 <Fragment> 
                 <Modal isVisible = {this.state.isForgotModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
                 onBackdropPress = {() => this.setState({ isForgotModalVisible: !this.state.isForgotModalVisible })} onModalHide = {this.toggleNewPassModal}>
-                    <View style = {{ height: Dimensions.get('window').height/2 - 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
+                    <View style = {{ height: Dimensions.get('window').height/2 - 100, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 5 }}>
                         <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
-                            <Text style = {styles.forgotModalTitle}>Forgot Password</Text>
-                            <Reinput label = "Email Address"  fontFamily = "raleway-light" keyboardType = {'email-address'} onChangeText = { (value) => this.setState({ username: value }) }/>
+                            <Text style = {{fontWeight: '300', fontSize: 30, alignSelf: 'center', marginBottom: 20}}>Forgot Password</Text>
+                            <Reinput label = "Email Address"  fontFamily = "raleway-light" keyboardType = {'email-address'} 
+                            onChangeText = { (value) => this.setState({ username: value }) }
+                            style={{marginLeft: 15, marginRight: 15}}/>
                             <TouchableOpacity onPress={this.forgotPassword}>
                                 <View style = {styles.forgotModalButton}>
                                     <Text style = {styles.forgotModalButtonText}>Forgot Password?</Text>
@@ -164,13 +173,18 @@ class LogIn extends Component {
                 </Modal>
                 <Modal isVisible = {this.state.isNewPassModalVisible} style = {{paddingBottom: Dimensions.get('window').height/4 }}
                 onBackdropPress = {() => this.setState({ isNewPassModalVisible: !this.state.isNewPassModalVisible })}>
-                    <View style = {{ height: Dimensions.get('window').height/2, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dff3fd', borderRadius: 5 }}>
+                    <View style = {{ height: Dimensions.get('window').height/2, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 5 }}>
                         <View style = {{ width: Dimensions.get('window').width - 60, justifyContent: 'space-around'}}>
                             <Text style = {styles.forgotModalTitle}>Forgot Password</Text>
-                            <Reinput label = "Confirmation Code"  fontFamily = "raleway-light" onChangeText = { (value) => this.setState({ confirmCode: value }) }/>
-                            <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ newPass: value }) }/>
-                            <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true} onChangeText = { (value) => this.setState({ confirmNewPass: value }) }/>
-                            <TouchableOpacity onPress={this.setNewPassword}>
+                            <View style={{marginLeft: 15, marginRight: 15}}>
+                                <Reinput label = "Confirmation Code"  fontFamily = "raleway-light"
+                                onChangeText = { (value) => this.setState({ confirmCode: value }) }/>
+                                <Reinput label = "New Password"  fontFamily = "raleway-light" secureTextEntry = {true}
+                                onChangeText = { (value) => this.setState({ newPass: value }) }/>
+                                <Reinput label = "Confirm New Password"  fontFamily = "raleway-light" secureTextEntry = {true}
+                                onChangeText = { (value) => this.setState({ confirmNewPass: value }) }/>
+                            </View>
+                            <TouchableOpacity  onPress={this.setNewPassword}>
                                 <View style = {styles.forgotModalButton}>
                                     <Text style = {styles.forgotModalButtonText}>Confirm New Password</Text>
                                 </View>
@@ -179,41 +193,45 @@ class LogIn extends Component {
                     </View>
                 </Modal>
                 <View style = { styles.loginContainer} >
-                    <View style = {{alignSelf: 'center', paddingTop: 10}}>
-                        <Image
-                        style={{width: 80, height: 80}}
-                        source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}/>
+                    <View style={{flex:1, backgroundColor: 'white', alignItems: 'center', marginTop: 40}}>
+                        <CachedImage source = {require("../../assets/logo.png")} style={{height: 100, width: 400}}/>
                     </View>
-                    <Text style = {styles.loginText}>Log In</Text>
-                    <Reinput label = "Email Address"  fontFamily = "raleway-light"
-                    onChangeText = { (value) => this.setState({ username: value }) }/>
-                    <Reinput label = "Password"  fontFamily = "raleway-light" secureTextEntry = {true}
-                    onChangeText = { (value) => this.setState({ password: value }) }/>
-
-                    <View style = {{flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.toggleForgotModal}>
-                            <View style = {styles.loginScreenButtons}>
-                                <Text style = {styles.loginScreenButtonsText}>Forgot Password?</Text>
+                    <View style={{flex: 4.5}}>
+                        <View style={{marginHorizontal: 10, marginRight: 10}}>
+                            <Reinput label = "Email Address"  fontFamily = "raleway-light" keyboardType = {'email-address'}
+                                returnKeyType = {"next"}
+                                onChangeText = { (value) => this.setState({ username: value.toLowerCase() }) }
+                                onSubmitEditing={() => { this.refs['Password'].focus() }}/>
+                            <Reinput label = "Password"  fontFamily = "raleway-light" secureTextEntry = {true}
+                                ref = {'Password'} onChangeText = { (value) => this.setState({ password: value }) }/>
+                            <View style={{flexDirection: 'row', marginTop: -30}}>
+                                <Text style={{fontWeight: '300'}}>Forgot Password?</Text>
+                                <TouchableOpacity onPress={this.toggleForgotModal} style={{marginLeft: 5}}>
+                                    <Text style={{color: global.iOSBlue, fontWeight: '300'}}>Recover here</Text>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress = {this.signIn}>
-                            <View style = {styles.loginScreenButtons}>
-                                <Text style = {styles.loginScreenButtonsText}>Log In</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomContainer}>
-                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')}>
-                            <View style = {styles.signUpButton}>
-                                <Text style = {styles.signUpButtonText}>Sign Up</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('Dashboard')}>
-                            <View style = {styles.signUpButton}>
-                                <Text style = {styles.signUpButtonText}>Dashboard</Text>
-                            </View>
-                        </TouchableOpacity>
-                        
+                        </View>
+                        <View style={{alignItems: 'center', marginTop: 40}}>
+                            <Button onPress={this.signIn} title="Log In" buttonStyle={{backgroundColor: global.iOSBlue}} containerStyle={{width: width-50}}/>
+                        </View>
+                        <Divider style={{height: 1, backgroundColor: '#c5c7c4', marginLeft: 12, marginRight: 12, marginTop: 30 }} />
+                        <View style={{flexDirection: 'row', marginTop: 15, marginHorizontal: 12, justifyContent: 'center'}}>
+                            <Text>Don't have an account?</Text>
+                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')} style={{marginLeft: 5}}>
+                                <Text style={{color: global.iOSBlue}}>Choose an option</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{marginTop: 30, alignItems: 'center'}}>
+                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')} style={{marginLeft: 5}}>
+                                <CachedImage source = {require("../../assets/facebook.jpg")} style={{width: 370, height: 40}}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')} style={{marginLeft: 5, marginTop: 15}}>
+                                <CachedImage source = {require("../../assets/google.jpg")} style={{width: 370, height: 40}}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('SignUp')} style={{marginLeft: 5, marginTop: 15}}>
+                                <CachedImage source = {require("../../assets/email.jpg")} style={{width: 370, height: 40}}/>
+                            </TouchableOpacity>
+                        </View>  
                     </View>
                 </View> 
                 </Fragment>
@@ -248,7 +266,7 @@ class LogIn extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#dff3fd'
+        backgroundColor: 'white'
     },
     bottomContainer: {
         flex: 1,
@@ -269,7 +287,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     forgotModalButton: {
-        backgroundColor: '#3f51b5',
+        backgroundColor: global.iOSBlue,
         borderRadius: 10,
         width: Dimensions.get('window').width - 60,
         alignSelf: 'center',
@@ -284,7 +302,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     loginScreenButtons: {
-        backgroundColor: '#dff3fd',
+        backgroundColor: 'white',
         borderRadius: 10,
         width: Dimensions.get('window').width/2 - 30,
         margin: 2,
@@ -299,7 +317,7 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         flex: 1,
-        backgroundColor: '#dff3fd',
+        backgroundColor: 'white',
         marginHorizontal: 15,
         marginVertical: 20,
         width : Dimensions.get('window').width - 30,
