@@ -224,7 +224,7 @@ class Home extends Component {
 
     pressTest(jobDetails) {
         const {navigation} = this.props
-        navigation.navigate('Details', {jobDetails: jobDetails});
+        navigation.navigate('Details', {jobDetails: jobDetails, userType: this.state.userType});
     }
 
     convertToTwelve = (time) => {
