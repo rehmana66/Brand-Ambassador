@@ -99,7 +99,8 @@ class Detail extends Component {
                             title='EDIT INFO' />
                             <Button
                             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 5}}
-                            title='APPLICANTS' /></View>
+                            title='APPLICANTS' 
+                            disabled={this.state.approved == null ? false : true}/></View>
                         }
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         {(this.state.userType) &&
