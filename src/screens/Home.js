@@ -87,6 +87,33 @@ const GETUSERJOBS = `query getUserJobs($id: ID!) {
     }
 }`;
 
+const GETPOSTEDJOBS = `query getPostedJobs($employerID: ID!) {
+    listJobs(filter: {employerID: {eq: $employerID}}) {
+        items {
+            id
+            employer {
+                id
+                fullName
+            }
+            name
+            date
+            details {
+                title
+                body
+                desc
+                misc
+                rate
+                dates {
+                    items {
+                        start_date
+                        end_date
+                    }
+                }
+            }
+        }
+    }
+}`;
+
 global.USERID = {};
 global.iOSBlue = '#147efb';
 
@@ -101,6 +128,7 @@ class Home extends Component {
             log: {},
             testJobs: [],
             user: "",
+            userType: null,
             isLoaded: false,
             selected: undefined,
             data: [],
@@ -120,11 +148,18 @@ class Home extends Component {
         Auth.currentAuthenticatedUser().then((data) => {
             if (data) {
                 const getDetails = API.graphql(graphqlOperation(GETUSER, {email: data.attributes.email})).then(
-                    (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true})
+                    (info) => this.setState({user: info.data.listUsers.items[0], isLoaded: true, userType: info.data.listUsers.items[0].user_type})
                 ).then(() => {
-                    const getJobs = API.graphql(graphqlOperation(GETUSERJOBS, {id: this.state.user.id})).then(
-                        (info) => this.setState({userJobs: info.data.getUser.jobs}))
-                        .then(this.loadJobs.bind(this));
+                    if(!this.state.userType){
+                        const getJobs = API.graphql(graphqlOperation(GETUSERJOBS, {id: this.state.user.id})).then(
+                            (info) => this.setState({userJobs: info.data.getUser.jobs}))
+                            .then(this.loadJobs.bind(this));
+                    }
+                    else{
+                        const getJobs = API.graphql(graphqlOperation(GETPOSTEDJOBS, {employerID: this.state.user.id})).then(
+                            (info) => this.setState({userJobs: info.data.listJobs.items}))
+                            .then(this.loadJobs.bind(this));  
+                    }
                     });
                 }}).catch(err => console.log(err));
     }
@@ -134,14 +169,28 @@ class Home extends Component {
     }
 
     loadJobs(){
-        var jobs = this.state.userJobs;
-        for(i = 0; i < jobs['items'].length; i++){
-            for(j = 0; j < jobs.items[i].jobID.details.dates['items'].length; j++){
-                var newObject = {JobID: jobs.items[i].jobID.id, JobName: jobs.items[i].jobID.name, Details: jobs.items[i].jobID.details, 
-                    Employer: jobs.items[i].jobID.employer, JobStartDate: jobs.items[i].jobID.details.dates.items[j].start_date, JobEndDate: jobs.items[i].jobID.details.dates.items[j].end_date};
-                    this.state.testJobs.push(newObject);
-                    var myDate = newObject.JobStartDate.substring(0, newObject.JobStartDate.indexOf('T'));
-                    this.state.myMarkedDays.push(myDate);
+        if(!this.state.userType){
+            var jobs = this.state.userJobs;
+            for(i = 0; i < jobs['items'].length; i++){
+                for(j = 0; j < jobs.items[i].jobID.details.dates['items'].length; j++){
+                    var newObject = {JobID: jobs.items[i].jobID.id, JobName: jobs.items[i].jobID.name, Details: jobs.items[i].jobID.details, 
+                        Employer: jobs.items[i].jobID.employer, JobStartDate: jobs.items[i].jobID.details.dates.items[j].start_date, JobEndDate: jobs.items[i].jobID.details.dates.items[j].end_date};
+                        this.state.testJobs.push(newObject);
+                        var myDate = newObject.JobStartDate.substring(0, newObject.JobStartDate.indexOf('T'));
+                        this.state.myMarkedDays.push(myDate);
+                }
+            }
+        }
+        else{
+            var jobs = this.state.userJobs;
+            for(i = 0; i < jobs.length; i++){
+                for(j = 0; j < jobs[i].details.dates['items'].length; j++){
+                    var newObject = {JobID: jobs[i].id, JobName: jobs[i].name, Details: jobs[i].details, 
+                        Employer: jobs[i].employer, JobStartDate: jobs[i].details.dates.items[j].start_date, JobEndDate: jobs[i].details.dates.items[j].end_date};
+                        this.state.testJobs.push(newObject);
+                        var myDate = newObject.JobStartDate.substring(0, newObject.JobStartDate.indexOf('T'));
+                        this.state.myMarkedDays.push(myDate);
+                }
             }
         }
         this.state.myMarkedDays.sort(this.compareMarked);
