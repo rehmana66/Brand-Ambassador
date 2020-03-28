@@ -9,15 +9,34 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import CachedImage from '../components/CachedImage';
+import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 ];
+
+const GETAPPS = `query getApps($job: ID!) {
+    listApplications(filter: {job: {eq: $job}}) {
+        items {
+            id
+            date
+            status
+            userID {
+                id
+                fullName
+            }
+        }
+    }
+}`;
 
 class Detail extends Component {
 
     constructor (props) {
         super(props);
         this.state = {
+            userType: null,
+            details: null,
+            applicants: null,
+            approved: null
         }
     }
 
@@ -27,40 +46,43 @@ class Detail extends Component {
         var ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
         return modHour + time.substr(2, 3) + " " + ampm;
     }
-   /* componentDidMount() {
+
+    fetchData() {
         const { navigation } = this.props;
-        const details = navigation.getParam('jobDetails', null);
-        this.setState({jobDetails: details})
-    }*/
-    /*render() {
-        const { navigation } = this.props;
-        const details = navigation.getParam('jobDetails', null);
-        //this.setState({jobDetails: jobdetails})
-        console.log(details);
-        const title = "title";
-        const desc = "desc";
-        const price = "price";
-        return (
-            <SafeAreaView style={styles.container}>
-                <View style={{flex: 1}}>
-                    <View style={{marginTop: 5, alignItems: 'center'}}>
-                        <Text h4 style={{fontWeight: '500', fontSize: 28}} >{details.JobName}</Text>
-                        <Text h5 style={{color: 'grey'}} >{details.Employer.fullName} an hour</Text>
-                    </View>
-                    <View style={{flex: 6}}>
-                        <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4', marginLeft: 20, marginRight: 20 }} />
-                        <ScrollView style={{marginTop: 10}} scrollEventThrottle={16}>
-                            <Text h5 style={{color: 'grey'}} >{details.Employer.fullName} an hour</Text>
-                        </ScrollView>
-                    </View>
-                </View>
-            </SafeAreaView>
-        );
-    }*/
+        const jobDetails = navigation.getParam('jobDetails', null);
+        this.setState({details: jobDetails, userType: navigation.getParam('userType', null)});
+        API.graphql(graphqlOperation(GETAPPS, {job: jobDetails.JobID})).then((info) => {
+            this.setState({applicants: info.data.listApplications.items})
+            console.log("INFO", info)
+            this.setPerson(info.data.listApplications.items);
+            }
+        ).catch(err=> console.log(err));
+    }
+
+    setPerson(info){
+        let obj = info.find(o => o.status === 'true')
+        if (obj !== undefined){
+            this.setState({approved: info[0].userID.fullName})
+            console.log(info[0].userID.fullName);
+        }
+    }
+    componentWillMount() {
+        this.fetchData();
+    }
+    
+    checkApplicants(applicants) {
+        const {navigation} = this.props
+        navigation.navigate('JobApplicants', {applicants: applicants});
+    }
+
 
     render() {
-        const { navigation } = this.props;
-        const details = navigation.getParam('jobDetails', null);
+        //const { navigation } = this.props;
+        //const details = navigation.getParam('jobDetails', null);
+        //const userType = navigation.getParam('userType', null);
+        //console.log(details.JobID);
+        //this.fetchData(details.JobID);
+        //console.log(this.applicants);
         //this.setState({jobDetails: jobdetails})
         
         return (
@@ -69,25 +91,41 @@ class Detail extends Component {
                 <ScrollView>
                     <Card 
                     containerStyle = {{marginBottom: 5}}
-                    title = {details.JobName}
+                    title = {this.state.details.JobName}
                     image = {require('../../assets/home.jpg')}>
-                        <Text style={{marginBottom: 10}}>This is {details.Details.desc}. There will most likely
+                        <Text style={{marginBottom: 10}}>This is {this.state.details.Details.desc}. There will most likely
                         be more here but lets just leave it at this for now.</Text>
-                        <Button
+                        {!this.state.userType
+                            ? <Button
                             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                             title='VERIFY' />
+                            : <View><Button
+                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                            title='EDIT INFO' />
+                            <Button
+                            onPress={() => this.checkApplicants(this.state.applicants)}
+                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 5}}
+                            title='APPLICANTS' 
+                            disabled={this.state.approved == null ? false : true}/></View>
+                        }
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
+                        {(this.state.userType && this.state.approved) &&
+                            <ListItem
+                            title={this.state.approved}
+                            leftIcon={<CachedImage source = {require("../../assets/profile/account.png")} style = {{height: 40, width: 40}}/>}
+                            />
+                        }
                         <ListItem
-                        title={monthNames[details.JobStartDate.substring(6,7)-1] + ", " + details.JobStartDate.substring(8,10) + ", " + details.JobStartDate.substring(0,4)}
+                        title={monthNames[this.state.details.JobStartDate.substring(6,7)-1] + ", " + this.state.details.JobStartDate.substring(8,10) + ", " + this.state.details.JobStartDate.substring(0,4)}
                         leftIcon={<CachedImage source = {require('../../assets/calendar.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <ListItem
-                        title={this.convertToTwelve(details.JobStartDate.substring(details.JobStartDate.indexOf('T')+1, details.JobStartDate.indexOf('.')-3))
-                            + " " + "-" + " " + this.convertToTwelve(details.JobEndDate.substring(details.JobEndDate.indexOf('T')+1, details.JobEndDate.indexOf('.')-3))}
+                        title={this.convertToTwelve(this.state.details.JobStartDate.substring(this.state.details.JobStartDate.indexOf('T')+1, this.state.details.JobStartDate.indexOf('.')-3))
+                            + " " + "-" + " " + this.convertToTwelve(this.state.details.JobEndDate.substring(this.state.details.JobEndDate.indexOf('T')+1, this.state.details.JobEndDate.indexOf('.')-3))}
                             leftIcon={<CachedImage source = {require('../../assets/time.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <ListItem 
-                            title={details.Details.rate}
+                            title={this.state.details.Details.rate}
                             leftIcon={<CachedImage source = {require('../../assets/money.png')} style = {{height: 40, width: 40}}/>}
                         />
                         <ListItem
@@ -97,12 +135,12 @@ class Detail extends Component {
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         <ListItem
                             title="Miscellaneous"
-                            subtitle={details.Details.misc}
+                            subtitle={this.state.details.Details.misc}
                         />
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
                         <ListItem
                             containerStyle={{marginBottom: 2}}
-                            title={"Shift is " + moment(details.JobStartDate).fromNow()}
+                            title={"Shift is " + moment(this.state.details.JobStartDate).fromNow()}
                             titleStyle={{color: 'grey', fontSize: 10}}
                         />
                     </Card>
