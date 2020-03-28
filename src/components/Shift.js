@@ -13,9 +13,10 @@ import * as mutations from '../graphql/mutations';
 const { height, width } = Dimensions.get('window');
 
 const GETAPPLICATION = `
-    query listApplication($job:ID!){
+    query listApplication($job:ID!, $ID: ID!){
         listApplications(filter: {
             job: {eq: $job}
+            user: {eq: $ID}
         }) {
             items{id
             jobID{id}
@@ -61,7 +62,7 @@ class Shift extends Component {
     }
     
     componentDidMount() {
-        API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
+        API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id, ID: global.USERID.id})).then(
             data => {
                 this.setState({isLoaded: true})
                 if (!data.data.listApplications.items[0]) {
@@ -88,7 +89,7 @@ class Shift extends Component {
             status: "progress",  
             date: currentDate
         }
-        const details = API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id})).then(
+        const details = API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id, ID: global.USERID.id})).then(
             data => {
                 if (!data.data.listApplications.items[0]) {
                     API.graphql(graphqlOperation(mutations.createApplication,

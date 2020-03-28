@@ -38,9 +38,10 @@ Amplify.configure({
 
 
 const GETAPPLICATION = `
-    query listApplication($status :String){
+    query listApplication($status :String, $ID: ID){
         listApplications(filter: {
             status: {eq: $status}
+            user: {eq: $ID}
         }) {
             items{id job user status date
             jobID{id date name
@@ -82,7 +83,8 @@ class Applications extends Component {
 
     fetchData = async(stat) => {
         const { value } = this.state;
-        API.graphql(graphqlOperation(GETAPPLICATION, {status: stat})).then(data =>
+        console.log(global.USERID.id)
+        API.graphql(graphqlOperation(GETAPPLICATION, {status: stat, ID: global.USERID.id})).then(data =>
             {
                 this.setState({ applications:data.data.listApplications.items,
                         inMemorydata: data.data.listApplications.items,
