@@ -18,20 +18,6 @@ const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 ];
 const { height, width } = Dimensions.get('window')
 
-const GETAPPS = `query getApps($job: ID!) {
-    listApplications(filter: {job: {eq: $job}}) {
-        items {
-            id
-            date
-            status
-            userID {
-                id
-                fullName
-            }
-        }
-    }
-}`;
-
 class JobApplicants extends Component {
 
     constructor (props) {
@@ -47,7 +33,10 @@ class JobApplicants extends Component {
 
     fetchData() {
         const { navigation } = this.props;
-        const sortApps = navigation.getParam('applicants', null);
+        var sortApps = navigation.getParam('applicants', null);
+        sortApps = sortApps.filter(function(obj) {
+            return obj.status == 'progress'
+        })
         sortApps.sort(this.compare); 
         this.setState({applicants: sortApps});
     }
@@ -63,7 +52,7 @@ class JobApplicants extends Component {
        
         <ListItem
             topDivider
-            onPress={() => this.pressTest(item)}
+            onPress={() => this.viewApplicant(item)}
             title={item.userID.fullName}
             subtitle="star rating?"
             leftElement={
@@ -87,6 +76,11 @@ class JobApplicants extends Component {
         else if (dateA < dateB)
             comp = -1;
         return comp;
+    }
+
+    viewApplicant(applicant) {
+        const {navigation} = this.props
+        navigation.navigate('ProcessApplicant', {applicant: applicant});
     }
 
     render() {

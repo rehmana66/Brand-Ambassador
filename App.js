@@ -19,6 +19,7 @@ import PropTypes from 'prop-types'
 import Details from './src/screens/Detail';
 import CreateJob from './src/screens/CreateJob';
 import JobApplicants from './src/screens/JobApplicants';
+import ProcessApplicant from './src/screens/ProcessApplicant';
 
 import {
   createSwitchNavigator,
@@ -151,6 +152,14 @@ const HomeStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Applicants',
+        };
+      }
+    },
+    ProcessApplicant: {
+      screen: ProcessApplicant,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Applicant',
         };
       }
     },
