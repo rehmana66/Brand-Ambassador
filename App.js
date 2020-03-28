@@ -18,6 +18,7 @@ import Initializing from './src/screens/Initializing';
 import PropTypes from 'prop-types'
 import Details from './src/screens/Detail';
 import CreateJob from './src/screens/CreateJob';
+import JobApplicants from './src/screens/JobApplicants';
 
 import {
   createSwitchNavigator,
@@ -144,7 +145,15 @@ const HomeStack = createStackNavigator(
           headerTitle: 'Job Details',
         };
       }
-    }
+    },
+    JobApplicants: {
+      screen: JobApplicants,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Applicants',
+        };
+      }
+    },
   },
   {
     initialRouteName: 'Home',

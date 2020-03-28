@@ -68,7 +68,12 @@ class Detail extends Component {
     }
     componentWillMount() {
         this.fetchData();
-    }   
+    }
+    
+    checkApplicants(applicants) {
+        const {navigation} = this.props
+        navigation.navigate('JobApplicants', {applicants: applicants});
+    }
 
 
     render() {
@@ -98,12 +103,13 @@ class Detail extends Component {
                             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                             title='EDIT INFO' />
                             <Button
+                            onPress={() => this.checkApplicants(this.state.applicants)}
                             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, marginTop: 5}}
                             title='APPLICANTS' 
                             disabled={this.state.approved == null ? false : true}/></View>
                         }
                         <Divider style={{height: 1, marginTop: 10, backgroundColor: '#c5c7c4' }} />
-                        {(this.state.userType) &&
+                        {(this.state.userType && this.state.approved) &&
                             <ListItem
                             title={this.state.approved}
                             leftIcon={<CachedImage source = {require("../../assets/profile/account.png")} style = {{height: 40, width: 40}}/>}
