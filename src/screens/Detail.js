@@ -19,6 +19,8 @@ const GETAPPS = `query getApps($job: ID!) {
         items {
             id
             date
+            user
+            job
             status
             userID {
                 id

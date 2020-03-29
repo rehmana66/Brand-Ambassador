@@ -161,7 +161,7 @@ class Search extends Component {
                                 value = {search}
                                 inputContainerStyle={styles.searchinputContainer}
                                 containerStyle={styles.searchContainer}
-                                lightTheme
+                                lightThemeZ
                             />
                             <View style={{flexDirection: 'row', marginHorizontal: 20, position: 'relative', top: 15}}>
                                 <Tag name='Dates'></Tag>
