@@ -9,6 +9,13 @@ import {
 import { Auth } from 'aws-amplify'
 import {AsyncStorage} from 'react-native';
 import PropTypes from 'prop-types'
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings([
+  'Warning: componentWillMount is deprecated',
+  'Warning: componentWillUpdate is deprecated',
+  'Warning: componentWillReceiveProps is deprecated',
+]);
+console.disableYellowBox = true;
 
 export default class Initializing extends Component {
 

@@ -20,22 +20,6 @@ import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-Amplify.configure({
-    Auth: {
-        // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: 'us-west-2:1c3aaff9-add7-44e8-b2ae-c6fde2bab990', 
-        // REQUIRED - Amazon Cognito Region
-        region: 'us-west-2', 
-        // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'us-west-2_0554WrncK',
-        // OPTIONAL - Amazon Cognito Web Client ID
-        userPoolWebClientId: '2rlumscuro51u9d6m56srimcov', 
-    },
-    "aws_appsync_graphqlEndpoint": "https://xtwbkpbhera2fdndfrvu2w4hb4.appsync-api.us-west-2.amazonaws.com/graphql",
-    "aws_appsync_region": "us-west-2",
-    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
-});
-
 
 const GETAPPLICATION = `
     query listApplication($status :String, $ID: ID){
@@ -169,6 +153,9 @@ class Applications extends Component {
             return (
             
                 <SafeAreaView style={styles.container}>
+                    <View>
+                        
+                    </View>
                     <SearchBar placeholder="Type Here..."
                         onChangeText={(search) => {this.setState({search}); this.searchApplications(search)}}
                         value = {search}

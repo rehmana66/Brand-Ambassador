@@ -224,6 +224,7 @@ class Home extends Component {
 
     pressTest(jobDetails) {
         const {navigation} = this.props
+        //console.log("as", jobDetails);
         navigation.navigate('Details', {jobDetails: jobDetails, userType: this.state.userType});
     }
 
@@ -245,7 +246,7 @@ class Home extends Component {
     }
 
     renderItem = ({ item }) => (
-       
+        
         <ListItem
             topDivider
             onPress={() => this.pressTest(item)}
@@ -268,6 +269,7 @@ class Home extends Component {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>
         } else {
             USERID = user;
+            
             return (
                 <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                     <View>

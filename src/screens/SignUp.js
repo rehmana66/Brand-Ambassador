@@ -73,6 +73,10 @@ class SignUp extends Component {
         }
       }
     
+      componentDidMount() {
+          
+      }
+
     signUp = async () => {
         const { username, password, email, phone_number, name, birthdate
         } = this.state

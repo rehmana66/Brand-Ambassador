@@ -258,7 +258,7 @@ class Settings extends Component {
                                 onPress={()=> {(buttonText =="Edit") ? this.updateAccount(0) : this.updateAccount(1)}}/>
                             </View>
                         </View>
-                        <View style={{position: 'absolute', backgroundColor: this.state.editColor, left: 0, right: 0, height: height/3.2, marginTop: 29,
+                        <View style={{position: 'absolute', backgroundColor: this.state.editColor, left: 0, right: 0, height: height/2.8, marginTop: 29,
                             display: disabled}}>
                         </View>
                         <Text style={{marginTop: 70}}>name: {fullName}</Text>

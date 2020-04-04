@@ -43,7 +43,7 @@ class Area extends Component {
       this.setState({ appState: nextAppState });
     };
 
-    componentWillMount() {
+    componentDidMount() {
       AppState.addEventListener('change', this.handleAppStateChange);
         if (Platform.OS === 'android' && !Constants.isDevice) {
           this.setState({

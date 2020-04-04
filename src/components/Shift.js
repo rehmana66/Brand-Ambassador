@@ -9,7 +9,6 @@ import moment from 'moment';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 
-
 const { height, width } = Dimensions.get('window');
 
 const GETAPPLICATION = `
@@ -45,6 +44,7 @@ class Shift extends Component {
             dates: []
         }
     }
+    /*
     componentWillMount() {
         const job = this.state.job
         this.setState({
@@ -59,10 +59,43 @@ class Shift extends Component {
             date: job.date,
             dates: job.details.dates.items
         })
-    }
-    
+    }*/
+
     componentDidMount() {
+        const job = this.state.job
+        this.setState({
+            title: job.details.title,
+            desc: job.details.desc,
+            misc: job.details.misc,
+            body: job.details.body,
+            rate: job.details.rate,
+            id: job.id,
+            employerName: job.employer.fullName,
+            employerID: job.employer.id,
+            date: job.date,
+            dates: job.details.dates.items
+        }, () => {
+            this.fetchData()
+        })
+
+/*
         API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id, ID: global.USERID.id})).then(
+            data => {
+                this.setState({isLoaded: true})
+                if (!data.data.listApplications.items[0]) {
+                } else {
+                    this.setState({
+                        imageURI: require("../../assets/thumbs-up-filled.png"),
+                       
+                    })
+                }
+            }
+        ).catch(err => console.log(err));
+        */
+    }
+
+    fetchData() {
+        const jobs = API.graphql(graphqlOperation(GETAPPLICATION, {job: this.state.id, ID: global.USERID.id})).then(
             data => {
                 this.setState({isLoaded: true})
                 if (!data.data.listApplications.items[0]) {
