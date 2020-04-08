@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         height: 50,
-        borderColor: 'white'
     },
     searchinputContainer: {
         backgroundColor: 'white',    

@@ -19,8 +19,6 @@ const GETAPPS = `query getApps($job: ID!) {
         items {
             id
             date
-            user
-            job
             status
             userID {
                 id
@@ -50,6 +48,9 @@ class Detail extends Component {
     }
 
     fetchData() {
+        const { navigation } = this.props;
+        const jobDetails = navigation.getParam('jobDetails', null);
+        this.setState({details: jobDetails, userType: navigation.getParam('userType', null)});
         API.graphql(graphqlOperation(GETAPPS, {job: jobDetails.JobID})).then((info) => {
             this.setState({applicants: info.data.listApplications.items})
             console.log("INFO", info)
@@ -65,13 +66,8 @@ class Detail extends Component {
             console.log(info[0].userID.fullName);
         }
     }
-    componentDidMount() {
-        const { navigation } = this.props;
-        const jobDetails = navigation.getParam('jobDetails', {});
-        
-        console.log("details: ", jobDetails)
-        this.setState({details: jobDetails, userType: navigation.getParam('userType', null)}, () => {this.fetchData();});
-        //this.fetchData();
+    componentWillMount() {
+        this.fetchData();
     }
     
     checkApplicants(applicants) {
@@ -88,7 +84,7 @@ class Detail extends Component {
         //this.fetchData(details.JobID);
         //console.log(this.applicants);
         //this.setState({jobDetails: jobdetails})
-        console.log(this.state.details);
+        
         return (
             <SafeAreaView style={styles.container}>
                 <View style = {{flex: 1}}>

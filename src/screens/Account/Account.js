@@ -81,6 +81,7 @@ class Account extends Component {
         rating: 0,
         reviews: 0,
         reviewsData: null,
+        details: null
     };
     
     pickImage = async () => {
@@ -172,8 +173,8 @@ class Account extends Component {
     };
 
     render() {
-        let { image, user, isLoaded } = this.state;
-        
+        let { image, user, isLoaded, details } = this.state;
+        const {navigation} = this.props
         //console.log(user)
         if (!isLoaded) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>;
@@ -181,7 +182,7 @@ class Account extends Component {
             
                 let phone = USERID.phone_number.slice(0, 2) + " (" + USERID.phone_number.slice(2, 5) + ")" + " " +
                 USERID.phone_number.slice(5, 8) + "-" + USERID.phone_number.slice(8)
-
+                console.log("details: ", details);
             return (
                 <SafeAreaView style={styles.container}>
                     <View style = {styles.profileContainer}>
@@ -219,6 +220,7 @@ class Account extends Component {
                     </ScrollView>
                     
                     </View>
+
                 </SafeAreaView>
             );
         }

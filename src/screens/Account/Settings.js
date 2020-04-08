@@ -261,11 +261,6 @@ class Settings extends Component {
                         <View style={{position: 'absolute', backgroundColor: this.state.editColor, left: 0, right: 0, height: height/2.8, marginTop: 29,
                             display: disabled}}>
                         </View>
-                        <Text style={{marginTop: 70}}>name: {fullName}</Text>
-                        <Text>phone: {(isValidPhoneNumber) ? "true" : "false"}</Text>
-                        <Text>{cca2}</Text>
-                        <Text>dob: {dob}</Text>
-                        <Text>gender: {gen}</Text>
                     </SafeAreaView>
                 </TouchableWithoutFeedback>
             );
@@ -274,6 +269,14 @@ class Settings extends Component {
 }
     
 export default Settings;
+/*
+
+                        <Text style={{marginTop: 70}}>name: {fullName}</Text>
+                        <Text>phone: {(isValidPhoneNumber) ? "true" : "false"}</Text>
+                        <Text>{cca2}</Text>
+                        <Text>dob: {dob}</Text>
+                        <Text>gender: {gen}</Text>
+                        */
 
 const styles = StyleSheet.create({
     container: {

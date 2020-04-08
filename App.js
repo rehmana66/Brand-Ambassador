@@ -16,7 +16,7 @@ import SignUp from './src/screens/SignUp';
 import EditAccount from './src/screens/EditAccount';
 import Initializing from './src/screens/Initializing';
 import PropTypes from 'prop-types'
-import Details from './src/screens/Detail';
+import Detail from './src/screens/Detail';
 import CreateJob from './src/screens/CreateJob';
 import JobApplicants from './src/screens/JobApplicants';
 import ProcessApplicant from './src/screens/ProcessApplicant';
@@ -139,8 +139,8 @@ const HomeStack = createStackNavigator(
         };
       }
     },
-    Details: {
-      screen: Details,
+    Detail: {
+      screen: Detail,
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Job Details',
@@ -187,7 +187,7 @@ const SearchStack = createStackNavigator(
       }
     },
     Detail: {
-      screen: Details
+      screen: Detail
     },
     CreateJob: {
       screen: CreateJob,

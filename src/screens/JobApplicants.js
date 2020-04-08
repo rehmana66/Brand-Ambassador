@@ -12,11 +12,28 @@ import moment from 'moment';
 import CachedImage from '../components/CachedImage';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import { FlatList } from 'react-native-gesture-handler';
-
+import StarRating from 'react-native-star-rating';
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
 "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 ];
 const { height, width } = Dimensions.get('window')
+
+const GETREVIEWS = `
+    query listReviews($ID: ID!) {
+        listReviewss(filter: {user_id: {eq: $ID}}) {
+        items { id employer_id review rating date
+            job{ id name 
+                employer {
+                id fullName
+                }
+                details {
+                id misc title desc rate body
+                }
+            }
+        }
+        }
+    }
+`
 
 class JobApplicants extends Component {
 
@@ -48,13 +65,39 @@ class JobApplicants extends Component {
         return modHour + time.substr(2, 3) + " " + ampm;
     }
 
+    getStarRating = ({id}) => {
+        let rating = 0;
+        let reviews = 0;
+        API.graphql(graphqlOperation(GETREVIEWS, {ID: USERID.id})).then( (reviews) => {
+            data = reviews.data.listReviewss.items;
+            len = Object.keys(data).length;
+            if (len != 0)  {
+                counter = 0;
+                for (key in data) {
+                     counter += data[key].rating;
+                }
+                rating = counter/len;
+                reviews = len;
+                //.setState({rating: counter/len, reviews: len, reviewsData: data})
+            }}
+        ).catch(err=> console.log(err));
+        return(
+           
+            <View style={{marginTop: 7, flexDirection: 'row'}}>
+                <StarRating disabled={true} maxStars={5} rating={this.state.rating} starSize={15}></StarRating>
+                <Text style={{color: 'grey', fontSize: 10, marginLeft: 5}}> {reviews} ratings</Text>
+            </View>
+        
+        )
+    }
+
     renderItem = ({ item }) => (
        
         <ListItem
             topDivider
             onPress={() => this.viewApplicant(item)}
             title={item.userID.fullName}
-            subtitle="star rating?"
+            subtitle= {this.getStarRating("12")}//"star rating?"
             leftElement={
             <View style={{alignItems: 'center', borderRightWidth: 2, borderRightColor: 'grey', paddingRight: 10}}>
                 <Text>{monthNames[item.date.substring(6,7)-1]}</Text>

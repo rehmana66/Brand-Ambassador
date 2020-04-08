@@ -193,7 +193,7 @@ class LogIn extends Component {
                     </View>
                 </Modal>
                 <View style = { styles.loginContainer} >
-                    <View style={{flex:1, backgroundColor: 'white', alignItems: 'center', marginTop: 40}}>
+                    <View style={{flex:1, backgroundColor: 'white', alignItems: 'center'}}>
                         <CachedImage source = {require("../../assets/logo.png")} style={{height: 100, width: 400}}/>
                     </View>
                     <View style={{flex: 4.5}}>

@@ -225,7 +225,8 @@ class Home extends Component {
     pressTest(jobDetails) {
         const {navigation} = this.props
         //console.log("as", jobDetails);
-        navigation.navigate('Details', {jobDetails: jobDetails, userType: this.state.userType});
+        navigation.push('Detail', {jobDetails: jobDetails, userType: this.state.userType});
+        //navigation.push('Account', {jobDetails: jobDetails, userType: this.state.userType});
     }
 
     convertToTwelve = (time) => {
@@ -245,7 +246,9 @@ class Home extends Component {
             console.log("nope");
     }
 
-    renderItem = ({ item }) => (
+    renderItem = ({ item }) => {
+        //console.log("item: ", item)
+        return(
         
         <ListItem
             topDivider
@@ -262,14 +265,16 @@ class Home extends Component {
             chevron
         />
     );
+            }
 
     render() {
+        const {navigation} = this.props;
         const { isLoaded, user } = this.state;
         if (isLoaded == false) {
             return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} animating size="large"></ActivityIndicator>
         } else {
             USERID = user;
-            
+            console.log(USERID.id)
             return (
                 <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
                     <View>
@@ -294,6 +299,7 @@ class Home extends Component {
                             </Text>
                         )}>
                     </FlatList>
+                    
                 </View>
             
             );
