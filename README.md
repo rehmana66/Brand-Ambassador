@@ -12,7 +12,7 @@ Create a simple and easy to use application for both Employers and Employees to 
 
 ** As this was my first mobile application and first experience with node.js, react.js, CSS and even JavaScript, some of the goals set out are still a work in progress. 
 
-[![Brand Ambassador Application](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=rN31NP3EKOo)
+[![Brand Ambassador Application](https://i.ibb.co/M6G0nFv/18.png)](https://youtu.be/rN31NP3EKOo "Brand Ambassador Application")
 
 ## Main Login Screen
 
